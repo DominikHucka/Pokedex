@@ -1,3 +1,10 @@
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    margin-top: 300px !important;
+}
+
 .card {
     background-color: brown;
     color: white;
