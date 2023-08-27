@@ -1,11 +1,93 @@
 body {
     margin: 0;
-    display: flex;
-    justify-content: center;
-    margin-top: 300px !important;
+    font-family: 'Roboto Flex';
+    font-style: normal;
+    font-weight: 700;
 }
 
-.card {
-    background-color: brown;
-    color: white;
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 150px;
+    background-color: rgb(227, 53, 13);   
 }
+
+.header img {
+    height: 150px;
+}
+
+.header img:hover {
+    cursor: pointer;
+}
+
+.card-img-top {
+    background-color: rgb(242, 242, 242)
+}
+
+#pokedex {
+    display: flex;
+}
+
+.pokemon-card {
+    padding: 15px;
+    transition: transform .2s;
+}
+
+.pokemon-card:hover {
+    transform: matrix(1, 0, 0, 1, 0, -10);
+}
+
+.pokemon-card-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #F2F2F2;
+    border-radius: 10px;
+    width: 220px;
+    height: 220px;
+    cursor: pointer;
+}
+
+.pokemon-id {
+    color: rgb(145, 145, 145);
+    font-family: 'Roboto Flex';
+    font-weight: 700;
+    padding: 5px;
+}
+
+.pokemon-card-type {
+    width: 80px;
+    border-radius: 10px;
+}
+
+.pokemon-card-type p {
+    text-align: center;
+}
+
+/* Pokemon Color Type  */
+
+.normal {
+    background-color: rgb(164, 172, 175);
+}
+
+/* Überschrift */
+
+.pokedex {
+    display: inline-block;
+    text-align: center;
+    transform: rotate(-5deg);
+    background-color: #00A3E0;
+    padding: 20px 40px;
+    border-radius: 10px;
+    border: 2px solid #003A59;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .pokedex-title {
+    font-weight: bold;
+    font-size: 24px;
+    color: yellow;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+  }

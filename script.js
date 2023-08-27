@@ -1,10 +1,14 @@
 let currentPokemon;
+let allPokemons;
+let allPokemonUrl = [];
 
 
-async function init() {
-    await includeHTML();
+function init() {
+    includeHTML();
+    loadAllPokemons();
     loadPokemon();
-}
+    
+}   
 
 
 async function includeHTML() {
@@ -22,37 +26,56 @@ async function includeHTML() {
 }
 
 
+async function loadAllPokemons() {
+    let url = 'https://pokeapi.co/api/v2/pokemon?limit=100000&offset=20';
+    let response = await fetch(url);
+    allPokemons = await response.json();
+    console.log('load all Pokemons', allPokemons);
+    let result = allPokemons['results'];
+    renderAllPokemons(result);
+}
+
+
+function renderAllPokemons(result) {
+    for (let i = 0; i < result.length; i++) {
+        let loadPokemons = result[i];
+        allPokemonUrl.push(loadPokemons);
+    }
+}
+
+
 async function loadPokemon() {
-    let url = ' https://pokeapi.co/api/v2/pokemon/charmander';
+    let url = 'https://pokeapi.co/api/v2/pokemon/ditto';
     let response = await fetch(url);
     currentPokemon = await response.json();
-
-    console.log('loaded', currentPokemon);
-    renderPokedexInfo();
+    console.log('load Pokemon', currentPokemon);
+    renderPokemonInformation();
 }
 
 
-function renderPokedexInfo() {
-    document.getElementById('pokedex').innerHTML = generateHTMLPokedex();
+
+function renderPokemonInformation() {
+    let pokemonImage = currentPokemon['sprites']['other']['dream_world']['front_default'];
+    let pokemonName = currentPokemon['name'];
+    let pokemonId = currentPokemon['id'];
+    let pokemonType = currentPokemon['types']['0']['type']['name'];
+    document.getElementById('pokedex').innerHTML = '';
+    document.getElementById('pokedex').innerHTML += generateHTMLPokedex(pokemonImage, pokemonName, pokemonId, pokemonType);
 }
 
 
-function generateHTMLPokedex() {
+function generateHTMLPokedex(pokemonImage, pokemonName, pokemonId, pokemonType) {
     return /*html*/`
-        <div  class="card" style="width: 18rem;">
-            <img src="" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <div  class="pokemon-card">
+            <div class="pokemon-card-img">
+                <img src="${pokemonImage}" alt="Pokemon Image">
             </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">An item</li>
-                <li class="list-group-item">A second item</li>
-                <li class="list-group-item">A third item</li>
-            </ul>
-            <div class="card-body">
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
+            <div class="pokemon-card-information">
+                <p class="pokemon-id">Nr. ${pokemonId}</p>
+                <h2>${pokemonName}</h2>
+                <div class="pokemon-card-type normal">
+                    <p>${pokemonType}</p>
+                </div>
             </div>
         </div>
     `
