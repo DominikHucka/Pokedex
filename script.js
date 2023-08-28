@@ -27,7 +27,7 @@ async function includeHTML() {
 
 
 async function loadAllPokemons() {
-    let url = 'https://pokeapi.co/api/v2/pokemon?limit=31&offset=890'; // API limit auf 30 gesetzt 
+    let url = 'https://pokeapi.co/api/v2/pokemon?limit=31&offset=0'; // API limit auf 30 gesetzt 
     let response = await fetch(url); //ladet die API runter (aller Pokemons)
     allPokemons = await response.json(); //wandelt das in eine JSON um
     let result = allPokemons['results']; //results ist ein Array in der API 
@@ -75,7 +75,7 @@ function generateHTMLPokedex(img, name, id, type) {
             </div>
             <div class="pokemon-card-information">
                 <p class="pokemon-id">Nr. ${id}</p>
-                <h2>${name}</h2>
+                <h3>${name}</h3>
                 <div class="pokemon-card-type normal">
                     <p>${type}</p>
                 </div>
