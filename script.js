@@ -1,10 +1,10 @@
 let currentPokemon;
 let allPokemons;
-let allPokemonUrl = [];
+let allPokemonUrl = []; //sind alle URL von der Pokemon API 
 
 
-function init() {
-    includeHTML();
+async function init() {
+    await includeHTML();
     loadAllPokemons();
     loadPokemon();
     
@@ -27,54 +27,57 @@ async function includeHTML() {
 
 
 async function loadAllPokemons() {
-    let url = 'https://pokeapi.co/api/v2/pokemon?limit=100000&offset=20';
-    let response = await fetch(url);
-    allPokemons = await response.json();
-    console.log('load all Pokemons', allPokemons);
-    let result = allPokemons['results'];
-    renderAllPokemons(result);
+    let url = 'https://pokeapi.co/api/v2/pokemon?limit=31&offset=890'; // API limit auf 30 gesetzt 
+    let response = await fetch(url); //ladet die API runter (aller Pokemons)
+    allPokemons = await response.json(); //wandelt das in eine JSON um
+    let result = allPokemons['results']; //results ist ein Array in der API 
+    loadUrl(result);
+    loadPokemon();
 }
 
 
-function renderAllPokemons(result) {
-    for (let i = 0; i < result.length; i++) {
-        let loadPokemons = result[i];
-        allPokemonUrl.push(loadPokemons);
+function loadUrl(result) {
+    let maxPokemon = 893;
+    for (let i = 0; i < Math.min(result.length, maxPokemon); i++) { //ist ein Array aus der Function loadAllPokemons - hier habe ich die Max zahl in einem Array hinterlegt
+        let pokemon = result[i];
+        let url = pokemon['url'];//wird auf die URL in dem ARRAY results zugegriffen
+        allPokemonUrl.push(url); //wird in der Array allPokemonUrl gepusht
     }
 }
 
 
 async function loadPokemon() {
-    let url = 'https://pokeapi.co/api/v2/pokemon/ditto';
-    let response = await fetch(url);
-    currentPokemon = await response.json();
-    console.log('load Pokemon', currentPokemon);
-    renderPokemonInformation();
+    for (let j = 0; j < allPokemonUrl.length; j++) {
+        let pokemonUrl = allPokemonUrl[j];
+        let response = await fetch(pokemonUrl);// ladet die URL aus dem Array 
+        currentPokemon = await response.json();
+        console.log('load Pokemon', currentPokemon);
+        renderPokemonInformation();
+    }   
 }
-
 
 
 function renderPokemonInformation() {
-    let pokemonImage = currentPokemon['sprites']['other']['dream_world']['front_default'];
-    let pokemonName = currentPokemon['name'];
+    let pokemonImage = currentPokemon['sprites']['other']['official-artwork']['front_default'];
+    let pokemonName = currentPokemon['forms']['0']['name'];
+    let modifiedName = pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1);
     let pokemonId = currentPokemon['id'];
     let pokemonType = currentPokemon['types']['0']['type']['name'];
-    document.getElementById('pokedex').innerHTML = '';
-    document.getElementById('pokedex').innerHTML += generateHTMLPokedex(pokemonImage, pokemonName, pokemonId, pokemonType);
+    document.getElementById('pokedex').innerHTML += generateHTMLPokedex(pokemonImage, modifiedName, pokemonId, pokemonType);
 }
 
 
-function generateHTMLPokedex(pokemonImage, pokemonName, pokemonId, pokemonType) {
+function generateHTMLPokedex(img, name, id, type) {
     return /*html*/`
         <div  class="pokemon-card">
             <div class="pokemon-card-img">
-                <img src="${pokemonImage}" alt="Pokemon Image">
+                <img src="${img}" alt="Pokemon Image">
             </div>
             <div class="pokemon-card-information">
-                <p class="pokemon-id">Nr. ${pokemonId}</p>
-                <h2>${pokemonName}</h2>
+                <p class="pokemon-id">Nr. ${id}</p>
+                <h2>${name}</h2>
                 <div class="pokemon-card-type normal">
-                    <p>${pokemonType}</p>
+                    <p>${type}</p>
                 </div>
             </div>
         </div>

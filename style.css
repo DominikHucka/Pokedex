@@ -28,6 +28,7 @@ body {
 
 #pokedex {
     display: flex;
+    flex-wrap: wrap;
 }
 
 .pokemon-card {
@@ -48,6 +49,11 @@ body {
     width: 220px;
     height: 220px;
     cursor: pointer;
+}
+
+.pokemon-card-img img {
+    height: 180px;
+    width:  180px;
 }
 
 .pokemon-id {
@@ -74,20 +80,3 @@ body {
 
 /* Überschrift */
 
-.pokedex {
-    display: inline-block;
-    text-align: center;
-    transform: rotate(-5deg);
-    background-color: #00A3E0;
-    padding: 20px 40px;
-    border-radius: 10px;
-    border: 2px solid #003A59;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  }
-
-  .pokedex-title {
-    font-weight: bold;
-    font-size: 24px;
-    color: yellow;
-    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
-  }
