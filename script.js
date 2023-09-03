@@ -1,7 +1,7 @@
 let currentPokemon;
 let allPokemons;
 let allPokemonUrl = []; //sind alle URL von der Pokemon API 
-let limitPokemon = 99;
+
 
 
 async function init() {
@@ -28,7 +28,7 @@ async function includeHTML() {
 
 
 async function loadAllPokemons() {
-    let url = 'https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=0'; // API limit auf 30 gesetzt 
+    let url = 'https://pokeapi.co/api/v2/pokemon?limit=33&offset=0'; // API limit auf 30 gesetzt 
     let response = await fetch(url); //ladet die API runter (aller Pokemons)
     allPokemons = await response.json(); //wandelt das in eine JSON um
     console.log('show all Pokemons', allPokemons);
@@ -39,8 +39,7 @@ async function loadAllPokemons() {
 
 
 function loadUrl(result) {
-    let maxPokemon = 893;
-    for (let i = 0; i < Math.min(result.length, maxPokemon); i++) { //ist ein Array aus der Function loadAllPokemons - hier habe ich die Max zahl in einem Array hinterlegt
+    for (let i = 0; i < (result.length); i++) { //ist ein Array aus der Function loadAllPokemons - hier habe ich die Max zahl in einem Array hinterlegt
         let pokemon = result[i];
         let url = pokemon['url'];//wird auf die URL in dem ARRAY results zugegriffen
         allPokemonUrl.push(url); //wird in der Array allPokemonUrl gepusht
@@ -72,7 +71,7 @@ function renderPokemonInformation() {
 }
 
 
-function generateHTMLPokedex(img, name, id, type, color, shadow) {
+function generateHTMLPokedex(img, name, id, type, color, shadow) { 
     return /*html*/`
         <div  class="pokemon-card ${shadow}" >
             <div class="pokemon-card-img">
@@ -89,3 +88,11 @@ function generateHTMLPokedex(img, name, id, type, color, shadow) {
     `
 }
 
+
+async function loadMorePokemon() {
+    let loadingNext = allPokemons['next'];
+    let response = await fetch(loadingNext);
+    allPokemons = await response.json();
+    console.log('show Next', allPokemons);
+    loadPokemon();
+}

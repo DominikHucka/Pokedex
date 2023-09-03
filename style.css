@@ -1,8 +1,8 @@
 body {
     margin: 0;
-    font-family: 'Roboto Flex';
-    font-style: normal;
-    font-weight: 700;
+    font-family: 'Roboto Flex' !important;
+    font-style: normal !important;
+    font-weight: 700 !important;
 }
 
 .main-header {
@@ -132,23 +132,34 @@ body {
     background-color: rgb(164, 172, 175);
 }
 
-/* Toolbar */
+/* LOADING MORE Pokemon */
 
-.btn-toolbar {
-    justify-content: center !important;
-    padding: 50px;
+.load-button {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 40px;
 }
 
-.btn-primary {
-    background-color: rgb(55, 92, 169) !important;
+.loading-pokemon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(255, 204, 1);
+    background-color: rgb(55, 92, 169);
+    width: 200px;
+    height: 80px;
+    border-radius: 10px;
+    transition: transform .3s;
 }
 
-.btn-primary:hover {
-    background-color: rgb(255, 204, 1) !important;
+.loading-pokemon:hover {
+    box-shadow: 1px 1px 15px 0px rgb(255, 204, 1);
+    transform: scale(1.1);
 }
 
-.btn-group {
-    gap: 20px !important;
+.pokemon-ball-footer {
+    height: 60px;
 }
 
 /* Color Type */
@@ -221,8 +232,16 @@ body {
     background-color: #7b62a3;
 }
 
+.bg-dark {
+    background-color: #080808;
+    color: white;
+}
+
 /* color Typ Shadow Box */
 
+.shadow-dark:hover {
+    box-shadow: 1px 1px 15px 0px #080808;
+}
 
 .shadow-bug:hover {
     box-shadow: 1px 1px 15px 0px #9eb96e;
