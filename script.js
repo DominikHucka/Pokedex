@@ -1,14 +1,14 @@
 let currentPokemon;
-let allPokemons;
-let allPokemonUrl = []; //sind alle URL von der Pokemon API 
-
+let pokemons;
+let allPokemons = []; //sind alle URL von der Pokemon API 
+let limit = 34;
+let offset = 0;
 
 
 async function init() {
     await includeHTML();
     loadAllPokemons();
-    loadPokemon();
-    
+    await loadPokemon(); 
 }   
 
 
@@ -28,31 +28,29 @@ async function includeHTML() {
 
 
 async function loadAllPokemons() {
-    let url = 'https://pokeapi.co/api/v2/pokemon?limit=33&offset=0'; // API limit auf 30 gesetzt 
+    let url = `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`; // API limit auf 33 gesetzt 
     let response = await fetch(url); //ladet die API runter (aller Pokemons)
-    allPokemons = await response.json(); //wandelt das in eine JSON um
-    console.log('show all Pokemons', allPokemons);
-    let result = allPokemons['results']; //results ist ein Array in der API 
-    loadUrl(result);
+    pokemons = await response.json(); //wandelt das in eine JSON um
+    let result = pokemons['results']; //results ist ein Array in der API
+    loadPokemonId(result);
     loadPokemon();
 }
 
 
-function loadUrl(result) {
-    for (let i = 0; i < (result.length); i++) { //ist ein Array aus der Function loadAllPokemons - hier habe ich die Max zahl in einem Array hinterlegt
+function loadPokemonId(result) {
+    for (let i = 0; i < result.length; i++) { //ist ein Array aus der Function loadAllPokemons - hier habe ich die Max zahl in einem Array hinterlegt
         let pokemon = result[i];
         let url = pokemon['url'];//wird auf die URL in dem ARRAY results zugegriffen
-        allPokemonUrl.push(url); //wird in der Array allPokemonUrl gepusht
+        allPokemons.push(url); //wird in die Array allPokemonUrl gepusht
     }
 }
 
 
 async function loadPokemon() {
-    for (let j = 0; j < allPokemonUrl.length; j++) {
-        let pokemonUrl = allPokemonUrl[j];
-        let response = await fetch(pokemonUrl);// ladet die URL aus dem Array 
+    for (let j = 0; j < allPokemons.length; j++) {
+        let pokemonCurentUrl = allPokemons[j];
+        let response = await fetch(pokemonCurentUrl);// ladet die URL aus dem Array 
         currentPokemon = await response.json();
-        console.log('load Pokemon', currentPokemon);
         renderPokemonInformation();
     }   
 }
@@ -89,10 +87,8 @@ function generateHTMLPokedex(img, name, id, type, color, shadow) {
 }
 
 
-async function loadMorePokemon() {
-    let loadingNext = allPokemons['next'];
-    let response = await fetch(loadingNext);
-    allPokemons = await response.json();
-    console.log('show Next', allPokemons);
-    loadPokemon();
+function loadMorePokemon() {
+    offset += 34;
+    allPokemons = [];
+    loadAllPokemons();
 }
