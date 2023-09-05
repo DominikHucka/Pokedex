@@ -8,8 +8,8 @@ let offset = 0;
 async function init() {
     await includeHTML();
     loadAllPokemons();
-    await loadPokemon(); 
-}   
+    await loadPokemon();
+}
 
 
 async function includeHTML() {
@@ -52,7 +52,7 @@ async function loadPokemon() {
         let response = await fetch(pokemonCurentUrl);// ladet die URL aus dem Array 
         currentPokemon = await response.json();
         renderPokemonInformation();
-    }   
+    }
 }
 
 
@@ -69,17 +69,22 @@ function renderPokemonInformation() {
 }
 
 
-function generateHTMLPokedex(img, name, id, type, color, shadow) { 
+function generateHTMLPokedex(img, name, id, type, color, shadow) {
     return /*html*/`
-        <div  class="pokemon-card ${shadow}" >
-            <div class="pokemon-card-img">
-                <img src="${img}" alt="Pokemon Image">
-            </div>
-            <div class="pokemon-card-information">
-                <p class="pokemon-id"># ${id}</p>
-                <h3>${name}</h3>
-                <div id="typeColor" class="pokemon-card-type ${color}">
-                    <p>${type}</p>
+        <div id="pokemonContainer" class="pokemon-container">
+            <div class="pokemon-card front ${shadow}" >
+                <div onclick="showStats()"  class="pokemon-card-img">
+                    <img src="${img}" alt="Pokemon Image">
+                </div>
+                <div class="pokemon-card-information">
+                    <p class="pokemon-id"># ${id}</p>
+                    <h3>${name}</h3>
+                    <div id="typeColor" class="pokemon-card-type ${color}">
+                        <p>${type}</p>
+                    </div>
+                </div>
+                <div id="pokemonCardBack" class="back">
+                    <p>back</p>
                 </div>
             </div>
         </div>
@@ -88,7 +93,16 @@ function generateHTMLPokedex(img, name, id, type, color, shadow) {
 
 
 function loadMorePokemon() {
-    offset += 34;
-    allPokemons = [];
+    offset += 34; // Globale Variable ladet immer 34 neue Pokemons
+    allPokemons = []; // Liste wird vor dem  Laden einmal zurückgesetzt, nun können die neuen Pokemons geladen werden
     loadAllPokemons();
 }
+
+
+function showStats() {
+    let flip = document.getElementById('pokemonContainer');
+    flip.style.transition = "1s";
+    flip.style.transform = "rotate3D(0, 1, 0, 180deg)";
+}
+
+
