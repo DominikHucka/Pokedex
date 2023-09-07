@@ -51,12 +51,12 @@ async function loadPokemon() {
         let pokemonCurentUrl = allPokemons[j];
         let response = await fetch(pokemonCurentUrl);// ladet die URL aus dem Array 
         currentPokemon = await response.json();
-        renderPokemonInformation();
+        renderPokemonInformation(j);
     }
 }
 
 
-function renderPokemonInformation() {
+function renderPokemonInformation(j) {
     let pokemonImage = currentPokemon['sprites']['other']['official-artwork']['front_default'];
     let pokemonName = currentPokemon['forms']['0']['name'];
     let modifiedName = pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1); //anfangsbuchstaben wird in einen Große umgewandelt
@@ -65,15 +65,15 @@ function renderPokemonInformation() {
     let modifiedType = pokemonType.charAt(0).toUpperCase() + pokemonType.slice(1);
     let backgroundColorClass = `bg-${pokemonType.toLowerCase()}`; // platzhalter für die CSS klasse bg-.....CSS ab Zeile 135
     let shadowClass = `shadow-${pokemonType.toLowerCase()}`;
-    document.getElementById('pokedex').innerHTML += generateHTMLPokedex(pokemonImage, modifiedName, pokemonId, modifiedType, backgroundColorClass, shadowClass);
+    document.getElementById('pokedex').innerHTML += generateHTMLPokedex(pokemonImage, modifiedName, pokemonId, modifiedType, backgroundColorClass, shadowClass, j);
 }
 
 
-function generateHTMLPokedex(img, name, id, type, color, shadow) {
+function generateHTMLPokedex(img, name, id, type, color, shadow, j) {
     return /*html*/`
-        <div id="pokemonContainer" class="pokemon-container">
+        <div id="pokemonContainer-${j}" class="pokemon-container">
             <div class="pokemon-card front ${shadow}" >
-                <div onclick="showStats()"  class="pokemon-card-img">
+                <div onclick="showStats(${j})" class="pokemon-card-img">
                     <img src="${img}" alt="Pokemon Image">
                 </div>
                 <div class="pokemon-card-information">
@@ -99,10 +99,22 @@ function loadMorePokemon() {
 }
 
 
-function showStats() {
-    let flip = document.getElementById('pokemonContainer');
-    flip.style.transition = "1s";
-    flip.style.transform = "rotate3D(0, 1, 0, 180deg)";
+function showStats(j, colors) {
+    let flip = document.getElementById(`pokemonContainer-${j}`);
+    if (flip) {
+        flip.style.transition = "2s";
+        flip.style.transform = "scale(1) rotate3D(0, 1, 0, 180deg)";
+        flip.style.zIndex = "9999";
+        flip.style.position = "fixed";
+        flip.style.top = "0";
+        flip.style.left = "0";
+        flip.style.bottom = "0";
+        flip.style.right = "0";
+        flip.style.display = "flex";
+        flip.style.justifyContent = "center";
+        flip.backgroundColor = `${colors}`;   
+    }
 }
+
 
 

@@ -162,7 +162,13 @@ body {
     height: 60px;
 }
 
+.d-none {
+    display: none;
+}
+
 /* POKEMONKARTE */
+
+
 
 /* .flip {
     perspective: 1000px;

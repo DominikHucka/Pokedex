@@ -1,0 +1,21 @@
+let colors = {
+    greenDark: 'bg-bug',   
+    gold: 'bg-dragon',     
+    yellow: 'bg-electric',        
+    pink: 'bg-fairy',    
+    orange: 'bg-fighting', 
+    red: 'bg-fire',    
+    blue: 'bg-flying', 
+    green: 'bg-grass',                             
+    brown: 'bg-ground', 
+    whiteBlue: 'bg-ice', 
+    white: 'bg-normal',  
+    purple: 'bg-poison', 
+    pinkDark: 'bg-psychic', 
+    graySilver: 'bg-steel', 
+    blueLight: 'bg-water',                                 
+    gray: 'bg-rock', 
+    purpleBlack: 'bg-ghost', 
+    black: 'bg-dark', 
+}
+
