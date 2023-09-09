@@ -5,6 +5,12 @@ body {
     font-weight: 700 !important;
 }
 
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+    font-family: 'Roboto Flex';
+    font-style: normal;
+    font-weight: 700;
+}
+
 .main-header {
     position: relative;
 }
@@ -59,10 +65,11 @@ body {
     left: 50%;
     right: 50%;
     transform: translate(-50%, -1%);
+    transition: transform .2;
 }
 
 .pokeball:hover {
-    cursor: pointer;
+    cursor: pointer; 
 }
 
 .pokedex {
@@ -102,8 +109,8 @@ body {
     align-items: center;
     background-color: #F2F2F2;
     border-radius: 10px;
-    width: 220px;
-    height: 220px;
+    width: 250px;
+    height: 250px;
     cursor: pointer;
 }
 
@@ -175,20 +182,22 @@ body {
 /* POKEMONKARTE RÜCKSEITE */
 
 
-.pokemon-card-container {
+.pokemon-container {
     perspective: 1000px;
-    /* width: 220px; 
-    height: 220px;  */
-    
+    width: 300px;
+    height: 400px;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+    margin: 10px;  
 }
 
 
 .pokemon-card {
+    display: flex;
+    flex-direction: column;
     width: 100%;
     height: 100%;
-    /* position: absolute; */
     backface-visibility: hidden;
-    transition: transform 0.5s;
 }
 
 .pokemon-card-front {
@@ -199,7 +208,12 @@ body {
     transform: rotateY(180deg);
 }
 
-
+.pokemon-card-front, .pokemon-card-back {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    backface-visibility: hidden;
+  }
 
 .stats-container {
     border-radius: 10px;
@@ -209,5 +223,18 @@ body {
 .back-img {
     height: 100px;
     width: 100px;
+}
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-bar {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-left: none;
 }
 

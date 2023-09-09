@@ -59,91 +59,86 @@ async function loadPokemon() {
 
 
 function renderPokemonInformation(j) {
-    let pokemonImage = currentPokemon['sprites']['other']['official-artwork']['front_default'];
-    let pokemonName = currentPokemon['forms']['0']['name'];
-    let modifiedName = pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1); //anfangsbuchstaben wird in einen Große umgewandelt
-    let pokemonId = currentPokemon['id'];
-    let pokemonType = currentPokemon['types']['0']['type']['name'];
-    let modifiedType = pokemonType.charAt(0).toUpperCase() + pokemonType.slice(1);
-    let backgroundColorClass = `bg-${pokemonType.toLowerCase()}`; // platzhalter für die CSS klasse bg-.....CSS ab Zeile 135
+    let pokemon = currentPokemon;
+    let pokemonImage = pokemon.sprites.other['official-artwork'].front_default;
+    let pokemonName = pokemon.forms[0].name.charAt(0).toUpperCase() + pokemon.forms[0].name.slice(1);
+    let pokemonId = pokemon.id;
+    let pokemonType = pokemon.types[0].type.name.charAt(0).toUpperCase() + pokemon.types[0].type.name.slice(1);
+    let backgroundColorClass = `bg-${pokemonType.toLowerCase()}`;
     let shadowClass = `shadow-${pokemonType.toLowerCase()}`;
-    document.getElementById('pokedex').innerHTML += generateHTMLPokedex(pokemonImage, modifiedName, pokemonId, modifiedType, backgroundColorClass, shadowClass, j);
-}
-
-
-
-function generateHTMLPokedex(img, name, id, type, color, shadow, j) {
-    const cardId = `card-${j}`;
-
-    return /*html*/`
-        <div class="pokemon-card-container" id="${cardId}">
-            <div class="pokemon-card pokemon-card-front ${shadow}">
-                <div onclick="flipPokemonCard('${cardId}')" class="pokemon-card-img">
-                    <img src="${img}" alt="Pokemon Image">
-                </div>
-                <div class="pokemon-card-information">
-                    <p class="pokemon-id"># ${id}</p>
-                    <h3>${name}</h3>
-                    <div class="pokemon-card-type ${color}">
-                        <p>${type}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="pokemon-card pokemon-card-back">
-                <div class="backId">
-                    <h2>${name}</h2>
-                    <img class="back-img" src="${img}" alt="">
-                    <div class="stats">
-                        <!-- Hier kannst du die Statistiken einfügen -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-}
-
-// Funktion zum Umschalten zwischen Vorder- und Rückseite
-function flipPokemonCard(cardId) {
-    const card = document.getElementById(cardId);
-    if (card) {
-        card.classList.toggle('flipped');
-    }
+    
+    document.getElementById('pokedex').innerHTML += generateHTMLPokedex(pokemonImage, pokemonName, pokemonId, pokemonType, backgroundColorClass, shadowClass, j);
 }
 
 
 // function generateHTMLPokedex(img, name, id, type, color, shadow, j) {
-//     const frontCardId = `frontCard-${j}`;
-//     const backfaceId = `backface-${j}`;
 //     const cardId = `card-${j}`;
-//     let pokemonStats = currentPokemon['stats'];
+
 //     return /*html*/`
-//         <div id="${cardId}">
-//             <div id="${frontCardId}" class="pokemon-container">
-//                 <div class="pokemon-card pokemon-card-front ${shadow}">
-//                     <div onclick="flipPokemonCart('${frontCardId}', '${backfaceId}')" class="pokemon-card-img">
-//                         <img src="${img}" alt="Pokemon Image">
-//                     </div>
-//                     <div class="pokemon-card-information">
-//                         <p class="pokemon-id"># ${id}</p>
-//                         <h3>${name}</h3>
-//                         <div id="typeColor" class="pokemon-card-type ${color}">
-//                             <p>${type}</p>
-//                         </div>
+//         <div class="pokemon-card-container" id="${cardId}">
+//             <div class="pokemon-card pokemon-card-front ${shadow}">
+//                 <div class="pokemon-card-img">
+//                     <img src="${img}" alt="Pokemon Image">
+//                 </div>
+//                 <div class="pokemon-card-information">
+//                     <p class="pokemon-id"># ${id}</p>
+//                     <h3>${name}</h3>
+//                     <div class="pokemon-card-type ${color}">
+//                         <p>${type}</p>
 //                     </div>
 //                 </div>
 //             </div>
-//             <div id="${backfaceId}" class="stats-container pokemon-card-back ${color}">
+//             <div class="pokemon-card pokemon-card-back">
 //                 <div class="backId">
 //                     <h2>${name}</h2>
 //                     <img class="back-img" src="${img}" alt="">
 //                     <div class="stats">
-//                         <p>${pokemonStats}</p>
+//                         <!-- Hier kannst du die Statistiken einfügen -->
 //                     </div>
 //                 </div>
 //             </div>
 //         </div>
-//     `
+//     `;
 // }
+
+// // Funktion zum Umschalten zwischen Vorder- und Rückseite
+// function flipPokemonCard(cardId) {
+//     const card = document.getElementById(cardId);
+//     if (card) {
+//         card.classList.toggle('flipped');
+//     }
+// }
+
+
+function generateHTMLPokedex(img, name, id, type, color, shadow, j) {
+    let flippCart = `flipper-${j}`;
+    // const backfaceId = `backface-${j}`;
+    return /*html*/`
+            <div id="${flippCart}" class="pokemon-container">
+                <div class="pokemon-card pokemon-card-front ${shadow}">
+                    <div onclick="flipPokemonCart('${flippCart}')" class="pokemon-card-img">
+                        <img src="${img}" alt="Pokemon Image">
+                    </div>
+                    <div class="pokemon-card-information">
+                        <p class="pokemon-id"># ${id}</p>
+                        <h3>${name}</h3>
+                        <div id="typeColor" class="pokemon-card-type ${color}">
+                            <p>${type}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="stats-container pokemon-card-back ${color}">
+                    <div class="back-id">
+                        <h2>${name}</h2>
+                        <img class="back-img" src="${img}" alt="">
+                    </div>   
+                    <div class="stats">
+                        <p>${pokemonStats}</p>
+                    </div>
+                </div>
+            </div>
+    `
+}
 
 
 function loadMorePokemon() {
@@ -153,15 +148,15 @@ function loadMorePokemon() {
 }
 
 
-// function flipPokemonCart(frontCardId, backfaceId) {
-//     let flipCard = document.getElementById(`${frontCardId}`);
-//     if (flipCard) {
-//         flipCard.style.transition = "2s";
-//         flipCard.style.transform = "scale(2) rotate3D(0, 1, 0, 180deg) translateX(-20%)";
-//         flipCard.style.zIndex = "9999";
-//         flipCard.style.position = "fixed";
-//     }
-// }
+function flipPokemonCart(flipper) {
+    let flipCard = document.getElementById(`${flipper}`);
+    if (flipCard) {
+        flipCard.style.transition = "2s";
+        flipCard.style.transform = "scale(1.5) rotate3D(0, 1, 0, 180deg) translateX(-20%)";
+        flipCard.style.zIndex = "9999";
+        flipCard.style.position = "fixed";
+    }
+}
 
 
 // function showBackSide(backfaceId) {
