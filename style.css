@@ -93,6 +93,48 @@ body {
     flex-wrap: wrap;
 }
 
+
+/* Pokemon Color Type  */
+
+.normal {
+    background-color: rgb(164, 172, 175);
+}
+
+/* LOADING MORE Pokemon */
+
+.load-button {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 40px;
+}
+
+.loading-pokemon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(255, 204, 1);
+    background-color: rgb(55, 92, 169);
+    width: 200px;
+    height: 80px;
+    border-radius: 10px;
+    transition: transform .3s;
+}
+
+.loading-pokemon:hover {
+    box-shadow: 1px 1px 15px 0px rgb(255, 204, 1);
+    transform: scale(1.1);
+}
+
+.pokemon-ball-footer {
+    height: 60px;
+}
+
+.d-none {
+    display: none;
+}
+
+
 .pokemon-card {
     border-radius: 10px;
     padding: 15px;
@@ -135,53 +177,6 @@ body {
     text-align: center;
 }
 
-/* Pokemon Color Type  */
-
-.normal {
-    background-color: rgb(164, 172, 175);
-}
-
-/* LOADING MORE Pokemon */
-
-.load-button {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin: 40px;
-}
-
-.loading-pokemon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: rgb(255, 204, 1);
-    background-color: rgb(55, 92, 169);
-    width: 200px;
-    height: 80px;
-    border-radius: 10px;
-    transition: transform .3s;
-}
-
-.loading-pokemon:hover {
-    box-shadow: 1px 1px 15px 0px rgb(255, 204, 1);
-    transform: scale(1.1);
-}
-
-.pokemon-ball-footer {
-    height: 60px;
-}
-
-.d-none {
-    display: none;
-}
-
-.back {
-    visibility: hidden;
-}
-
-/* POKEMONKARTE RÜCKSEITE */
-
-
 .pokemon-container {
     perspective: 1000px;
     width: 300px;
@@ -201,6 +196,7 @@ body {
 }
 
 .pokemon-card-front {
+    background-color: white;
     transform: rotateY(0deg);
 }
 
