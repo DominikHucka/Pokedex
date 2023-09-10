@@ -1,4 +1,5 @@
 body {
+    scroll-behavior: smooth;
     margin: 0;
     font-family: 'Roboto Flex' !important;
     font-style: normal !important;
@@ -128,6 +129,24 @@ body {
 
 .pokemon-ball-footer {
     height: 60px;
+    animation: hop 2s ease-in-out infinite; 
+}
+
+@keyframes hop {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    20%, 80% {
+      transform: translateY(-20px);
+    }
+    40%, 60% {
+      transform: translateY(-10px);
+    }
+  }
+  
+.pokemon-ball-footer:hover {
+    cursor: pointer;
+    transform: translateY(-10px);
 }
 
 .d-none {

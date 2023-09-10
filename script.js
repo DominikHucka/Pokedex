@@ -1,9 +1,9 @@
 let currentPokemon;
 let pokemons;
 let allPokemons = []; //sind alle URL von der Pokemon API 
-// let pokemonStats = []; //ladet alle stats aus den pokemon
 let limit = 34;
 let offset = 0;
+window.onscroll = function () { scrollFunction() }; // Ln 229
 
 
 async function init() {
@@ -62,49 +62,63 @@ async function loadPokemon() {
 
 function renderPokemonInformation(j) {
     let pokemon = currentPokemon;
-    let pokemonImage = pokemon.sprites.other['official-artwork'].front_default;
-    let pokemonName = pokemon.forms[0].name.charAt(0).toUpperCase() + pokemon.forms[0].name.slice(1);
-    let pokemonId = pokemon.id;
-    let pokemonType = pokemon.types[0].type.name.charAt(0).toUpperCase() + pokemon.types[0].type.name.slice(1);
-    let backgroundColorClass = `bg-${pokemonType.toLowerCase()}`;
+    document.getElementById('pokemonImage').src = pokemon.sprites.other['official-artwork'].front_default;
+    document.getElementById('pokemonName').innerHTML = pokemon.forms[0].name.charAt(0).toUpperCase() + pokemon.forms[0].name.slice(1);
+    document.getElementById('pokemonId').innerHTML = pokemon.id;
+    document.getElementById('pokemonType') = pokemon.types[0].type.name.charAt(0).toUpperCase() + pokemon.types[0].type.name.slice(1);
+    // let backgroundColorClass = `bg-${pokemonType.toLowerCase()}`;
     let shadowClass = `shadow-${pokemonType.toLowerCase()}`;
-
-    document.getElementById('pokedex').innerHTML += generateHTMLPokedex(pokemonImage, pokemonName, pokemonId, pokemonType, backgroundColorClass, shadowClass, j);
+    document.getElementById('typeColor').innerHTML = pokemonType.toLowerCase();
+    document.getElementById('bgShadow').innerHTML = pokemonType.toLowerCase();
+    getElementById('pokedex').innerHTML += pokemon;
 }
 
 
-function generateHTMLPokedex(img, name, id, type, color, shadow, j) {
-    let flippCart = `flipper-${j}`;
-    return /*html*/`
-            <div id="${flippCart}" class="pokemon-container">
-                <div class="pokemon-card pokemon-card-front ${shadow}">
-                    <div onclick="flipPokemonCart('${flippCart}')" class="pokemon-card-img">
-                        <img src="${img}" alt="Pokemon Image">
-                    </div>
-                    <div class="pokemon-card-information">
-                        <p class="pokemon-id"># ${id}</p>
-                        <h3>${name}</h3>
-                        <div id="typeColor" class="pokemon-card-type ${color}">
-                            <p>${type}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="stats-container pokemon-card-back ${color}">
-                    <div class="back-id">
-                        <h2>${name}</h2>
-                        <img class="back-img" src="${img}" alt="">
-                    </div>   
-                    <div class="stats">
-                        <p id="hp"></p>
-                        <!-- <p id=""></p>
-                        <p id=""></p>
-                        <p id=""></p>
-                        <p id=""></p> -->
-                    </div>
-                </div>
-            </div>
-    `
-}
+// function renderPokemonInformation(j) {
+//     let pokemon = currentPokemon;
+//     let pokemonImage = pokemon.sprites.other['official-artwork'].front_default;
+//     let pokemonName = pokemon.forms[0].name.charAt(0).toUpperCase() + pokemon.forms[0].name.slice(1);
+//     let pokemonId = pokemon.id;
+//     let pokemonType = pokemon.types[0].type.name.charAt(0).toUpperCase() + pokemon.types[0].type.name.slice(1);
+//     let backgroundColorClass = `bg-${pokemonType.toLowerCase()}`;
+//     let shadowClass = `shadow-${pokemonType.toLowerCase()}`;
+
+//     document.getElementById('pokedex').innerHTML += generateHTMLPokedex(pokemonImage, pokemonName, pokemonId, pokemonType, backgroundColorClass, shadowClass, j);
+// }
+
+
+// function generateHTMLPokedex(img, name, id, type, color, shadow, j) {
+//     let flippCart = `flipper-${j}`;
+//     return /*html*/`
+//             <div id="${flippCart}" class="pokemon-container">
+//                 <div class="pokemon-card pokemon-card-front ${shadow}">
+//                     <div onclick="flipPokemonCart('${flippCart}')" class="pokemon-card-img">
+//                         <img src="${img}" alt="Pokemon Image">
+//                     </div>
+//                     <div class="pokemon-card-information">
+//                         <p class="pokemon-id"># ${id}</p>
+//                         <h3>${name}</h3>
+//                         <div id="typeColor" class="pokemon-card-type ${color}">
+//                             <p>${type}</p>
+//                         </div>
+//                     </div>
+//                 </div>
+//                 <div class="stats-container pokemon-card-back ${color}">
+//                     <div class="back-id">
+//                         <h2>${name}</h2>
+//                         <img class="back-img" src="${img}" alt="">
+//                     </div>   
+//                     <div class="stats">
+//                         <p id="hp"></p>
+//                         <!-- <p id=""></p>
+//                         <p id=""></p>
+//                         <p id=""></p>
+//                         <p id=""></p> -->
+//                     </div>
+//                 </div>
+//             </div>
+//     `
+// }
 
 
 function loadMorePokemon() {
@@ -136,5 +150,21 @@ function flipPokemonCart(flipper) {
 
 function loadStatsPokemon() {
    document.getElementById('hp').innerHTML = currentPokemon['stats']['0']['stat']['name'];
+}
+
+function scrollFunction() {
+    let scrollOnTOP = document.getElementById('.scrollToTopButton');
+
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        scrollOnTOP.style.display = "block";
+    } else {
+        scrollOnTOP.style.display = "none";
+    }
+}
+
+
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
 }
 
