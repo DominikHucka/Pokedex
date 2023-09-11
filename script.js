@@ -3,14 +3,13 @@ let pokemons;
 let allPokemons = []; //sind alle URL von der Pokemon API 
 let limit = 34;
 let offset = 0;
-window.onscroll = function () { scrollFunction() }; // Ln 229
+window.onscroll = function () { scrollFunction() }; // scroll on Top funktion
 
 
 async function init() {
     await includeHTML();
     loadAllPokemons();
     await loadPokemon();
-    loadStatsPokemon();
 }
 
 
@@ -62,63 +61,67 @@ async function loadPokemon() {
 
 function renderPokemonInformation(j) {
     let pokemon = currentPokemon;
-    document.getElementById('pokemonImage').src = pokemon.sprites.other['official-artwork'].front_default;
-    document.getElementById('pokemonName').innerHTML = pokemon.forms[0].name.charAt(0).toUpperCase() + pokemon.forms[0].name.slice(1);
-    document.getElementById('pokemonId').innerHTML = pokemon.id;
-    document.getElementById('pokemonType') = pokemon.types[0].type.name.charAt(0).toUpperCase() + pokemon.types[0].type.name.slice(1);
-    // let backgroundColorClass = `bg-${pokemonType.toLowerCase()}`;
+    let pokemonImage = pokemon.sprites.other['official-artwork'].front_default;
+    let pokemonName = pokemon.forms[0].name.charAt(0).toUpperCase() + pokemon.forms[0].name.slice(1);
+    let pokemonId = pokemon.id;
+    let pokemonType = pokemon.types[0].type.name.charAt(0).toUpperCase() + pokemon.types[0].type.name.slice(1);
+    let backgroundColorClass = `bg-${pokemonType.toLowerCase()}`;
     let shadowClass = `shadow-${pokemonType.toLowerCase()}`;
-    document.getElementById('typeColor').innerHTML = pokemonType.toLowerCase();
-    document.getElementById('bgShadow').innerHTML = pokemonType.toLowerCase();
-    getElementById('pokedex').innerHTML += pokemon;
+    document.getElementById('pokedex').innerHTML += generateHTMLPokedex(pokemonImage, pokemonName, pokemonId, pokemonType, backgroundColorClass, shadowClass, j);
 }
 
 
-// function renderPokemonInformation(j) {
-//     let pokemon = currentPokemon;
-//     let pokemonImage = pokemon.sprites.other['official-artwork'].front_default;
-//     let pokemonName = pokemon.forms[0].name.charAt(0).toUpperCase() + pokemon.forms[0].name.slice(1);
-//     let pokemonId = pokemon.id;
-//     let pokemonType = pokemon.types[0].type.name.charAt(0).toUpperCase() + pokemon.types[0].type.name.slice(1);
-//     let backgroundColorClass = `bg-${pokemonType.toLowerCase()}`;
-//     let shadowClass = `shadow-${pokemonType.toLowerCase()}`;
-
-//     document.getElementById('pokedex').innerHTML += generateHTMLPokedex(pokemonImage, pokemonName, pokemonId, pokemonType, backgroundColorClass, shadowClass, j);
-// }
+function generateHTMLPokedex(img, name, id, type, color, shadow, j) {
+    let flipCard = `flipper-${j}`;
+    return /*html*/`
+            <div id="${flipCard}" class="pokemon-container">
+                ${generateHTMLFrontCard(img, name, id, type, color, shadow, flipCard)}
+                ${generateHTMLBackCard(img, name, color)}
+            </div>
+    `
+}
 
 
-// function generateHTMLPokedex(img, name, id, type, color, shadow, j) {
-//     let flippCart = `flipper-${j}`;
-//     return /*html*/`
-//             <div id="${flippCart}" class="pokemon-container">
-//                 <div class="pokemon-card pokemon-card-front ${shadow}">
-//                     <div onclick="flipPokemonCart('${flippCart}')" class="pokemon-card-img">
-//                         <img src="${img}" alt="Pokemon Image">
-//                     </div>
-//                     <div class="pokemon-card-information">
-//                         <p class="pokemon-id"># ${id}</p>
-//                         <h3>${name}</h3>
-//                         <div id="typeColor" class="pokemon-card-type ${color}">
-//                             <p>${type}</p>
-//                         </div>
-//                     </div>
-//                 </div>
-//                 <div class="stats-container pokemon-card-back ${color}">
-//                     <div class="back-id">
-//                         <h2>${name}</h2>
-//                         <img class="back-img" src="${img}" alt="">
-//                     </div>   
-//                     <div class="stats">
-//                         <p id="hp"></p>
-//                         <!-- <p id=""></p>
-//                         <p id=""></p>
-//                         <p id=""></p>
-//                         <p id=""></p> -->
-//                     </div>
-//                 </div>
-//             </div>
-//     `
-// }
+function generateHTMLFrontCard(img, name, id, type, color, shadow, flipCard) {
+    return /*html*/`
+        <div class="pokemon-card pokemon-card-front ${shadow}">
+            <div id="imgContainer" disabled onclick="flipPokemonCard('${flipCard}')" class="pokemon-card-img">
+                <img src="${img}" alt="Pokemon Image">
+            </div>
+            <div class="pokemon-card-information">
+                <p class="pokemon-id"># ${id}</p>
+                <h3>${name}</h3>
+                <div id="typeColor" class="pokemon-card-type ${color}">
+                    <p>${type}</p>
+                </div>
+            </div>
+        </div>
+    `
+}
+
+
+function generateHTMLBackCard(img, name, color) {
+    return /*html*/`
+        <div class="stats-container pokemon-card-back ${color}">
+            <div class="back-id">
+                <h2>${name}</h2>
+                <img class="back-img" src="${img}" alt="">
+            </div>   
+            <div class="stats">
+                <p id="hp">Hi</p>
+                <!-- <p id=""></p>
+                <p id=""></p>
+                <p id=""></p>
+                <p id=""></p> -->
+            </div>
+        </div>
+    `
+}
+
+
+function renderPokemonStats (currentPokemon) {
+    document.getElementById('hp').innerHTML = currentPokemon.stats[0].state.name;
+}
 
 
 function loadMorePokemon() {
@@ -128,37 +131,41 @@ function loadMorePokemon() {
 }
 
 
-function flipPokemonCart(flipper) {
-    let flipCard = document.getElementById(`${flipper}`);
+function flipPokemonCard(flipCard) {
+    let flipPokemonCart = document.getElementById(`${flipCard}`);
+    if (flipPokemonCart) {
+        flipPokemonCart.style.transition = "1.5s";
+        flipPokemonCart.style.transform = "scale(1.5) translateY(-50%)";
+        flipPokemonCart.style.zIndex = "9999";
+        setTimeout(() => {
+            flipPokemonCart.style.transform = "scale(1.5) rotate3D(0, 1, 0, 90deg)";
+            flipPokemonCart.style.zIndex = "9999";
+            flipPokemonCart.style.position = "fixed";
+        }, 800);
+        setTimeout(() => {
+            flipPokemonCart.style.transform = "scale(1.5) rotate3D(0, 1, 0, 180deg)";
+            flipPokemonCart.style.zIndex = "9999";
+            flipPokemonCart.style.position = "fixed";
+        }, 800);
+    }
+    flipCardOncklickDisable(flipCard);
+}
+
+
+function flipCardOncklickDisable(flipCard) {
     if (flipCard) {
-        flipCard.style.transition = "1.5s";
-        flipCard.style.transform = "scale(1.5) translateY(-50%)";
-        flipCard.style.zIndex = "9999";
-        setTimeout(() => {
-            flipCard.style.transform = "scale(1.5) rotate3D(0, 1, 0, 90deg)";
-            flipCard.style.zIndex = "9999";
-            flipCard.style.position = "fixed";
-        }, 800);
-        setTimeout(() => {
-            flipCard.style.transform = "scale(1.5) rotate3D(0, 1, 0, 180deg)";
-            flipCard.style.zIndex = "9999";
-            flipCard.style.position = "fixed";
-        }, 800);
+        document.getElementById('imgContainer').disabled = true;
+    } else {
+        document.getElementById('imgContainer').disabled = false;
     }
 }
 
 
-function loadStatsPokemon() {
-   document.getElementById('hp').innerHTML = currentPokemon['stats']['0']['stat']['name'];
-}
-
 function scrollFunction() {
-    let scrollOnTOP = document.getElementById('.scrollToTopButton');
+    let scrollOnTOP = document.getElementById('scrollToTopButton');
 
-    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+    if (scrollOnTOP) {
         scrollOnTOP.style.display = "block";
-    } else {
-        scrollOnTOP.style.display = "none";
     }
 }
 
@@ -168,3 +175,19 @@ function topFunction() {
     document.documentElement.scrollTop = 0;
 }
 
+// function renderPokemonInformation(j) {
+//     let pokemon = currentPokemon;
+//     document.getElementById('pokemonImage').src = pokemon.sprites.other['official-artwork'].front_default;
+//     document.getElementById('pokemonName').innerHTML = pokemon.forms[0].name.charAt(0).toUpperCase() + pokemon.forms[0].name.slice(1);
+//     document.getElementById('pokemonId').innerHTML = pokemon.id;
+//     document.getElementById('pokemonType').innerHTML = pokemon.types[0].type.name.charAt(0).toUpperCase() + pokemon.types[0].type.name.slice(1);
+//     // document.getElementById('typeColor').innerHTML = `bg-${pokemonType.toLowerCase()}`;
+//     for (let k = 0; k < currentPokemon.length; k++) {
+//         let pokemon = currentPokemon[k];
+//         document.getElementById('pokedex').innerHTML += pokemon;
+//     }
+// let shadowClass = `shadow-${pokemonType.toLowerCase()}`;
+// document.getElementById('typeColor').innerHTML = `${colors}`;
+// document.getElementById('bgShadow').innerHTML = pokemonType.toLowerCase();
+// document.getElementById('pokedex').innerHTML += pokedex;
+// }
