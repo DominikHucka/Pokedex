@@ -85,7 +85,7 @@ function generateHTMLPokedex(img, name, id, type, color, shadow, j) {
 function generateHTMLFrontCard(img, name, id, type, color, shadow, flipCard) {
     return /*html*/`
         <div class="pokemon-card pokemon-card-front ${shadow}">
-            <div id="imgContainer" disabled onclick="flipPokemonCard('${flipCard}')" class="pokemon-card-img">
+            <div id="imgContainer" onclick="flipPokemonCard('${flipCard}')" class="pokemon-card-img">
                 <img src="${img}" alt="Pokemon Image">
             </div>
             <div class="pokemon-card-information">
@@ -102,25 +102,37 @@ function generateHTMLFrontCard(img, name, id, type, color, shadow, flipCard) {
 
 function generateHTMLBackCard(img, name, color) {
     return /*html*/`
-        <div class="stats-container pokemon-card-back ${color}">
-            <div class="back-id">
+        <div class="stats-container pokemon-card-back">
+            <div class="back-id ${color}">
                 <h2>${name}</h2>
                 <img class="back-img" src="${img}" alt="">
             </div>   
             <div class="stats">
-                <p id="hp">Hi</p>
-                <!-- <p id=""></p>
-                <p id=""></p>
-                <p id=""></p>
-                <p id=""></p> -->
+                <table class="pokemon-stats-style">
+                    <tr>
+                        <td>Wert 1</td>
+                        <td>Wert 2</td>
+                    </tr>
+                    <tr>
+                        <td>Wert 3</td>
+                        <td>Wert 4</td>
+                    </tr>
+                    <tr>
+                        <td>Wert 5</td>
+                        <td>Wert 6</td>
+                    </tr>
+                    <tr>
+                        <td>Wert 7</td>
+                        <td>Wert 8</td>
+                    </tr>
+                    <tr>
+                        <td>Wert 9</td>
+                        <td>Wert 10</td>
+                    </tr>
+                </table>
             </div>
         </div>
     `
-}
-
-
-function renderPokemonStats (currentPokemon) {
-    document.getElementById('hp').innerHTML = currentPokemon.stats[0].state.name;
 }
 
 
@@ -174,6 +186,8 @@ function topFunction() {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
 }
+
+
 
 // function renderPokemonInformation(j) {
 //     let pokemon = currentPokemon;

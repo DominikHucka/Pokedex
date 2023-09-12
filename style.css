@@ -230,11 +230,6 @@ body {
     backface-visibility: hidden;
   }
 
-.stats-container {
-    border-radius: 10px;
-    display: flex;
-}
-
 .back-img {
     height: 100px;
     width: 100px;
@@ -253,3 +248,43 @@ body {
     border-left: none;
 }
 
+.stats-container {
+    border-radius: 10px;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+}
+
+.stats-container h2 {
+    text-align: center;
+    margin: 10px;
+}
+
+.stats-container img {
+    padding-left: 10px;
+}
+
+.back-id {
+    border-bottom-left-radius: 50%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    height: 150px;
+}
+
+.pokemon-stats {
+    display: flex;
+    justify-content: space-between;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 50px;
+}
+
+.stats tr {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
