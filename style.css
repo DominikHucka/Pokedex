@@ -269,22 +269,48 @@ body {
     border-bottom-left-radius: 50%;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    height: 150px;
+    height: 160px;
+    margin-bottom: 30px;
 }
 
-.pokemon-stats {
-    display: flex;
-    justify-content: space-between;
+table {
+    margin: 10px;
 }
 
-.stats {
-    display: flex;
-    justify-content: space-around;
-    padding-top: 50px;
+table tr td {
+    padding: 5px;
 }
 
-.stats tr {
+.stat-color {
+    color: blueviolet;
+}
+
+.back-close-pokeball-button {
+    height: 30px;
+}
+
+.back-close-pokeball-button:hover {
+    cursor: pointer;
+    animation: wiggle .8s ease-in-out infinite; 
+}
+
+@keyframes wiggle {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    40%, 60% {
+      transform: translateX(3px);
+    }
+    
+    40%, 60% {
+      transform: translateX(-3px);
+    }
+  }
+ 
+
+.back-card-header {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
+    gap: 10px;
 }

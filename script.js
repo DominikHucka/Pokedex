@@ -1,7 +1,7 @@
 let currentPokemon;
 let pokemons;
 let allPokemons = []; //sind alle URL von der Pokemon API 
-let limit = 34;
+let limit = 0;
 let offset = 0;
 window.onscroll = function () { scrollFunction() }; // scroll on Top funktion
 
@@ -76,7 +76,7 @@ function generateHTMLPokedex(img, name, id, type, color, shadow, j) {
     return /*html*/`
             <div id="${flipCard}" class="pokemon-container">
                 ${generateHTMLFrontCard(img, name, id, type, color, shadow, flipCard)}
-                ${generateHTMLBackCard(img, name, color)}
+                ${generateHTMLBackCard(img, name, color, shadow, flipCard)}
             </div>
     `
 }
@@ -100,37 +100,38 @@ function generateHTMLFrontCard(img, name, id, type, color, shadow, flipCard) {
 }
 
 
-function generateHTMLBackCard(img, name, color) {
+function generateHTMLBackCard(img, name, color, shadow, flipCard) {
     return /*html*/`
         <div class="stats-container pokemon-card-back">
             <div class="back-id ${color}">
-                <h2>${name}</h2>
+                <div class="back-card-header">
+                    <h2>${name}</h2>
+                    <img onclick="closePokemonCard('${flipCard}')" class="back-close-pokeball-button" src="img/pokeball.png" alt="close Button Pokeball">
+                </div>
                 <img class="back-img" src="${img}" alt="">
             </div>   
-            <div class="stats">
-                <table class="pokemon-stats-style">
-                    <tr>
-                        <td>Wert 1</td>
-                        <td>Wert 2</td>
+                <table>
+                    <tr class="${shadow}">
+                        <td>${currentPokemon['stats']['0']['stat']['name']}</td>
+                        <td class="stat-color">${currentPokemon['stats']['0']['base_stat']}</td>
                     </tr>
-                    <tr>
-                        <td>Wert 3</td>
-                        <td>Wert 4</td>
+                    <tr class="${shadow}">
+                        <td>${currentPokemon['stats']['1']['stat']['name']}</td>
+                        <td class="stat-color">${currentPokemon['stats']['1']['base_stat']}</td>
                     </tr>
-                    <tr>
-                        <td>Wert 5</td>
-                        <td>Wert 6</td>
+                    <tr class="${shadow}">
+                        <td>${currentPokemon['stats']['2']['stat']['name']}</td>
+                        <td class="stat-color">${currentPokemon['stats']['2']['base_stat']}</td>
                     </tr>
-                    <tr>
-                        <td>Wert 7</td>
-                        <td>Wert 8</td>
+                    <tr class="${shadow}">
+                        <td>${currentPokemon['stats']['3']['stat']['name']}</td>
+                        <td class="stat-color">${currentPokemon['stats']['3']['base_stat']}</td>
                     </tr>
-                    <tr>
-                        <td>Wert 9</td>
-                        <td>Wert 10</td>
+                    <tr class="${shadow}">
+                        <td>${currentPokemon['stats']['4']['stat']['name']}</td>
+                        <td class="stat-color">${currentPokemon['stats']['4']['base_stat']}</td>
                     </tr>
                 </table>
-            </div>
         </div>
     `
 }
@@ -186,6 +187,18 @@ function topFunction() {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
 }
+
+
+function closePokemonCard(flipCard) {
+    let flipPokemonCart = document.getElementById(`${flipCard}`);
+    if (flipPokemonCart) {
+        flipPokemonCart.style.transition = "1.5s";
+        flipPokemonCart.style.transform = "scale(1) rotate3D(0, 1, 0, 0deg)";
+        flipPokemonCart.style.zIndex = "auto";
+        flipPokemonCart.style.position = "static";
+    }
+}
+
 
 
 
