@@ -1,14 +1,14 @@
 let currentPokemon;
 let pokemons;
 let allPokemons = []; //sind alle URL von der Pokemon API 
-let limit = 0;
+let limit = 20;
 let offset = 0;
 window.onscroll = function () { scrollFunction() }; // scroll on Top funktion
 
 
 async function init() {
     await includeHTML();
-    loadAllPokemons();
+    await loadAllPokemons();
     await loadPokemon();
 }
 
@@ -33,9 +33,8 @@ async function loadAllPokemons() {
     let response = await fetch(url); //ladet die API runter (aller Pokemons)
     pokemons = await response.json(); //wandelt das in eine JSON um
     let result = pokemons['results']; //results ist ein Array in der API
-    console.log('load first 334 Pokemons', result);
+    console.log('load first 34 Pokemons', result);
     loadPokemonId(result);
-    loadPokemon();
 }
 
 
@@ -85,7 +84,7 @@ function generateHTMLPokedex(img, name, id, type, color, shadow, j) {
 function generateHTMLFrontCard(img, name, id, type, color, shadow, flipCard) {
     return /*html*/`
         <div class="pokemon-card pokemon-card-front ${shadow}">
-            <div id="imgContainer" onclick="flipPokemonCard('${flipCard}')" class="pokemon-card-img">
+            <div id="imgContainer" onclick="openPokemonCard('${flipCard}')" class="pokemon-card-img">
                 <img src="${img}" alt="Pokemon Image">
             </div>
             <div class="pokemon-card-information">
@@ -110,6 +109,14 @@ function generateHTMLBackCard(img, name, color, shadow, flipCard) {
                 </div>
                 <img class="back-img" src="${img}" alt="">
             </div>   
+                ${generateHTMLBackCardStats(shadow)}
+        </div>
+    `
+}
+
+
+function generateHTMLBackCardStats(shadow) {
+    return /*html*/`
                 <table>
                     <tr class="${shadow}">
                         <td>${currentPokemon['stats']['0']['stat']['name']}</td>
@@ -132,33 +139,32 @@ function generateHTMLBackCard(img, name, color, shadow, flipCard) {
                         <td class="stat-color">${currentPokemon['stats']['4']['base_stat']}</td>
                     </tr>
                 </table>
-        </div>
     `
 }
 
 
 function loadMorePokemon() {
-    offset += 34; // Globale Variable ladet immer 34 neue Pokemons
+    offset += 20; // Globale Variable ladet immer 34 neue Pokemons
     allPokemons = []; // Liste wird vor dem  Laden einmal zurückgesetzt, nun können die neuen Pokemons geladen werden
-    loadAllPokemons();
+    init();
 }
 
 
-function flipPokemonCard(flipCard) {
-    let flipPokemonCart = document.getElementById(`${flipCard}`);
-    if (flipPokemonCart) {
-        flipPokemonCart.style.transition = "1.5s";
-        flipPokemonCart.style.transform = "scale(1.5) translateY(-50%)";
-        flipPokemonCart.style.zIndex = "9999";
+function openPokemonCard(flipCard) {
+    let flipPokemonCard = document.getElementById(`${flipCard}`);
+    if (flipPokemonCard) {
+        flipPokemonCard.style.transition = "1.5s";
+        flipPokemonCard.style.transform = "scale(1.5) translateY(-50%)";
+        flipPokemonCard.style.zIndex = "9999";
         setTimeout(() => {
-            flipPokemonCart.style.transform = "scale(1.5) rotate3D(0, 1, 0, 90deg)";
-            flipPokemonCart.style.zIndex = "9999";
-            flipPokemonCart.style.position = "fixed";
+            flipPokemonCard.style.transform = "scale(1.5) rotate3D(0, 1, 0, 90deg)";
+            flipPokemonCard.style.zIndex = "9999";
+            flipPokemonCard.style.position = "fixed";
         }, 800);
         setTimeout(() => {
-            flipPokemonCart.style.transform = "scale(1.5) rotate3D(0, 1, 0, 180deg)";
-            flipPokemonCart.style.zIndex = "9999";
-            flipPokemonCart.style.position = "fixed";
+            flipPokemonCard.style.transform = "scale(1.5) rotate3D(0, 1, 0, 180deg)";
+            flipPokemonCard.style.zIndex = "9999";
+            flipPokemonCard.style.position = "fixed";
         }, 800);
     }
     flipCardOncklickDisable(flipCard);

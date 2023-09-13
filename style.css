@@ -155,6 +155,7 @@ body {
 
 
 .pokemon-card {
+    background-color: white;
     border-radius: 10px;
     padding: 15px;
     transition: transform .2s;
@@ -194,6 +195,11 @@ body {
 
 .pokemon-card-type p {
     text-align: center;
+}
+
+.type-color {
+    display: flex;
+    gap: 40px;
 }
 
 .pokemon-container {
