@@ -1,7 +1,8 @@
 let currentPokemon;
 let pokemons;
 let allPokemons = []; //sind alle URL von der Pokemon API 
-let limit = 20;
+let evolution;
+let limit = 33;
 let offset = 0;
 window.onscroll = function () { scrollFunction() }; // scroll on Top funktion
 
@@ -10,6 +11,8 @@ async function init() {
     await includeHTML();
     await loadAllPokemons();
     await loadPokemon();
+    await loadEvolution();
+    showNames();
 }
 
 
@@ -48,13 +51,20 @@ function loadPokemonId(result) {
 
 
 async function loadPokemon() {
-    for (let j = 0; j < allPokemons.length; j++) {
-        let pokemonCurentUrl = allPokemons[j];
-        let response = await fetch(pokemonCurentUrl);// ladet die URL aus dem Array 
+    for (let j = offset; j < allPokemons.length; j++) {
+        let pokemonCurrentUrl = allPokemons[j];
+        let response = await fetch(pokemonCurrentUrl);// ladet die URL aus dem Array 
         currentPokemon = await response.json();
         console.log('show Pokemon', currentPokemon);
         renderPokemonInformation(j);
     }
+}
+
+async function loadEvolution() {
+    let url = 'https://pokeapi.co/api/v2/type/3';
+    let result = await fetch(url);
+    evolution = await result.json();
+    console.log('show Evolution', evolution);
 }
 
 
@@ -108,7 +118,11 @@ function generateHTMLBackCard(img, name, color, shadow, flipCard) {
                     <img onclick="closePokemonCard('${flipCard}')" class="back-close-pokeball-button" src="img/pokeball.png" alt="close Button Pokeball">
                 </div>
                 <img class="back-img" src="${img}" alt="">
-            </div>   
+            </div> 
+                <div class="back-category">
+                    <a href="#baseStats">Base Stats </a>
+                    <a href="#">Evolution</a>
+                </div>
                 ${generateHTMLBackCardStats(shadow)}
         </div>
     `
@@ -117,7 +131,7 @@ function generateHTMLBackCard(img, name, color, shadow, flipCard) {
 
 function generateHTMLBackCardStats(shadow) {
     return /*html*/`
-                <table>
+                <table id="baseStats">
                     <tr class="${shadow}">
                         <td>${currentPokemon['stats']['0']['stat']['name']}</td>
                         <td class="stat-color">${currentPokemon['stats']['0']['base_stat']}</td>
@@ -144,8 +158,7 @@ function generateHTMLBackCardStats(shadow) {
 
 
 function loadMorePokemon() {
-    offset += 20; // Globale Variable ladet immer 34 neue Pokemons
-    allPokemons = []; // Liste wird vor dem  Laden einmal zurückgesetzt, nun können die neuen Pokemons geladen werden
+    offset += 33; // Globale Variable ladet immer 34 neue Pokemons
     init();
 }
 
@@ -207,20 +220,3 @@ function closePokemonCard(flipCard) {
 
 
 
-
-// function renderPokemonInformation(j) {
-//     let pokemon = currentPokemon;
-//     document.getElementById('pokemonImage').src = pokemon.sprites.other['official-artwork'].front_default;
-//     document.getElementById('pokemonName').innerHTML = pokemon.forms[0].name.charAt(0).toUpperCase() + pokemon.forms[0].name.slice(1);
-//     document.getElementById('pokemonId').innerHTML = pokemon.id;
-//     document.getElementById('pokemonType').innerHTML = pokemon.types[0].type.name.charAt(0).toUpperCase() + pokemon.types[0].type.name.slice(1);
-//     // document.getElementById('typeColor').innerHTML = `bg-${pokemonType.toLowerCase()}`;
-//     for (let k = 0; k < currentPokemon.length; k++) {
-//         let pokemon = currentPokemon[k];
-//         document.getElementById('pokedex').innerHTML += pokemon;
-//     }
-// let shadowClass = `shadow-${pokemonType.toLowerCase()}`;
-// document.getElementById('typeColor').innerHTML = `${colors}`;
-// document.getElementById('bgShadow').innerHTML = pokemonType.toLowerCase();
-// document.getElementById('pokedex').innerHTML += pokedex;
-// }

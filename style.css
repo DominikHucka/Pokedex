@@ -204,7 +204,7 @@ body {
 
 .pokemon-container {
     perspective: 1000px;
-    width: 300px;
+    width: 280px;
     height: 400px;
     transform-style: preserve-3d;
     transition: transform 0.5s;
@@ -276,7 +276,7 @@ body {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     height: 160px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 table {
@@ -293,11 +293,13 @@ table tr td {
 
 .back-close-pokeball-button {
     height: 30px;
+    animation: wiggle .8s ease-in-out infinite; 
+    
 }
 
 .back-close-pokeball-button:hover {
     cursor: pointer;
-    animation: wiggle .8s ease-in-out infinite; 
+    
 }
 
 @keyframes wiggle {
@@ -319,4 +321,9 @@ table tr td {
     justify-content: center;
     align-items: center;
     gap: 10px;
+}
+
+.back-category {
+    display: flex;
+    justify-content: space-around;
 }
