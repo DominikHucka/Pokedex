@@ -12,7 +12,6 @@ async function init() {
     await loadAllPokemons();
     await loadPokemon();
     await loadEvolution();
-    showNames();
 }
 
 
@@ -94,7 +93,7 @@ function generateHTMLPokedex(img, name, id, type, color, shadow, j) {
 function generateHTMLFrontCard(img, name, id, type, color, shadow, flipCard) {
     return /*html*/`
         <div class="pokemon-card pokemon-card-front ${shadow}">
-            <div id="imgContainer" onclick="openPokemonCard('${flipCard}')" class="pokemon-card-img">
+            <div id="openCard" onclick="openPokemonCard('${flipCard}')" class="pokemon-card-img">
                 <img src="${img}" alt="Pokemon Image">
             </div>
             <div class="pokemon-card-information">
@@ -180,16 +179,14 @@ function openPokemonCard(flipCard) {
             flipPokemonCard.style.position = "fixed";
         }, 800);
     }
-    flipCardOncklickDisable(flipCard);
+    flipCardOncklickDisable(flipPokemonCard);
 }
 
 
 function flipCardOncklickDisable(flipCard) {
     if (flipCard) {
-        document.getElementById('imgContainer').disabled = true;
-    } else {
-        document.getElementById('imgContainer').disabled = false;
-    }
+        document.getElementById('openCard').removeAttribute("onclick");
+    }  
 }
 
 

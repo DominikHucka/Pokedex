@@ -16,24 +16,14 @@ body {
     position: relative;
 }
 
-.playgame {
-    height: 30px;
-    animation: 1s fadeIn ease-in-out;
-}
-
 .search {
     height: 30px;
     cursor: pointer;
 }
 
-.playgame:hover {
-    cursor: pointer;
-}
-
-
 .header-white {
     display: flex;
-    justify-content: space-around ;
+    padding-left: 50px;
     align-items: center;
     width: 100%;
     height: 106px;
