@@ -1,9 +1,11 @@
+// let currentPokemon = [];
 let currentPokemon;
 let pokemons;
 let allPokemons = []; //sind alle URL von der Pokemon API 
-let evolution;
+let allEvolution = [];
 let limit = 33;
 let offset = 0;
+let cardClickEnabled = true; 
 window.onscroll = function () { scrollFunction() }; // scroll on Top funktion
 
 
@@ -11,7 +13,7 @@ async function init() {
     await includeHTML();
     await loadAllPokemons();
     await loadPokemon();
-    await loadEvolution();
+    // await loadEvolution();
 }
 
 
@@ -53,30 +55,52 @@ async function loadPokemon() {
     for (let j = offset; j < allPokemons.length; j++) {
         let pokemonCurrentUrl = allPokemons[j];
         let response = await fetch(pokemonCurrentUrl);// ladet die URL aus dem Array 
-        currentPokemon = await response.json();
-        console.log('show Pokemon', currentPokemon);
+        let currentPokemonData = await response.json();
+        currentPokemon.push(currentPokemonData);
+        console.log('pokemons', currentPokemon);
         renderPokemonInformation(j);
     }
 }
 
-async function loadEvolution() {
-    let url = 'https://pokeapi.co/api/v2/type/3';
-    let result = await fetch(url);
-    evolution = await result.json();
-    console.log('show Evolution', evolution);
+
+async function loadPokemon() {
+    for (let j = offset; j < allPokemons.length; j++) {
+        let pokemonCurrentUrl = allPokemons[j];
+        let response = await fetch(pokemonCurrentUrl);// ladet die URL aus dem Array 
+        currentPokemon = await response.json();
+        console.log('pokemons', currentPokemon);
+        renderPokemonInformation(j);
+    }
 }
+
+// async function loadEvolution() {
+//     let url = `https://pokeapi.co/api/v2/evolution-chain/${l}/`;
+//     let result = await fetch(url);
+//     evolution = await result.json();
+//     console.log('show Evolution', evolution);
+// }
 
 
 function renderPokemonInformation(j) {
-    let pokemon = currentPokemon;
-    let pokemonImage = pokemon.sprites.other['official-artwork'].front_default;
-    let pokemonName = pokemon.forms[0].name.charAt(0).toUpperCase() + pokemon.forms[0].name.slice(1);
-    let pokemonId = pokemon.id;
-    let pokemonType = pokemon.types[0].type.name.charAt(0).toUpperCase() + pokemon.types[0].type.name.slice(1);
+    let pokemonImage = currentPokemon['sprites']['other']['official-artwork'].front_default;
+    let pokemonName = currentPokemon.forms[0].name.charAt(0).toUpperCase() + currentPokemon.forms[0].name.slice(1);
+    let pokemonId = currentPokemon.id.toString().padStart(4, '0');
+    let pokemonType = currentPokemon.types[0].type.name.charAt(0).toUpperCase() + currentPokemon.types[0].type.name.slice(1);
     let backgroundColorClass = `bg-${pokemonType.toLowerCase()}`;
     let shadowClass = `shadow-${pokemonType.toLowerCase()}`;
     document.getElementById('pokedex').innerHTML += generateHTMLPokedex(pokemonImage, pokemonName, pokemonId, pokemonType, backgroundColorClass, shadowClass, j);
 }
+
+
+// function renderPokemonInformation(j) {
+//     let pokemonImage = currentPokemon.sprites.other['official-artwork'].front_default;
+//     let pokemonName = currentPokemon.forms[0].name.charAt(0).toUpperCase() + currentPokemon.forms[0].name.slice(1);
+//     let pokemonId = currentPokemon.id.toString().padStart(4, '0');// hier gebe ich mehrere Nullen mit padStart
+//     let pokemonType = currentPokemon.types[0].type.name.charAt(0).toUpperCase() + currentPokemon.types[0].type.name.slice(1);
+//     let backgroundColorClass = `bg-${pokemonType.toLowerCase()}`;
+//     let shadowClass = `shadow-${pokemonType.toLowerCase()}`;
+//     document.getElementById('pokedex').innerHTML += generateHTMLPokedex(pokemonImage, pokemonName, pokemonId, pokemonType, backgroundColorClass, shadowClass, j);
+// }
 
 
 function generateHTMLPokedex(img, name, id, type, color, shadow, j) {
@@ -119,6 +143,7 @@ function generateHTMLBackCard(img, name, color, shadow, flipCard) {
                 <img class="back-img" src="${img}" alt="">
             </div> 
                 <div class="back-category">
+                    <a href="About">About</a>
                     <a href="#baseStats">Base Stats </a>
                     <a href="#">Evolution</a>
                 </div>
@@ -166,27 +191,25 @@ function openPokemonCard(flipCard) {
     let flipPokemonCard = document.getElementById(`${flipCard}`);
     if (flipPokemonCard) {
         flipPokemonCard.style.transition = "1.5s";
-        flipPokemonCard.style.transform = "scale(1.5) translateY(-50%)";
+        flipPokemonCard.style.transform = "scale(2) translateY(-50%)";
         flipPokemonCard.style.zIndex = "9999";
         setTimeout(() => {
-            flipPokemonCard.style.transform = "scale(1.5) rotate3D(0, 1, 0, 90deg)";
+            flipPokemonCard.style.transform = "scale(2) rotate3D(0, 1, 0, 90deg)";
             flipPokemonCard.style.zIndex = "9999";
             flipPokemonCard.style.position = "fixed";
         }, 800);
         setTimeout(() => {
-            flipPokemonCard.style.transform = "scale(1.5) rotate3D(0, 1, 0, 180deg)";
+            flipPokemonCard.style.transform = "scale(2) rotate3D(0, 1, 0, 180deg)";
             flipPokemonCard.style.zIndex = "9999";
             flipPokemonCard.style.position = "fixed";
         }, 800);
     }
-    flipCardOncklickDisable(flipPokemonCard);
+    flipCardOncklickDisable();
 }
 
 
-function flipCardOncklickDisable(flipCard) {
-    if (flipCard) {
-        document.getElementById('openCard').removeAttribute("onclick");
-    }  
+function flipCardOncklickDisable() {
+    cardClickEnabled = false; // Deaktivieren Sie das Klicken auf Karten
 }
 
 
@@ -208,12 +231,30 @@ function topFunction() {
 function closePokemonCard(flipCard) {
     let flipPokemonCart = document.getElementById(`${flipCard}`);
     if (flipPokemonCart) {
-        flipPokemonCart.style.transition = "1.5s";
+        flipPokemonCart.style.transition = "1s";
         flipPokemonCart.style.transform = "scale(1) rotate3D(0, 1, 0, 0deg)";
         flipPokemonCart.style.zIndex = "auto";
         flipPokemonCart.style.position = "static";
     }
+    cardClickEnabled = true;
 }
 
+
+function searchPokemon() {
+    let search = document.getElementById('search').value;
+    search = search.toLowerCase();
+    console.log(search);
+
+    let pokedexContainer = document.getElementById('pokedex');
+    pokedexContainer.innerHTML = '';
+
+    for (let k = 0; k < currentPokemon.length; k++) {
+        let pokemonName = currentPokemon[k]['forms']['0']['name'];
+        if (pokemonName.toLowerCase().includes(search)) {
+            pokedexContainer.innerHTML += renderPokemonInformation(k);
+        }   
+    }
+
+}
 
 
