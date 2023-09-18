@@ -1,4 +1,4 @@
-// let currentPokemon = [];
+let currentPokemonName = [];
 let currentPokemon;
 let pokemons;
 let allPokemons = []; //sind alle URL von der Pokemon API 
@@ -51,16 +51,16 @@ function loadPokemonId(result) {
 }
 
 
-async function loadPokemon() {
-    for (let j = offset; j < allPokemons.length; j++) {
-        let pokemonCurrentUrl = allPokemons[j];
-        let response = await fetch(pokemonCurrentUrl);// ladet die URL aus dem Array 
-        let currentPokemonData = await response.json();
-        currentPokemon.push(currentPokemonData);
-        console.log('pokemons', currentPokemon);
-        renderPokemonInformation(j);
-    }
-}
+// async function loadPokemon() {
+//     for (let j = offset; j < allPokemons.length; j++) {
+//         let pokemonCurrentUrl = allPokemons[j];
+//         let response = await fetch(pokemonCurrentUrl);// ladet die URL aus dem Array 
+//         let currentPokemonData = await response.json();
+//         currentPokemon.push(currentPokemonData);
+//         console.log('pokemons', currentPokemon);
+//         renderPokemonInformation(j);
+//     }
+// }
 
 
 async function loadPokemon() {
@@ -68,6 +68,7 @@ async function loadPokemon() {
         let pokemonCurrentUrl = allPokemons[j];
         let response = await fetch(pokemonCurrentUrl);// ladet die URL aus dem Array 
         currentPokemon = await response.json();
+        currentPokemonName.push(currentPokemon);
         console.log('pokemons', currentPokemon);
         renderPokemonInformation(j);
     }
@@ -81,16 +82,15 @@ async function loadPokemon() {
 // }
 
 
-function renderPokemonInformation(j) {
-    let pokemonImage = currentPokemon['sprites']['other']['official-artwork'].front_default;
-    let pokemonName = currentPokemon.forms[0].name.charAt(0).toUpperCase() + currentPokemon.forms[0].name.slice(1);
-    let pokemonId = currentPokemon.id.toString().padStart(4, '0');
-    let pokemonType = currentPokemon.types[0].type.name.charAt(0).toUpperCase() + currentPokemon.types[0].type.name.slice(1);
-    let backgroundColorClass = `bg-${pokemonType.toLowerCase()}`;
-    let shadowClass = `shadow-${pokemonType.toLowerCase()}`;
-    document.getElementById('pokedex').innerHTML += generateHTMLPokedex(pokemonImage, pokemonName, pokemonId, pokemonType, backgroundColorClass, shadowClass, j);
-}
-
+// function renderPokemonInformation(j) {
+//     let pokemonImage = currentPokemonName[j]['sprites']['other']['official-artwork'].front_default;
+//     let pokemonName = currentPokemon.forms[0].name.charAt(0).toUpperCase() + currentPokemon.forms[0].name.slice(1);
+//     let pokemonId = currentPokemon.id.toString().padStart(4, '0');
+//     let pokemonType = currentPokemon.types[0].type.name.charAt(0).toUpperCase() + currentPokemon.types[0].type.name.slice(1);
+//     let backgroundColorClass = `bg-${pokemonType.toLowerCase()}`;
+//     let shadowClass = `shadow-${pokemonType.toLowerCase()}`;
+//     document.getElementById('pokedex').innerHTML += generateHTMLPokedex(pokemonImage, pokemonName, pokemonId, pokemonType, backgroundColorClass, shadowClass, j);
+// }
 
 // function renderPokemonInformation(j) {
 //     let pokemonImage = currentPokemon.sprites.other['official-artwork'].front_default;
@@ -102,15 +102,28 @@ function renderPokemonInformation(j) {
 //     document.getElementById('pokedex').innerHTML += generateHTMLPokedex(pokemonImage, pokemonName, pokemonId, pokemonType, backgroundColorClass, shadowClass, j);
 // }
 
+function renderPokemonInformation(j) {
+    let pokemon = currentPokemonName[j]
+    let pokemonImage = pokemon['sprites']['other']['official-artwork']['front_default'];
+    let pokemonName = pokemon['forms']['0']['name'].charAt(0).toUpperCase() + pokemon['forms']['0']['name'].slice(1);
+    let pokemonId = pokemon['id'].toString().padStart(4, '0');
+    let pokemonType = pokemon['types']['0']['type']['name'].charAt(0).toUpperCase() + pokemon['types']['0']['type']['name'].slice(1);
+    let backgroundColorClass = `bg-${pokemonType.toLowerCase()}`;
+    let shadowClass = `shadow-${pokemonType.toLowerCase()}`;
+    document.getElementById('pokedex').innerHTML += generateHTMLPokedex(pokemonImage, pokemonName, pokemonId, pokemonType, backgroundColorClass, shadowClass, j);
+}
+
+
+
 
 function generateHTMLPokedex(img, name, id, type, color, shadow, j) {
     let flipCard = `flipper-${j}`;
     return /*html*/`
-            <div id="${flipCard}" class="pokemon-container">
-                ${generateHTMLFrontCard(img, name, id, type, color, shadow, flipCard)}
-                ${generateHTMLBackCard(img, name, color, shadow, flipCard)}
-            </div>
-    `
+                <div id="${flipCard}" class="pokemon-container">
+                    ${generateHTMLFrontCard(img, name, id, type, color, shadow, flipCard)}
+                    ${generateHTMLBackCard(img, name, color, shadow, flipCard)}
+                </div>
+    `;
 }
 
 
@@ -144,7 +157,7 @@ function generateHTMLBackCard(img, name, color, shadow, flipCard) {
             </div> 
                 <div class="back-category">
                     <a href="About">About</a>
-                    <a href="#baseStats">Base Stats </a>
+                    <a href="Javascript:load">Base Stats </a>
                     <a href="#">Evolution</a>
                 </div>
                 ${generateHTMLBackCardStats(shadow)}
@@ -189,18 +202,25 @@ function loadMorePokemon() {
 
 function openPokemonCard(flipCard) {
     let flipPokemonCard = document.getElementById(`${flipCard}`);
+
     if (flipPokemonCard) {
         flipPokemonCard.style.transition = "1.5s";
-        flipPokemonCard.style.transform = "scale(2) translateY(-50%)";
-        flipPokemonCard.style.zIndex = "9999";
+        flipPokemonCard.style.transform = "scale(1) translateY(-50%)";
+        flipPokemonCard.style.zIndex = "10";
+        flipPokemonCard.style.position = "static";
         setTimeout(() => {
-            flipPokemonCard.style.transform = "scale(2) rotate3D(0, 1, 0, 90deg)";
-            flipPokemonCard.style.zIndex = "9999";
+            flipPokemonCard.style.transform = "scale(1.2) rotate3D(0, 1, 0, 45deg)";
+            flipPokemonCard.style.zIndex = "10";
+            flipPokemonCard.style.position = "static";
+        }, 800);
+        setTimeout(() => {
+            flipPokemonCard.style.transform = "scale(1.5) rotate3D(0, 1, 0, 90deg)";
+            flipPokemonCard.style.zIndex = "10";
             flipPokemonCard.style.position = "fixed";
         }, 800);
         setTimeout(() => {
-            flipPokemonCard.style.transform = "scale(2) rotate3D(0, 1, 0, 180deg)";
-            flipPokemonCard.style.zIndex = "9999";
+            flipPokemonCard.style.transform = "scale(1.5) rotate3D(0, 1, 0, 180deg)";
+            flipPokemonCard.style.zIndex = "10";
             flipPokemonCard.style.position = "fixed";
         }, 800);
     }
@@ -248,13 +268,12 @@ function searchPokemon() {
     let pokedexContainer = document.getElementById('pokedex');
     pokedexContainer.innerHTML = '';
 
-    for (let k = 0; k < currentPokemon.length; k++) {
-        let pokemonName = currentPokemon[k]['forms']['0']['name'];
-        if (pokemonName.toLowerCase().includes(search)) {
+    for (let k = 0; k < currentPokemonName.length; k++) {
+        let pokemonName = currentPokemonName[k]['forms']['0']['name'];
+        if (pokemonName.charAt(0).toLowerCase().includes(search)) {
             pokedexContainer.innerHTML += renderPokemonInformation(k);
         }   
     }
-
 }
 
 

@@ -224,7 +224,7 @@ body {
     height: 100%;
     position: fixed;
     backface-visibility: hidden;
-  }
+}
 
 .back-img {
     height: 100px;
@@ -317,3 +317,4 @@ table tr td {
     display: flex;
     justify-content: space-around;
 }
+
