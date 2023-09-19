@@ -156,11 +156,21 @@ function generateHTMLBackCard(img, name, color, shadow, flipCard) {
                 <img class="back-img" src="${img}" alt="">
             </div> 
                 <div class="back-category">
-                    <a href="About">About</a>
-                    <a href="Javascript:load">Base Stats </a>
+                    <a href="Javascript:#about">About</a>
+                    <a href="Javascript:#baseStats">Base Stats </a>
                     <a href="#">Evolution</a>
-                </div>
+                </div> 
                 ${generateHTMLBackCardStats(shadow)}
+                ${generateHTMLBackCardAbout()}
+        </div>
+    `
+}
+
+
+function generateHTMLBackCardAbout() {
+    return /*html*/`
+        <div class="about">
+            <p>${currentPokemon['abilities']['0']['ability']['name']}</p>
         </div>
     `
 }
