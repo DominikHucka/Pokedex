@@ -318,3 +318,11 @@ table tr td {
     justify-content: space-around;
 }
 
+
+.back-div {
+    display: none; 
+}
+
+.back-div.active {
+    display: block; 
+}

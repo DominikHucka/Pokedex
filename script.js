@@ -5,7 +5,7 @@ let allPokemons = []; //sind alle URL von der Pokemon API
 let allEvolution = [];
 let limit = 33;
 let offset = 0;
-let cardClickEnabled = true; 
+let cardClickEnabled = true;
 window.onscroll = function () { scrollFunction() }; // scroll on Top funktion
 
 
@@ -51,18 +51,6 @@ function loadPokemonId(result) {
 }
 
 
-// async function loadPokemon() {
-//     for (let j = offset; j < allPokemons.length; j++) {
-//         let pokemonCurrentUrl = allPokemons[j];
-//         let response = await fetch(pokemonCurrentUrl);// ladet die URL aus dem Array 
-//         let currentPokemonData = await response.json();
-//         currentPokemon.push(currentPokemonData);
-//         console.log('pokemons', currentPokemon);
-//         renderPokemonInformation(j);
-//     }
-// }
-
-
 async function loadPokemon() {
     for (let j = offset; j < allPokemons.length; j++) {
         let pokemonCurrentUrl = allPokemons[j];
@@ -82,25 +70,6 @@ async function loadPokemon() {
 // }
 
 
-// function renderPokemonInformation(j) {
-//     let pokemonImage = currentPokemonName[j]['sprites']['other']['official-artwork'].front_default;
-//     let pokemonName = currentPokemon.forms[0].name.charAt(0).toUpperCase() + currentPokemon.forms[0].name.slice(1);
-//     let pokemonId = currentPokemon.id.toString().padStart(4, '0');
-//     let pokemonType = currentPokemon.types[0].type.name.charAt(0).toUpperCase() + currentPokemon.types[0].type.name.slice(1);
-//     let backgroundColorClass = `bg-${pokemonType.toLowerCase()}`;
-//     let shadowClass = `shadow-${pokemonType.toLowerCase()}`;
-//     document.getElementById('pokedex').innerHTML += generateHTMLPokedex(pokemonImage, pokemonName, pokemonId, pokemonType, backgroundColorClass, shadowClass, j);
-// }
-
-// function renderPokemonInformation(j) {
-//     let pokemonImage = currentPokemon.sprites.other['official-artwork'].front_default;
-//     let pokemonName = currentPokemon.forms[0].name.charAt(0).toUpperCase() + currentPokemon.forms[0].name.slice(1);
-//     let pokemonId = currentPokemon.id.toString().padStart(4, '0');// hier gebe ich mehrere Nullen mit padStart
-//     let pokemonType = currentPokemon.types[0].type.name.charAt(0).toUpperCase() + currentPokemon.types[0].type.name.slice(1);
-//     let backgroundColorClass = `bg-${pokemonType.toLowerCase()}`;
-//     let shadowClass = `shadow-${pokemonType.toLowerCase()}`;
-//     document.getElementById('pokedex').innerHTML += generateHTMLPokedex(pokemonImage, pokemonName, pokemonId, pokemonType, backgroundColorClass, shadowClass, j);
-// }
 
 function renderPokemonInformation(j) {
     let pokemon = currentPokemonName[j]
@@ -156,12 +125,13 @@ function generateHTMLBackCard(img, name, color, shadow, flipCard) {
                 <img class="back-img" src="${img}" alt="">
             </div> 
                 <div class="back-category">
-                    <a href="Javascript:#about">About</a>
-                    <a href="Javascript:#baseStats">Base Stats </a>
-                    <a href="#">Evolution</a>
-                </div> 
+                    <a href="javascript:void(0)" onclick="showDiv('about')">About</a>
+                    <a href="javascript:void(0)" onclick="showDiv('baseStats')">Base Stats</a>
+                    <a href="javascript:void(0)" onclick="showDiv('evolution')">Evolution</a>
+                </div>
                 ${generateHTMLBackCardStats(shadow)}
                 ${generateHTMLBackCardAbout()}
+                ${generateHTMLBackCardEvolution()}
         </div>
     `
 }
@@ -169,7 +139,7 @@ function generateHTMLBackCard(img, name, color, shadow, flipCard) {
 
 function generateHTMLBackCardAbout() {
     return /*html*/`
-        <div class="about">
+        <div id="about" class="back-div">
             <p>${currentPokemon['abilities']['0']['ability']['name']}</p>
         </div>
     `
@@ -178,7 +148,7 @@ function generateHTMLBackCardAbout() {
 
 function generateHTMLBackCardStats(shadow) {
     return /*html*/`
-                <table id="baseStats">
+                <table id="baseStats" class="back-div">
                     <tr class="${shadow}">
                         <td>${currentPokemon['stats']['0']['stat']['name']}</td>
                         <td class="stat-color">${currentPokemon['stats']['0']['base_stat']}</td>
@@ -202,6 +172,19 @@ function generateHTMLBackCardStats(shadow) {
                 </table>
     `
 }
+
+
+
+function generateHTMLBackCardEvolution() {
+    return /*html*/`
+        <div id="evolution" class="back-div">
+            <p>Hello</p>
+        </div>
+    `
+}
+
+
+
 
 
 function loadMorePokemon() {
@@ -280,9 +263,9 @@ function searchPokemon() {
 
     for (let k = 0; k < currentPokemonName.length; k++) {
         let pokemonName = currentPokemonName[k]['forms']['0']['name'];
-        if (pokemonName.charAt(0).toLowerCase().includes(search)) {
-            pokedexContainer.innerHTML += renderPokemonInformation(k);
-        }   
+        if (pokemonName.toLowerCase().includes(search)) {
+            renderPokemonInformation(k);
+        }
     }
 }
 
