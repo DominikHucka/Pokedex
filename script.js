@@ -14,6 +14,7 @@ async function init() {
     await loadAllPokemons();
     await loadPokemon();
     // await loadEvolution();
+    showDiv('about');
 }
 
 
@@ -184,6 +185,20 @@ function generateHTMLBackCardEvolution() {
 }
 
 
+function showDiv(divId) {
+    let divs = document.querySelectorAll(".back-div");
+    divs.forEach(div => {
+        if (div.id === divId) {
+            if (div.style.display === "none" || div.style.display === "") {
+                div.style.display = "block";
+            } else {
+                div.style.display = "none";
+            }
+        } else {
+            div.style.display = "none";
+        }
+    });
+}
 
 
 
@@ -210,19 +225,24 @@ function openPokemonCard(flipCard) {
             flipPokemonCard.style.transform = "scale(1.5) rotate3D(0, 1, 0, 90deg)";
             flipPokemonCard.style.zIndex = "10";
             flipPokemonCard.style.position = "fixed";
+            flipPokemonCard.style.top = "20vh";
         }, 800);
         setTimeout(() => {
             flipPokemonCard.style.transform = "scale(1.5) rotate3D(0, 1, 0, 180deg)";
             flipPokemonCard.style.zIndex = "10";
             flipPokemonCard.style.position = "fixed";
+            flipPokemonCard.style.top = "20vh";
         }, 800);
     }
-    flipCardOncklickDisable();
+    flipCardOncklickDisable(flipPokemonCard);
 }
 
 
-function flipCardOncklickDisable() {
-    cardClickEnabled = false; // Deaktivieren Sie das Klicken auf Karten
+function flipCardOncklickDisable(flipCard) {
+    let disabledAction = document.getElementById('openCard');  // Deaktivieren Sie das Klicken auf Karten
+    if (flipCard) {
+        disabledAction.removeAttribute("onclick");
+    } 
 }
 
 
