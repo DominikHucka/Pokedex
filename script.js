@@ -2,7 +2,7 @@ let currentPokemonName = [];
 let currentPokemon;
 let pokemons;
 let allPokemons = []; //sind alle URL von der Pokemon API 
-let allEvolution = [];
+let allEvolutions = [];
 let limit = 33;
 let offset = 0;
 let cardClickEnabled = true;
@@ -13,7 +13,7 @@ async function init() {
     await includeHTML();
     await loadAllPokemons();
     await loadPokemon();
-    // await loadEvolution();
+    await loadEvolution();
     showDiv('about');
 }
 
@@ -63,16 +63,22 @@ async function loadPokemon() {
     }
 }
 
-// async function loadEvolution() {
-//     let url = `https://pokeapi.co/api/v2/evolution-chain/${l}/`;
-//     let result = await fetch(url);
-//     evolution = await result.json();
-//     console.log('show Evolution', evolution);
-// }
+async function loadEvolution(pokemonId) {
+    try {
+        let url = `https://pokeapi.co/api/v2/evolution-chain/${pokemonId}/`;
+        let result = await fetch(url);
+        let evolutionData = await result.json();
+
+        displayEvolution(evolutionData);
+    } catch (error) {
+        console.error('Fehler beim Laden der Evolution:', error);
+    }
+    renderPokemonInformation(evolutionData);
+}
 
 
 
-function renderPokemonInformation(j) {
+function renderPokemonInformation(j, evolution) {
     let pokemon = currentPokemonName[j]
     let pokemonImage = pokemon['sprites']['other']['official-artwork']['front_default'];
     let pokemonName = pokemon['forms']['0']['name'].charAt(0).toUpperCase() + pokemon['forms']['0']['name'].slice(1);
@@ -80,18 +86,18 @@ function renderPokemonInformation(j) {
     let pokemonType = pokemon['types']['0']['type']['name'].charAt(0).toUpperCase() + pokemon['types']['0']['type']['name'].slice(1);
     let backgroundColorClass = `bg-${pokemonType.toLowerCase()}`;
     let shadowClass = `shadow-${pokemonType.toLowerCase()}`;
-    document.getElementById('pokedex').innerHTML += generateHTMLPokedex(pokemonImage, pokemonName, pokemonId, pokemonType, backgroundColorClass, shadowClass, j);
+    document.getElementById('pokedex').innerHTML += generateHTMLPokedex(pokemonImage, pokemonName, pokemonId, pokemonType, backgroundColorClass, shadowClass, j, evolution);
 }
 
 
 
 
-function generateHTMLPokedex(img, name, id, type, color, shadow, j) {
+function generateHTMLPokedex(img, name, id, type, color, shadow, j, evolution) {
     let flipCard = `flipper-${j}`;
     return /*html*/`
                 <div id="${flipCard}" class="pokemon-container">
                     ${generateHTMLFrontCard(img, name, id, type, color, shadow, flipCard)}
-                    ${generateHTMLBackCard(img, name, color, shadow, flipCard)}
+                    ${generateHTMLBackCard(img, name, color, shadow, flipCard, evolution, j)}
                 </div>
     `;
 }
@@ -115,7 +121,7 @@ function generateHTMLFrontCard(img, name, id, type, color, shadow, flipCard) {
 }
 
 
-function generateHTMLBackCard(img, name, color, shadow, flipCard) {
+function generateHTMLBackCard(img, name, color, shadow, flipCard, evolution, j) {
     return /*html*/`
         <div class="stats-container pokemon-card-back">
             <div class="back-id ${color}">
@@ -132,7 +138,7 @@ function generateHTMLBackCard(img, name, color, shadow, flipCard) {
                 </div>
                 ${generateHTMLBackCardStats(shadow)}
                 ${generateHTMLBackCardAbout()}
-                ${generateHTMLBackCardEvolution()}
+                ${generateHTMLBackCardEvolution(evolution, j)}
         </div>
     `
 }
@@ -140,9 +146,24 @@ function generateHTMLBackCard(img, name, color, shadow, flipCard) {
 
 function generateHTMLBackCardAbout() {
     return /*html*/`
-        <div id="about" class="back-div">
-            <p>${currentPokemon['abilities']['0']['ability']['name']}</p>
-        </div>
+        <table id="about" class="back-div">
+            <tr>
+                <td>Name</td>
+                <td>${currentPokemon['forms']['0']['name'].charAt(0).toUpperCase() + currentPokemon['forms']['0']['name'].slice(1)}</td>
+            </tr>
+            <tr>
+                <td>Weight</td>
+                <td>${currentPokemon['weight'].toFixed(1).replace(".", ",")} Kg</td>
+            </tr>
+            <tr>
+                <td>Types</td>
+                <td>${currentPokemon['types']['0']['type']['name'].charAt(0).toUpperCase() + currentPokemon['types']['0']['type']['name'].slice(1)}</td>
+            </tr>
+            <tr>
+                <td>Abilities</td>
+                <td>${currentPokemon['abilities']['0']['ability']['name']}</td>
+            </tr>
+        </table>
     `
 }
 
@@ -176,10 +197,10 @@ function generateHTMLBackCardStats(shadow) {
 
 
 
-function generateHTMLBackCardEvolution() {
+function generateHTMLBackCardEvolution(evolution, j) {
     return /*html*/`
         <div id="evolution" class="back-div">
-            <p>Hello</p>
+            <p>${evolution}</p>
         </div>
     `
 }
@@ -242,7 +263,7 @@ function flipCardOncklickDisable(flipCard) {
     let disabledAction = document.getElementById('openCard');  // Deaktivieren Sie das Klicken auf Karten
     if (flipCard) {
         disabledAction.removeAttribute("onclick");
-    } 
+    }
 }
 
 
