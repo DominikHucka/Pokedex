@@ -2,10 +2,8 @@ let currentPokemonName = [];
 let currentPokemon;
 let pokemons;
 let allPokemons = []; //sind alle URL von der Pokemon API 
-let allEvolutions = [];
 let limit = 33;
 let offset = 0;
-let cardClickEnabled = true;
 window.onscroll = function () { scrollFunction() }; // scroll on Top funktion
 
 
@@ -13,7 +11,6 @@ async function init() {
     await includeHTML();
     await loadAllPokemons();
     await loadPokemon();
-    await loadEvolution();
     showDiv('about');
 }
 
@@ -34,12 +31,17 @@ async function includeHTML() {
 
 
 async function loadAllPokemons() {
-    let url = `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`; // API limit auf 33 gesetzt 
-    let response = await fetch(url); //ladet die API runter (aller Pokemons)
-    pokemons = await response.json(); //wandelt das in eine JSON um
-    let result = pokemons['results']; //results ist ein Array in der API
-    console.log('load first 34 Pokemons', result);
-    loadPokemonId(result);
+    try {
+        let url = `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`; // API limit auf 33 gesetzt 
+        let response = await fetch(url); //ladet die API runter (aller Pokemons)
+        pokemons = await response.json(); //wandelt das in eine JSON um
+        let result = pokemons['results']; //results ist ein Array in der API
+        console.log('load first 34 Pokemons', result);
+        loadPokemonId(result);
+    } catch (error) {
+        console.log('Fehler beim laden');
+    }
+    
 }
 
 
@@ -53,29 +55,19 @@ function loadPokemonId(result) {
 
 
 async function loadPokemon() {
-    for (let j = offset; j < allPokemons.length; j++) {
-        let pokemonCurrentUrl = allPokemons[j];
-        let response = await fetch(pokemonCurrentUrl);// ladet die URL aus dem Array 
-        currentPokemon = await response.json();
-        currentPokemonName.push(currentPokemon);
-        console.log('pokemons', currentPokemon);
-        renderPokemonInformation(j);
-    }
-}
-
-async function loadEvolution(pokemonId) {
     try {
-        let url = `https://pokeapi.co/api/v2/evolution-chain/${pokemonId}/`;
-        let result = await fetch(url);
-        let evolutionData = await result.json();
-
-        displayEvolution(evolutionData);
+        for (let j = offset; j < allPokemons.length; j++) {
+            let pokemonCurrentUrl = allPokemons[j];
+            let response = await fetch(pokemonCurrentUrl);// ladet die URL aus dem Array 
+            currentPokemon = await response.json();
+            currentPokemonName.push(currentPokemon);
+            console.log('pokemons', currentPokemon);
+            renderPokemonInformation(j);
+        }
     } catch (error) {
-        console.error('Fehler beim Laden der Evolution:', error);
+        console.log('Fehler beim laden');
     }
-    renderPokemonInformation(evolutionData);
 }
-
 
 
 function renderPokemonInformation(j, evolution) {
