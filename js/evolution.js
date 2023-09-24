@@ -1,14 +1,14 @@
-let evolution = 2;
-let loadEvolution = [];
+let allSpecies;
 
 
-async function loadEvolution() {
+async function loadInformationForEvo() {
     try {
-        let url = `https://pokeapi.co/api/v2/evolution-chain/${evolution}/`;
+        let url = 'https://pokeapi.co/api/v2/pokemon-species/aegislash';
         let response = await fetch(url);
-        loadEvolution = await response.json(); 
-        console.log('showResponse', loadEvolution);
+        allSpecies = await response.json();
+        console.log('show', response);
     } catch (error) {
-        console.log('fehler');
+        console.log('Fehler beim Laden')
     }
 }
+

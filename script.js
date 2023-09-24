@@ -12,6 +12,7 @@ async function init() {
     await loadAllPokemons();
     await loadPokemon();
     showDiv('about');
+    await loadInformationForEvo();
 }
 
 
