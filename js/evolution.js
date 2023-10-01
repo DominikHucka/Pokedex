@@ -3,7 +3,7 @@ let allSpecies;
 
 async function loadInformationForEvo() {
     try {
-        let url = 'https://pokeapi.co/api/v2/pokemon-species/aegislash';
+        let url = `https://pokeapi.co/api/v2/pokemon-species/${evolution}`;
         let response = await fetch(url);
         allSpecies = await response.json();
         console.log('show', response);
@@ -12,3 +12,6 @@ async function loadInformationForEvo() {
     }
 }
 
+async function loadInformationForEvolution() {
+    
+}

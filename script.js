@@ -2,16 +2,17 @@ let currentPokemonName = [];
 let currentPokemon;
 let pokemons;
 let allPokemons = []; //sind alle URL von der Pokemon API 
-let limit = 33;
+let limit = 1;
 let offset = 0;
 window.onscroll = function () { scrollFunction() }; // scroll on Top funktion
+let disabled = true;
 
 
 async function init() {
     await includeHTML();
     await loadAllPokemons();
     await loadPokemon();
-    showDiv('about');
+    // showDiv('about');
     await loadInformationForEvo();
 }
 
@@ -114,7 +115,7 @@ function generateHTMLFrontCard(img, name, id, type, color, shadow, flipCard) {
 }
 
 
-function generateHTMLBackCard(img, name, color, shadow, flipCard, evolution, j) {
+function generateHTMLBackCard(img, name, color, shadow, flipCard, evolution) {
     return /*html*/`
         <div class="stats-container pokemon-card-back">
             <div class="back-id ${color}">
@@ -125,13 +126,13 @@ function generateHTMLBackCard(img, name, color, shadow, flipCard, evolution, j) 
                 <img class="back-img" src="${img}" alt="">
             </div> 
                 <div class="back-category">
-                    <a href="javascript:void(0)" onclick="showDiv('about')">About</a>
-                    <a href="javascript:void(0)" onclick="showDiv('baseStats')">Base Stats</a>
-                    <a href="javascript:void(0)" onclick="showDiv('evolution')">Evolution</a>
+                    <button class="show-stats-button" onclick="showAbout('about')">About</button>
+                    <button class="show-stats-button" onclick="showBaseStats('baseStats')">Base Stats</button>
+                    <button class="show-stats-button" onclick="showEvolution('evolution')">Evolution</button>
                 </div>
                 ${generateHTMLBackCardStats(shadow)}
                 ${generateHTMLBackCardAbout()}
-                ${generateHTMLBackCardEvolution(evolution, j)}
+                ${generateHTMLBackCardEvolution(evolution)}
         </div>
     `
 }
@@ -163,7 +164,7 @@ function generateHTMLBackCardAbout() {
 
 function generateHTMLBackCardStats(shadow) {
     return /*html*/`
-                <table id="baseStats" class="back-div">
+                <table id="baseStats" class="back-div d-none">
                     <tr class="${shadow}">
                         <td>${currentPokemon['stats']['0']['stat']['name']}</td>
                         <td class="stat-color">${currentPokemon['stats']['0']['base_stat']}</td>
@@ -190,35 +191,32 @@ function generateHTMLBackCardStats(shadow) {
 
 
 
-function generateHTMLBackCardEvolution(evolution, j) {
+function generateHTMLBackCardEvolution(evolution) {
     return /*html*/`
-        <div id="evolution" class="back-div">
+        <div id="evolution" class="back-div d-none">
             <p>${evolution}</p>
         </div>
     `
 }
 
 
-function showDiv(divId) {
-    let divs = document.querySelectorAll(".back-div");
-    divs.forEach(div => {
-        if (div.id === divId) {
-            if (div.style.display === "none" || div.style.display === "") {
-                div.style.display = "block";
-            } else {
-                div.style.display = "none";
-            }
-        } else {
-            div.style.display = "none";
-        }
-    });
+function showAbout() { 
+    document.getElementById('about').classList.remove('d-none'); 
+    document.getElementById('baseStats').classList.add('d-none');
+    document.getElementById('evolution').classList.add('d-none');  
+}
+
+function showBaseStats() {
+    document.getElementById('about').classList.add('d-none'); 
+    document.getElementById('baseStats').classList.remove('d-none');
+    document.getElementById('evolution').classList.add('d-none'); 
 }
 
 
-
-function loadMorePokemon() {
-    offset += 33; // Globale Variable ladet immer 34 neue Pokemons
-    init();
+function showEvolution() {
+    document.getElementById('about').classList.add('d-none'); 
+    document.getElementById('baseStats').classList.add('d-none');
+    document.getElementById('evolution').classList.remove('d-none'); 
 }
 
 
