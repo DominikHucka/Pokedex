@@ -319,11 +319,17 @@ table tr td {
     font-weight: 700;
     padding: .2em .4em;
     box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.2);
+    transition: transform 225ms ease-in;
 }
 
 .show-stats-button:hover {
     box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.2);
-    background-color: #ffcc01;
-    color: #375ca9;
-    transition: 225ms ease-in;
+}
+
+.progress-style {
+    width: 50%;
+}
+
+.progress {
+    height: .5rem !important;
 }

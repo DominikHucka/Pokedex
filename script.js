@@ -2,18 +2,17 @@ let currentPokemonName = [];
 let currentPokemon;
 let pokemons;
 let allPokemons = []; //sind alle URL von der Pokemon API 
-let limit = 1;
+let limit = 5;
 let offset = 0;
 window.onscroll = function () { scrollFunction() }; // scroll on Top funktion
-let disabled = true;
 
 
 async function init() {
     await includeHTML();
     await loadAllPokemons();
     await loadPokemon();
-    // showDiv('about');
-    await loadInformationForEvo();
+    // await loadSpecies();
+    showInformation('about', 'aboutButton');
 }
 
 
@@ -72,7 +71,7 @@ async function loadPokemon() {
 }
 
 
-function renderPokemonInformation(j, evolution) {
+function renderPokemonInformation(j) {
     let pokemon = currentPokemonName[j]
     let pokemonImage = pokemon['sprites']['other']['official-artwork']['front_default'];
     let pokemonName = pokemon['forms']['0']['name'].charAt(0).toUpperCase() + pokemon['forms']['0']['name'].slice(1);
@@ -80,18 +79,22 @@ function renderPokemonInformation(j, evolution) {
     let pokemonType = pokemon['types']['0']['type']['name'].charAt(0).toUpperCase() + pokemon['types']['0']['type']['name'].slice(1);
     let backgroundColorClass = `bg-${pokemonType.toLowerCase()}`;
     let shadowClass = `shadow-${pokemonType.toLowerCase()}`;
-    document.getElementById('pokedex').innerHTML += generateHTMLPokedex(pokemonImage, pokemonName, pokemonId, pokemonType, backgroundColorClass, shadowClass, j, evolution);
+    document.getElementById('pokedex').innerHTML += generateHTMLPokedex(pokemonImage, pokemonName, pokemonId, pokemonType, backgroundColorClass, shadowClass, j);
 }
 
 
+function loadMorePokemon() {
+    offset += 5;
+    init();
+}
 
 
-function generateHTMLPokedex(img, name, id, type, color, shadow, j, evolution) {
+function generateHTMLPokedex(img, name, id, type, color, shadow, j) {
     let flipCard = `flipper-${j}`;
     return /*html*/`
                 <div id="${flipCard}" class="pokemon-container">
                     ${generateHTMLFrontCard(img, name, id, type, color, shadow, flipCard)}
-                    ${generateHTMLBackCard(img, name, color, shadow, flipCard, evolution, j)}
+                    ${generateHTMLBackCard(img, name, color, shadow, flipCard, j)}
                 </div>
     `;
 }
@@ -115,7 +118,13 @@ function generateHTMLFrontCard(img, name, id, type, color, shadow, flipCard) {
 }
 
 
-function generateHTMLBackCard(img, name, color, shadow, flipCard, evolution) {
+function generateHTMLBackCard(img, name, color, shadow, flipCard, j) {
+    let about = `about-${j}`
+    let baseStats = `baseStats-${j}`
+    let evolution = `evolution-${j}`
+    let aboutButton = `aboutButton-${j}`
+    let baseStatsButton = `baseStatsButton-${j}`
+    let evolutionButton = `evolutionButton-${j}`
     return /*html*/`
         <div class="stats-container pokemon-card-back">
             <div class="back-id ${color}">
@@ -126,45 +135,88 @@ function generateHTMLBackCard(img, name, color, shadow, flipCard, evolution) {
                 <img class="back-img" src="${img}" alt="">
             </div> 
                 <div class="back-category">
-                    <button class="show-stats-button" onclick="showAbout('about')">About</button>
-                    <button class="show-stats-button" onclick="showBaseStats('baseStats')">Base Stats</button>
-                    <button class="show-stats-button" onclick="showEvolution('evolution')">Evolution</button>
+                    <button id="${aboutButton}" class="show-stats-button" onclick="showInformation('${about}', '${aboutButton}')">About</button>
+                    <button id="${baseStatsButton}" class="show-stats-button" onclick="showInformation('${baseStats}', '${baseStatsButton}')">Base Stats</button>
+                    <button id="${evolutionButton}" class="show-stats-button" onclick="showInformation('${evolution}', '${evolutionButton}')">Evolution</button>
                 </div>
-                ${generateHTMLBackCardStats(shadow)}
-                ${generateHTMLBackCardAbout()}
+                ${generateHTMLBackCardStats(shadow, baseStats)}
+                ${generateHTMLBackCardAbout(about)}
                 ${generateHTMLBackCardEvolution(evolution)}
         </div>
     `
 }
 
 
-function generateHTMLBackCardAbout() {
+function generateHTMLBackCardAbout(about) {
     return /*html*/`
-        <table id="about" class="back-div">
+        <table id="${about}" class="back-div">
             <tr>
-                <td>Name</td>
+                <td>Name:</td>
                 <td>${currentPokemon['forms']['0']['name'].charAt(0).toUpperCase() + currentPokemon['forms']['0']['name'].slice(1)}</td>
             </tr>
             <tr>
-                <td>Weight</td>
+                <td>Weight:</td>
                 <td>${currentPokemon['weight'].toFixed(1).replace(".", ",")} Kg</td>
             </tr>
             <tr>
-                <td>Types</td>
+                <td>Types:</td>
                 <td>${currentPokemon['types']['0']['type']['name'].charAt(0).toUpperCase() + currentPokemon['types']['0']['type']['name'].slice(1)}</td>
             </tr>
             <tr>
-                <td>Abilities</td>
+                <td>Abilities:</td>
                 <td>${currentPokemon['abilities']['0']['ability']['name']}</td>
             </tr>
         </table>
     `
 }
 
+// function generateHTMLBackCardStats(shadow) {
+//     return /*html*/`
+//                 <table id="baseStats" class="back-div d-none">
+//                     <tr class="${shadow}">
+//                         <td>${currentPokemon['stats']['0']['stat']['name']}</td>
+//                         <td class="progress-style"><div class="progress">
+//                             <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="200"></div>
+//                         </div>
+//                         </td>
+//                     </tr>
+//                     <tr class="${shadow}">
+//                         <td>${currentPokemon['stats']['1']['stat']['name']}</td>
+//                         <td class="progress-style">
+//                         <div class="progress">
+//                             <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="200"></div>
+//                         </div>
+//                         </td>
+//                     </tr>
+//                     <tr class="${shadow}">
+//                         <td>${currentPokemon['stats']['2']['stat']['name']}</td>
+//                         <td class="progress-style">
+//                         <div class="progress">
+//                             <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="200"></div>
+//                         </div>
+//                         </td>
+//                     </tr>
+//                     <tr class="${shadow}">
+//                         <td>${currentPokemon['stats']['3']['stat']['name']}</td>
+//                         <td class="progress-style"><div class="progress">
+//                             <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="200"></div>
+//                         </div></td>
+//                     </tr>
+//                     <tr class="${shadow}">
+//                         <td>${currentPokemon['stats']['4']['stat']['name']}</td>
+//                         <td class="progress-style">
+//                         <div class="progress">
+//                             <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="200"></div>
+//                         </div>
+//                         </td>
+//                     </tr>
+//                 </table>
+//     `
+// }
 
-function generateHTMLBackCardStats(shadow) {
+function generateHTMLBackCardStats(shadow, baseStats) {
     return /*html*/`
-                <table id="baseStats" class="back-div d-none">
+                <table id="${baseStats}" class="back-div d-none">
                     <tr class="${shadow}">
                         <td>${currentPokemon['stats']['0']['stat']['name']}</td>
                         <td class="stat-color">${currentPokemon['stats']['0']['base_stat']}</td>
@@ -190,33 +242,58 @@ function generateHTMLBackCardStats(shadow) {
 }
 
 
-
 function generateHTMLBackCardEvolution(evolution) {
     return /*html*/`
-        <div id="evolution" class="back-div d-none">
-            <p>${evolution}</p>
+        <div id="${evolution}" class="back-div d-none">
+            <p>evolution</p>
         </div>
     `
 }
 
 
-function showAbout() { 
-    document.getElementById('about').classList.remove('d-none'); 
-    document.getElementById('baseStats').classList.add('d-none');
-    document.getElementById('evolution').classList.add('d-none');  
-}
+// function showInformation(information) {
+//     if (information == 'about') {
+//         document.getElementById('baseStats').classList.add('d-none');
+//         document.getElementById('evolution').classList.add('d-none');
+//         document.getElementById('about').classList.remove('d-none');
+//     }
+//     if (information == 'baseStats') {
+//         document.getElementById('about').classList.add('d-none');
+//         document.getElementById('evolution').classList.add('d-none');
+//         document.getElementById('baseStats').classList.remove('d-none');
+//     }
+//     if (information == 'evolution') {
+//         document.getElementById('about').classList.add('d-none');
+//         document.getElementById('baseStats').classList.add('d-none');
+//         document.getElementById('evolution').classList.remove('d-none');
+//     }
+// }
 
-function showBaseStats() {
-    document.getElementById('about').classList.add('d-none'); 
-    document.getElementById('baseStats').classList.remove('d-none');
-    document.getElementById('evolution').classList.add('d-none'); 
-}
 
+function showInformation(information, button) {
+    document.querySelectorAll('.back-div').forEach(function (dNone) {
+        dNone.classList.add('d-none');
+});
+    document.querySelectorAll('.show-stats-button').forEach(function (btnStyle) {
+        btnStyle.classList.remove('active');
+        btnStyle.style.backgroundColor = "#fff";
+        btnStyle.style.color = "black";
+        btnStyle.style.transform = "scale(1)";
+});
 
-function showEvolution() {
-    document.getElementById('about').classList.add('d-none'); 
-    document.getElementById('baseStats').classList.add('d-none');
-    document.getElementById('evolution').classList.remove('d-none'); 
+    let info = document.getElementById(information);
+    let btn = document.getElementById(button);
+    
+
+    if (info && btn) {
+        info.classList.remove('d-none');
+        btn.classList.add('active');
+        btn.style.transition = "225ms";
+        btn.style.transform = "scale(1.1)";
+        btn.style.backgroundColor = "#ffcc01";
+        btn.style.color = "#375ca9";
+    };
+    
 }
 
 
@@ -246,16 +323,18 @@ function openPokemonCard(flipCard) {
             flipPokemonCard.style.top = "20vh";
         }, 800);
     }
-    flipCardOncklickDisable(flipPokemonCard);
-}
-
-
-function flipCardOncklickDisable(flipCard) {
-    let disabledAction = document.getElementById('openCard');  // Deaktivieren Sie das Klicken auf Karten
-    if (flipCard) {
-        disabledAction.removeAttribute("onclick");
+    if (flipPokemonCard) {
+        document.getElementById(flipPokemonCard).onclick = null;
     }
 }
+
+
+// function flipCardOncklickDisable(flipCard) {
+//     let disabledAction = document.getElementById('openCard');  // Deaktivieren Sie das Klicken auf Karten
+//     if (flipCard) {
+//         disabledAction.removeAttribute("onclick");
+//     }
+// }
 
 
 function scrollFunction() {
@@ -281,14 +360,12 @@ function closePokemonCard(flipCard) {
         flipPokemonCart.style.zIndex = "auto";
         flipPokemonCart.style.position = "static";
     }
-    cardClickEnabled = true;
 }
 
 
 function searchPokemon() {
     let search = document.getElementById('search').value;
     search = search.toLowerCase();
-    console.log(search);
 
     let pokedexContainer = document.getElementById('pokedex');
     pokedexContainer.innerHTML = '';
@@ -300,5 +377,3 @@ function searchPokemon() {
         }
     }
 }
-
-
