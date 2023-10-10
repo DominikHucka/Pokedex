@@ -13,6 +13,7 @@ async function init() {
     await loadPokemon();
     // await loadSpecies();
     showInformation('about', 'aboutButton');
+    updateProgressBar();
 }
 
 
@@ -139,7 +140,7 @@ function generateHTMLBackCard(img, name, color, shadow, flipCard, j) {
                     <button id="${baseStatsButton}" class="show-stats-button" onclick="showInformation('${baseStats}', '${baseStatsButton}')">Base Stats</button>
                     <button id="${evolutionButton}" class="show-stats-button" onclick="showInformation('${evolution}', '${evolutionButton}')">Evolution</button>
                 </div>
-                ${generateHTMLBackCardStats(shadow, baseStats)}
+                ${generateHTMLBackCardStats(shadow, baseStats, j)}
                 ${generateHTMLBackCardAbout(about)}
                 ${generateHTMLBackCardEvolution(evolution)}
         </div>
@@ -169,49 +170,124 @@ function generateHTMLBackCardAbout(about) {
         </table>
     `
 }
+function updateProgressBar() {
+    for (let i = 1; i <= 5; i++) {
+        let stat = currentPokemon['stats'][i - 1]['base_stat'];
+        let calc = (stat / 200) * 100;
+        calc = Math.round(calc);
 
-// function generateHTMLBackCardStats(shadow) {
+        let progressBarId = `progressBar0${i}`;
+        document.getElementById(progressBarId).style.width = `${calc}%`;
+        document.getElementById(progressBarId).innerHTML = `${calc}%`;
+    }
+}
+
+
+// function updateProgressBar() {
+//     let stat01 = currentPokemon['stats']['0']['base_stat'];
+//     let stat02 = currentPokemon['stats']['1']['base_stat'];
+//     let stat03 = currentPokemon['stats']['2']['base_stat'];
+//     let stat04 = currentPokemon['stats']['3']['base_stat'];
+//     let stat05 = currentPokemon['stats']['4']['base_stat'];
+
+//     let calc01 = (stat01 / 200) * 100;
+//     let calc02 = (stat02 / 200) * 100;
+//     let calc03 = (stat03 / 200) * 100;
+//     let calc04 = (stat04 / 200) * 100;
+//     let calc05 = (stat05 / 200) * 100;
+
+//     calc01 = Math.round(calc01);
+//     calc02 = Math.round(calc02);
+//     calc03 = Math.round(calc03);
+//     calc04 = Math.round(calc04);
+//     calc05 = Math.round(calc05);
+
+//     document.getElementById('progressBar01').style.width = `${calc01}%`;
+//     document.getElementById('progressBar01').innerHTML = `${calc01}%`;
+//     document.getElementById('progressBar02').style.width = `${calc02}%`;
+//     document.getElementById('progressBar02').innerHTML = `${calc02}%`;
+//     document.getElementById('progressBar03').style.width = `${calc03}%`;
+//     document.getElementById('progressBar03').innerHTML = `${calc03}%`;
+//     document.getElementById('progressBar04').style.width = `${calc04}%`;
+//     document.getElementById('progressBar04').innerHTML = `${calc04}%`;
+//     document.getElementById('progressBar05').style.width = `${calc05}%`;
+//     document.getElementById('progressBar05').innerHTML = `${calc05}%`;
+// }
+
+// function generateHTMLBackCardStats(shadow, baseStats) {
 //     return /*html*/`
-//                 <table id="baseStats" class="back-div d-none">
-//                     <tr class="${shadow}">
-//                         <td>${currentPokemon['stats']['0']['stat']['name']}</td>
-//                         <td class="progress-style"><div class="progress">
-//                             <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="200"></div>
-//                         </div>
-//                         </td>
-//                     </tr>
-//                     <tr class="${shadow}">
-//                         <td>${currentPokemon['stats']['1']['stat']['name']}</td>
-//                         <td class="progress-style">
-//                         <div class="progress">
-//                             <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="200"></div>
-//                         </div>
-//                         </td>
-//                     </tr>
-//                     <tr class="${shadow}">
-//                         <td>${currentPokemon['stats']['2']['stat']['name']}</td>
-//                         <td class="progress-style">
-//                         <div class="progress">
-//                             <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="200"></div>
-//                         </div>
-//                         </td>
-//                     </tr>
-//                     <tr class="${shadow}">
-//                         <td>${currentPokemon['stats']['3']['stat']['name']}</td>
-//                         <td class="progress-style"><div class="progress">
-//                             <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="200"></div>
-//                         </div></td>
-//                     </tr>
-//                     <tr class="${shadow}">
-//                         <td>${currentPokemon['stats']['4']['stat']['name']}</td>
-//                         <td class="progress-style">
-//                         <div class="progress">
-//                             <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="200"></div>
-//                         </div>
-//                         </td>
-//                     </tr>
-//                 </table>
-//     `
+//         <table id="${baseStats}" class="back-div d-none">
+//             <tr class="${shadow}">
+//                 <td>${currentPokemon['stats']['0']['stat']['name']}</td>
+//                 <td class="progress-style"><div class="progress">
+//                     <div id="${baseStats}-01" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="200">25%</div>
+//                 </div>
+//                 </td>
+//             </tr>
+//             <tr class="${shadow}">
+//                 <td>${currentPokemon['stats']['1']['stat']['name']}</td>
+//                 <td class="progress-style">
+//                 <div class="progress">
+//                     <div id="${baseStats}-02" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="200"></div>
+//                 </div>
+//                 </td>
+//             </tr>
+//             <tr class="${shadow}">
+//                 <td>${currentPokemon['stats']['2']['stat']['name']}</td>
+//                 <td class="progress-style">
+//                 <div class="progress">
+//                     <div id="${baseStats}-03" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="200"></div>
+//                 </div>
+//                 </td>
+//             </tr>
+//             <tr class="${shadow}">
+//                 <td>${currentPokemon['stats']['3']['stat']['name']}</td>
+//                 <td class="progress-style"><div class="progress">
+//                     <div id="${baseStats}-04" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="200"></div>
+//                 </div></td>
+//             </tr>
+//             <tr class="${shadow}">
+//                 <td>${currentPokemon['stats']['4']['stat']['name']}</td>
+//                 <td class="progress-style">
+//                 <div class="progress">
+//                     <div id="${baseStats}-05" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="200"></div>
+//                 </div>
+//                 </td>
+//             </tr>
+//         </table>
+//     `;
+// }
+
+
+// function updateProgressBar() {
+//     let stat01 = currentPokemon['stats']['0']['base_stat'];
+//     let stat02 = currentPokemon['stats']['1']['base_stat'];
+//     let stat03 = currentPokemon['stats']['2']['base_stat'];
+//     let stat04 = currentPokemon['stats']['3']['base_stat'];
+//     let stat05 = currentPokemon['stats']['4']['base_stat'];
+
+//     let calc01 = (stat01 / 200) * 100;
+//     let calc02 = (stat02 / 200) * 100;
+//     let calc03 = (stat03 / 200) * 100;
+//     let calc04 = (stat04 / 200) * 100;
+//     let calc05 = (stat05 / 200) * 100;
+
+//     calc01 = Math.round(calc01);    
+//     calc02 = Math.round(calc02);
+//     calc03 = Math.round(calc03);
+//     calc04 = Math.round(calc04);
+//     calc05 = Math.round(calc05);
+
+//     document.getElementById('progressBar01').style = `width: ${calc01}%`;
+//     document.getElementById('progressBar01').innerHTML = `${calc01}%`;
+//     document.getElementById('progressBar02').style.width = `${calc02}%`;
+//     document.getElementById('progressBar02').innerHTML = `${calc02}%`;
+//     document.getElementById('progressBar03').style.width = `${calc03}%`;
+//     document.getElementById('progressBar03').innerHTML = `${calc03}%`;
+//     document.getElementById('progressBar04').style.width = `${calc04}%`;
+//     document.getElementById('progressBar04').innerHTML = `${calc04}%`;
+//     document.getElementById('progressBar05').style.width = `${calc05}%`;
+//     document.getElementById('progressBar05').innerHTML = `${calc05}%`;
 // }
 
 function generateHTMLBackCardStats(shadow, baseStats) {
@@ -219,27 +295,73 @@ function generateHTMLBackCardStats(shadow, baseStats) {
                 <table id="${baseStats}" class="back-div d-none">
                     <tr class="${shadow}">
                         <td>${currentPokemon['stats']['0']['stat']['name']}</td>
-                        <td class="stat-color">${currentPokemon['stats']['0']['base_stat']}</td>
+                        <td class="progress-style"><div class="progress">
+                            <div id="progressBar01" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="200">25%</div>
+                        </div>
+                        </td>
                     </tr>
                     <tr class="${shadow}">
                         <td>${currentPokemon['stats']['1']['stat']['name']}</td>
-                        <td class="stat-color">${currentPokemon['stats']['1']['base_stat']}</td>
+                        <td class="progress-style">
+                        <div class="progress">
+                            <div id="progressBar02" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="200"></div>
+                        </div>
+                        </td>
                     </tr>
                     <tr class="${shadow}">
                         <td>${currentPokemon['stats']['2']['stat']['name']}</td>
-                        <td class="stat-color">${currentPokemon['stats']['2']['base_stat']}</td>
+                        <td class="progress-style">
+                        <div class="progress">
+                            <div id="progressBar03" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="200"></div>
+                        </div>
+                        </td>
                     </tr>
                     <tr class="${shadow}">
                         <td>${currentPokemon['stats']['3']['stat']['name']}</td>
-                        <td class="stat-color">${currentPokemon['stats']['3']['base_stat']}</td>
+                        <td class="progress-style"><div class="progress">
+                            <div id="progressBar04" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="200"></div>
+                        </div></td>
                     </tr>
                     <tr class="${shadow}">
                         <td>${currentPokemon['stats']['4']['stat']['name']}</td>
-                        <td class="stat-color">${currentPokemon['stats']['4']['base_stat']}</td>
+                        <td class="progress-style">
+                        <div class="progress">
+                            <div id="progressBar05" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="200"></div>
+                        </div>
+                        </td>
                     </tr>
                 </table>
-    `
+    `    
 }
+
+
+
+// function generateHTMLBackCardStats(shadow, baseStats) {
+//     return /*html*/`
+//                 <table id="${baseStats}" class="back-div d-none">
+//                     <tr class="${shadow}">
+//                         <td>${currentPokemon['stats']['0']['stat']['name']}</td>
+//                         <td class="stat-color">${currentPokemon['stats']['0']['base_stat']}</td>
+//                     </tr>
+//                     <tr class="${shadow}">
+//                         <td>${currentPokemon['stats']['1']['stat']['name']}</td>
+//                         <td class="stat-color">${currentPokemon['stats']['1']['base_stat']}</td>
+//                     </tr>
+//                     <tr class="${shadow}">
+//                         <td>${currentPokemon['stats']['2']['stat']['name']}</td>
+//                         <td class="stat-color">${currentPokemon['stats']['2']['base_stat']}</td>
+//                     </tr>
+//                     <tr class="${shadow}">
+//                         <td>${currentPokemon['stats']['3']['stat']['name']}</td>
+//                         <td class="stat-color">${currentPokemon['stats']['3']['base_stat']}</td>
+//                     </tr>
+//                     <tr class="${shadow}">
+//                         <td>${currentPokemon['stats']['4']['stat']['name']}</td>
+//                         <td class="stat-color">${currentPokemon['stats']['4']['base_stat']}</td>
+//                     </tr>
+//                 </table>
+//     `
+// }
 
 
 function generateHTMLBackCardEvolution(evolution) {
@@ -322,9 +444,6 @@ function openPokemonCard(flipCard) {
             flipPokemonCard.style.position = "fixed";
             flipPokemonCard.style.top = "20vh";
         }, 800);
-    }
-    if (flipPokemonCard) {
-        document.getElementById(flipPokemonCard).onclick = null;
     }
 }
 
