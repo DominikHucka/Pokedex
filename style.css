@@ -12,7 +12,6 @@ body {
 
 .search {
     height: 30px;
-    cursor: pointer;
 }
 
 .header-white {
@@ -220,6 +219,11 @@ body {
     backface-visibility: hidden;
 }
 
+.back-div-about {
+    margin-top: 25px;
+    margin-left: 40px;
+}
+
 .back-img {
     height: 100px;
     width: 100px;
@@ -233,9 +237,13 @@ body {
 }
 
 .search-bar {
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    border-left: none;
+    border-radius: 10px;
+    outline: none;
+    padding: 5px;
+}
+
+.search-bar:hover {
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
 }
 
 .stats-container {
@@ -331,5 +339,5 @@ table tr td {
 }
 
 .progress {
-    height: .5rem !important;
+    height: 1rem !important;
 }
