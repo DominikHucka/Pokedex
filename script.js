@@ -11,7 +11,6 @@ async function init() {
     await includeHTML();
     await loadAllPokemons();
     await loadPokemon();
-    showInformation('about', 'aboutButton');
     updateProgressBar();
 }
 
@@ -80,6 +79,7 @@ function renderPokemonInformation(j) {
     let backgroundColorClass = `bg-${pokemonType.toLowerCase()}`;
     let shadowClass = `shadow-${pokemonType.toLowerCase()}`;
     document.getElementById('pokedex').innerHTML += generateHTMLPokedex(pokemonImage, pokemonName, pokemonId, pokemonType, backgroundColorClass, shadowClass, j);
+    // showInformation(`about-0`, `aboutButton-0`);
 }
 
 
@@ -119,10 +119,10 @@ function generateHTMLFrontCard(img, name, id, type, color, shadow, flipCard) {
 
 
 function generateHTMLBackCard(img, name, color, shadow, flipCard, j) {
-    let about = `about-${j}`
-    let baseStats = `baseStats-${j}`
-    let aboutButton = `aboutButton-${j}`
-    let baseStatsButton = `baseStatsButton-${j}`
+    let about = `about-${j}`;
+    let baseStats = `baseStats-${j}`;
+    let aboutButton = `aboutButton-${j}`;
+    let baseStatsButton = `baseStatsButton-${j}`;
     return /*html*/`
         <div class="stats-container pokemon-card-back">
             <div class="back-id ${color}">
@@ -141,6 +141,8 @@ function generateHTMLBackCard(img, name, color, shadow, flipCard, j) {
         </div>
     `
 }
+
+
 
 
 function generateHTMLBackCardAbout(about) {
@@ -170,10 +172,10 @@ function generateHTMLBackCardAbout(about) {
 function updateProgressBar() {
     for (let j = 0; j < currentPokemonName.length; j++) {
         let pokemon = currentPokemonName[j];
-        for (let i = 0; i < 5; i++) {
-            const stat = pokemon['stats'][i]['base_stat'];
+        for (let m = 0; m < 5; m++) {
+            const stat = pokemon['stats'][m]['base_stat'];
             const calc = (stat / 150) * 100;
-            const progressBarId = `progressBar0${j}${i + 1}`;
+            const progressBarId = `progressBar0${j}${m + 1}`;
             
             document.getElementById(progressBarId).style.width = `${calc}%`;
             document.getElementById(progressBarId).innerHTML = `${calc.toFixed(1)}%`;
@@ -184,7 +186,7 @@ function updateProgressBar() {
 
 function generateHTMLBackCardStats(shadow, baseStats, j) {
     return /*html*/`
-        <table id="${baseStats}" class="back-div d- back-div-baseStats">
+        <table id="${baseStats}" class="back-div d-none back-div-baseStats">
             <tr class="${shadow}">
                 <td>${currentPokemon['stats']['0']['stat']['name'].charAt(0).toUpperCase() + currentPokemon['stats']['0']['stat']['name'].slice(1)}</td>
                 <td class="progress-style"><div class="progress">
@@ -249,8 +251,7 @@ function showInformation(information, button) {
         btn.style.transform = "scale(1.1)";
         btn.style.backgroundColor = "#ffcc01";
         btn.style.color = "#375ca9";
-    };
-    
+    }; 
 }
 
 
@@ -281,6 +282,7 @@ function openPokemonCard(flipCard) {
         }, 800);
     }
 }
+
 
 
 function scrollFunction() {
