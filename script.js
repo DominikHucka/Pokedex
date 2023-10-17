@@ -263,7 +263,7 @@ function showInformation(layout) {
 }
 
 
-function openPokemonCard(flipCard, j, openCard) {
+function openPokemonCard(flipCard, j) {
     let flipPokemonCard = document.getElementById(`${flipCard}`);
     let aboutButton = `aboutButton${j}`;
     let about = `about${j}`;
@@ -271,44 +271,98 @@ function openPokemonCard(flipCard, j, openCard) {
     if (about) {
         document.getElementById(aboutButton).classList.add('btn-yellow');
     }
-    
+
+    if (flipPokemonCard) {
+        flipPokemonCard.style.animation = 'none';
+
+        setTimeout(function () {
+            flipPokemonCard.style.animation = 'zoomIn 2s ease-in-out forwards';
+        }, 10);
+        overlayCard.classList.remove('d-none');
+    }
+
+    // if (flipPokemonCard) {
+    //     document.getElementById(flipCard).classList.remove('animation-card');
+    //     setTimeout(function() {
+    //         flipPokemonCard.classList.add('animation-card');
+    //     }, 100);
+    //     document.getElementById('overlayCard').classList.remove('d-none');
+    // }
+}
+
+
+
+function openPokemonCard(flipCard, j) {
+    let flipPokemonCard = document.getElementById(`${flipCard}`);
+    let aboutButton = `aboutButton${j}`;
+    let about = `about${j}`;
+
+    if (about) {
+        document.getElementById(aboutButton).classList.add('btn-yellow');
+    }
+
     if (flipPokemonCard) {
         flipPokemonCard.style.transition = "1.5s";
         flipPokemonCard.style.transform = "scale(1) translateY(-50%)";
         flipPokemonCard.style.zIndex = "10";
         flipPokemonCard.style.position = "static";
-        setTimeout(() => {
-            flipPokemonCard.style.transform = "scale(1.2) rotate3D(0, 1, 0, 45deg)";
-            flipPokemonCard.style.zIndex = "10";
-            flipPokemonCard.style.position = "static";
-        }, 800);
-        setTimeout(() => {
-            flipPokemonCard.style.transform = "scale(1.5) rotate3D(0, 1, 0, 90deg)";
-            flipPokemonCard.style.zIndex = "10";
-            flipPokemonCard.style.position = "fixed";
-            flipPokemonCard.style.top = "20vh";
-        }, 800);
-        setTimeout(() => {
-            flipPokemonCard.style.transform = "scale(1.5) rotate3D(0, 1, 0, 180deg)";
-            flipPokemonCard.style.zIndex = "10";
-            flipPokemonCard.style.position = "fixed";
-            flipPokemonCard.style.top = "20vh";
-        }, 800);
-        setTimeout(() => {
-            document.getElementById('overlayCard').classList.remove('d-none');
-        }, 400);
+        if (window.matchMedia("(max-width: 450px)").matches) {
+            setTimeout(() => {
+                flipPokemonCard.style.transform = "scale(1) rotate3D(0, 1, 0, 90deg)";
+                flipPokemonCard.style.zIndex = "10";
+                flipPokemonCard.style.position = "fixed";
+                flipPokemonCard.style.top = "20vh";
+            }, 800);
+            setTimeout(() => {
+                flipPokemonCard.style.transform = "scale(1) rotate3D(0, 1, 0, 180deg)";
+                flipPokemonCard.style.zIndex = "10";
+                flipPokemonCard.style.position = "fixed";
+                flipPokemonCard.style.top = "20vh";
+            }, 800);
+            setTimeout(() => {
+                document.getElementById('overlayCard').classList.remove('d-none');
+            }, 400);
+            document.getElementById('myBody').classList.add('overflow');
+            
+        } else {
+            setTimeout(() => {
+                flipPokemonCard.style.transform = "scale(1.2) rotate3D(0, 1, 0, 45deg)";
+                flipPokemonCard.style.zIndex = "10";
+                flipPokemonCard.style.position = "static";
+            }, 800);
+            setTimeout(() => {
+                flipPokemonCard.style.transform = "scale(1.5) rotate3D(0, 1, 0, 90deg)";
+                flipPokemonCard.style.zIndex = "10";
+                flipPokemonCard.style.position = "fixed";
+                flipPokemonCard.style.top = "20vh";
+            }, 800);
+            setTimeout(() => {
+                flipPokemonCard.style.transform = "scale(1.5) rotate3D(0, 1, 0, 180deg)";
+                flipPokemonCard.style.zIndex = "10";
+                flipPokemonCard.style.position = "fixed";
+                flipPokemonCard.style.top = "20vh";
+            }, 800);
+            setTimeout(() => {
+                document.getElementById('overlayCard').classList.remove('d-none');
+            }, 400);
+        }
+        
     }
 }
 
 
 function scrollFunction() {
     let scrollOnTOP = document.getElementById('scrollToTopButton');
-
-    if (scrollOnTOP) {
+    let scrollOnBOTTOM = document.getElementById('scrollToBottonButton');
+    if (scrollOnTOP && scrollOnBOTTOM) {
         scrollOnTOP.style.display = "block";
+        scrollOnBOTTOM.style.display = "block";
     }
 }
 
+function bottomFunction() {
+    window.scrollTo(0, document.body.scrollHeight);
+}
 
 function topFunction() {
     document.body.scrollTop = 0;
@@ -316,14 +370,25 @@ function topFunction() {
 }
 
 
+
+// function closePokemonCard(flipCard) {
+//     // let flipPokemonCard = document.getElementById(`${flipCard}`);
+//     if (flipCard) {
+//         document.getElementById(flipCard).classList.add('close-animation');
+//         document.getElementById('overlayCard').classList.add('d-none');
+//     }
+// }
+
 function closePokemonCard(flipCard) {
-    let flipPokemonCart = document.getElementById(`${flipCard}`);
-    if (flipPokemonCart) {
-        flipPokemonCart.style.transition = "1s";
-        flipPokemonCart.style.transform = "scale(1) rotate3D(0, 1, 0, 0deg)";
-        flipPokemonCart.style.zIndex = "auto";
-        flipPokemonCart.style.position = "static";
+    let flipPokemonCard = document.getElementById(`${flipCard}`);
+    if (flipPokemonCard) {
+        flipPokemonCard.style.animation = 'zoomOut 2s ease-in-out forwards';
+        flipPokemonCard.style.transition = "1s"
+        flipPokemonCard.style.transform = "scale(1) rotate3D(0, 1, 0, 0deg)";
+        flipPokemonCard.style.zIndex = "auto";
+        flipPokemonCard.style.position = "static";
         document.getElementById('overlayCard').classList.add('d-none');
+        document.getElementById('myBody').classList.remove('overflow');
     }
 }
 

@@ -246,6 +246,53 @@ body {
     margin: 10px;
 }
 
+/* .animation-card {
+   
+    animation: zoomIn 2s ease-in-out forwards;
+} */
+
+/* @keyframes zoomOut {
+    0% {
+        transform: scale(1.5) matrix3d(1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1);
+        position: fixed;
+        top: 20vh;
+        z-index: 10;
+    }
+    50% {
+        transform: scale(1.5)  matrix3d(1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1);
+        position: fixed;
+        top: 20vh;
+        z-index: 10;
+    }
+    100% {
+        transform: scale(1) matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+        z-index: 10;
+        position: static;
+        top: initial;
+    }
+}
+
+@keyframes zoomIn {
+    0% {
+        transform: scale(1) translateY(-50%);
+        z-index: 10;
+        position: static;
+    }
+    
+    50% {
+        transform: scale(1.5)  matrix3d(-1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1);
+        position: fixed;
+        top: 20vh;
+        z-index: 10;
+    }
+    100% {
+        transform: scale(1.5) matrix3d(-1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1);
+        position: fixed;
+        top: 20vh;
+        z-index: 10;
+    }
+} */
+
 
 .pokemon-card {
     display: flex;
@@ -443,6 +490,10 @@ table tr td {
     pointer-events: none;
 }
 
+.overflow {
+    overflow-y: hidden;
+}
+
 @media (max-width: 1000px) {
     .search-container {
         display: flex;
@@ -453,3 +504,76 @@ table tr td {
         height: 20px;
     }
 }
+
+@media (max-width: 768px) {
+    .pokedex img {
+        display: none;
+    }
+    .header-black, .header-red {
+        display: none;
+    }
+
+    .header-white {
+        height: 200px;
+        background-color: #DC0A2D;
+        display: block;
+    }
+
+    .search {
+        display: none;
+    }
+    
+    .pokeball {
+        height: 100px;
+        top: 220px;
+    }
+
+    #pokedex {
+        margin-top: 100px;
+    }
+
+    .search-bar {
+        width: 500px;
+        margin-top: 20%;
+    }
+}
+
+@media (max-width: 450px) {
+    
+}
+
+@media (max-width: 350px) {
+    
+}
+
+
+/* function closePokemonCard(flipCard) {
+    let flipPokemonCard = document.getElementById(`${flipCard}`);
+    if (flipPokemonCard) {
+        flipPokemonCard.style.animation = 'none';
+
+        setTimeout(function() {
+            flipPokemonCard.style.animation = 'zoomOut 2s ease-in-out forwards';
+        }, 10);
+        document.getElementById('overlayCard').classList.add('d-none');
+    }
+}
+
+
+function openPokemonCard(flipCard, j) {
+    let flipPokemonCard = document.getElementById(`${flipCard}`);
+    let aboutButton = `aboutButton${j}`;
+    let about = `about${j}`;
+
+    if (about) {
+        document.getElementById(aboutButton).classList.add('btn-yellow');
+    }
+
+    if (flipPokemonCard) {
+        flipPokemonCard.style.animation = 'none';
+
+        setTimeout(function() {
+            flipPokemonCard.style.animation = 'zoomIn 2s ease-in-out forwards';
+        }, 10);
+        overlayCard.classList.remove('d-none');
+    } */
