@@ -2,9 +2,11 @@ let currentPokemonName = [];
 let currentPokemon;
 let pokemons;
 let allPokemons = []; //sind alle URL von der Pokemon API 
-let limit = 5;
+let limit = 4;
 let offset = 0;
 window.onscroll = function () { scrollFunction() }; // scroll on Top funktion
+window.addEventListener("DOMContentLoaded", loadPokemon, loadMorePokemon); // zeigt das overlay an solange die Pokemons nicht vollständig geladen sind
+
 
 
 async function init() {
@@ -12,6 +14,8 @@ async function init() {
     await loadAllPokemons();
     await loadPokemon();
     updateProgressBar();
+    let loadingScreen = document.getElementById('loadingOverlay');
+    loadingScreen.style.display = "none";
 }
 
 
@@ -41,7 +45,7 @@ async function loadAllPokemons() {
     } catch (error) {
         console.log('Fehler beim laden der Pokemon Liste');
     }
-    
+
 }
 
 
@@ -79,12 +83,18 @@ function renderPokemonInformation(j) {
     let backgroundColorClass = `bg-${pokemonType.toLowerCase()}`;
     let shadowClass = `shadow-${pokemonType.toLowerCase()}`;
     document.getElementById('pokedex').innerHTML += generateHTMLPokedex(pokemonImage, pokemonName, pokemonId, pokemonType, backgroundColorClass, shadowClass, j);
-    // showInformation(`about-0`, `aboutButton-0`);
+    // showInformation(`about${j}`, `aboutButton${j}`);
 }
 
 
+function showLoadingOverlay() {
+    let loadingScreen = document.getElementById('loadingOverlay');
+    loadingScreen.style.display = "block";
+}
+
 function loadMorePokemon() {
-    offset += 5;
+    showLoadingOverlay();
+    offset += 4;
     init();
 }
 
@@ -93,17 +103,18 @@ function generateHTMLPokedex(img, name, id, type, color, shadow, j) {
     let flipCard = `flipper-${j}`;
     return /*html*/`
                 <div id="${flipCard}" class="pokemon-container">
-                    ${generateHTMLFrontCard(img, name, id, type, color, shadow, flipCard)}
+                    ${generateHTMLFrontCard(img, name, id, type, color, shadow, flipCard, j)}
                     ${generateHTMLBackCard(img, name, color, shadow, flipCard, j)}
                 </div>
     `;
 }
 
 
-function generateHTMLFrontCard(img, name, id, type, color, shadow, flipCard) {
+function generateHTMLFrontCard(img, name, id, type, color, shadow, flipCard, j) {
+    let openCard = `openCard${j}`
     return /*html*/`
         <div class="pokemon-card pokemon-card-front ${shadow}">
-            <div id="openCard" onclick="openPokemonCard('${flipCard}')" class="pokemon-card-img">
+            <div id="${openCard}" onclick="openPokemonCard('${flipCard}', '${j}', '${openCard}')" class="pokemon-card-img">
                 <img src="${img}" alt="Pokemon Image">
             </div>
             <div class="pokemon-card-information">
@@ -119,10 +130,10 @@ function generateHTMLFrontCard(img, name, id, type, color, shadow, flipCard) {
 
 
 function generateHTMLBackCard(img, name, color, shadow, flipCard, j) {
-    let about = `about-${j}`;
-    let baseStats = `baseStats-${j}`;
-    let aboutButton = `aboutButton-${j}`;
-    let baseStatsButton = `baseStatsButton-${j}`;
+    // let about = `about-${j}`;
+    // let baseStats = `baseStats-${j}`;
+    // let aboutButton = `aboutButton-${j}`;
+    // let baseStatsButton = `baseStatsButton-${j}`;
     return /*html*/`
         <div class="stats-container pokemon-card-back">
             <div class="back-id ${color}">
@@ -133,11 +144,11 @@ function generateHTMLBackCard(img, name, color, shadow, flipCard, j) {
                 <img class="back-img" src="${img}" alt="">
             </div> 
                 <div class="back-category">
-                    <button id="${aboutButton}" class="show-stats-button" onclick="showInformation('${about}', '${aboutButton}')">About</button>
-                    <button id="${baseStatsButton}" class="show-stats-button" onclick="showInformation('${baseStats}', '${baseStatsButton}')">Base Stats</button>
+                    <button id="aboutButton${j}" class="show-stats-button" onclick="showInformation('aboutButton${j}')">About</button>
+                    <button id="baseStatsButton${j}" class="show-stats-button" onclick="showInformation('baseStatsButton${j}')">Base Stats</button>
                 </div>
-                ${generateHTMLBackCardStats(shadow, baseStats, j)}
-                ${generateHTMLBackCardAbout(about)}
+                ${generateHTMLBackCardStats(shadow, j)}
+                ${generateHTMLBackCardAbout(j)}
         </div>
     `
 }
@@ -145,9 +156,9 @@ function generateHTMLBackCard(img, name, color, shadow, flipCard, j) {
 
 
 
-function generateHTMLBackCardAbout(about) {
+function generateHTMLBackCardAbout(j) {
     return /*html*/`
-        <table id="${about}" class="back-div back-div-about">
+        <table id="about${j}" class="back-div back-div-about">
             <tr>
                 <td><b>Name:</b></td>
                 <td>${currentPokemon['forms']['0']['name'].charAt(0).toUpperCase() + currentPokemon['forms']['0']['name'].slice(1)}</td>
@@ -176,7 +187,7 @@ function updateProgressBar() {
             const stat = pokemon['stats'][m]['base_stat'];
             const calc = (stat / 150) * 100;
             const progressBarId = `progressBar0${j}${m + 1}`;
-            
+
             document.getElementById(progressBarId).style.width = `${calc}%`;
             document.getElementById(progressBarId).innerHTML = `${calc.toFixed(1)}%`;
         }
@@ -184,13 +195,13 @@ function updateProgressBar() {
 }
 
 
-function generateHTMLBackCardStats(shadow, baseStats, j) {
+function generateHTMLBackCardStats(shadow, j) {
     return /*html*/`
-        <table id="${baseStats}" class="back-div d-none back-div-baseStats">
+        <table id="baseStats${j}" class="back-div d-none back-div-baseStats">
             <tr class="${shadow}">
                 <td>${currentPokemon['stats']['0']['stat']['name'].charAt(0).toUpperCase() + currentPokemon['stats']['0']['stat']['name'].slice(1)}</td>
                 <td class="progress-style"><div class="progress">
-                    <div id="progressBar0${j}1" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="150">25%</div>
+                    <div id="progressBar0${j}1" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="150"><p>25%</p></div>
                 </div>
                 </td>
             </tr>
@@ -198,7 +209,7 @@ function generateHTMLBackCardStats(shadow, baseStats, j) {
                 <td>${currentPokemon['stats']['1']['stat']['name'].charAt(0).toUpperCase() + currentPokemon['stats']['1']['stat']['name'].slice(1)}</td>
                 <td class="progress-style">
                 <div class="progress">
-                    <div id="progressBar0${j}2" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="150">25%</div>
+                    <div id="progressBar0${j}2" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="150"><p>25%</p></div>
                 </div>
                 </td>
             </tr>
@@ -206,21 +217,21 @@ function generateHTMLBackCardStats(shadow, baseStats, j) {
                 <td>${currentPokemon['stats']['2']['stat']['name'].charAt(0).toUpperCase() + currentPokemon['stats']['2']['stat']['name'].slice(1)}</td>
                 <td class="progress-style">
                 <div class="progress">
-                    <div id="progressBar0${j}3" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="150">25%</div>
+                    <div id="progressBar0${j}3" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="150"><p>25%</p></div>
                 </div>
                 </td>
             </tr>
             <tr class="${shadow}">
                 <td>${currentPokemon['stats']['3']['stat']['name'].charAt(0).toUpperCase() + currentPokemon['stats']['3']['stat']['name'].slice(1)}</td>
                 <td class="progress-style"><div class="progress">
-                    <div id="progressBar0${j}4" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="150">25%</div>
+                    <div id="progressBar0${j}4" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="150"><p>25%</p></div>
                 </div></td>
             </tr>
             <tr class="${shadow}">
                 <td>${currentPokemon['stats']['4']['stat']['name'].charAt(0).toUpperCase() + currentPokemon['stats']['4']['stat']['name'].slice(1)}</td>
                 <td class="progress-style">
                 <div class="progress">
-                    <div id="progressBar0${j}5" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="150">25%</div>
+                    <div id="progressBar0${j}5" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="150"><p>25%</p></div>
                 </div>
                 </td>
             </tr>
@@ -229,35 +240,38 @@ function generateHTMLBackCardStats(shadow, baseStats, j) {
 }
 
 
-function showInformation(information, button) {
-    document.querySelectorAll('.back-div').forEach(function (dNone) {
-        dNone.classList.add('d-none');
-});
-    document.querySelectorAll('.show-stats-button').forEach(function (btnStyle) {
-        btnStyle.classList.remove('active');
-        btnStyle.style.backgroundColor = "#fff";
-        btnStyle.style.color = "black";
-        btnStyle.style.transform = "scale(1)";
-});
+function showInformation(layout) {
+    for (let n = 0; n < currentPokemonName.length; n++) {
+        let about = `about${n}`;
+        let baseStats = `baseStats${n}`;
+        let aboutButton = `aboutButton${n}`;
+        let baseStatsButton = `baseStatsButton${n}`
 
-    let info = document.getElementById(information);
-    let btn = document.getElementById(button);
-    
-
-    if (info && btn) {
-        info.classList.remove('d-none');
-        btn.classList.add('active');
-        btn.style.transition = "225ms";
-        btn.style.transform = "scale(1.1)";
-        btn.style.backgroundColor = "#ffcc01";
-        btn.style.color = "#375ca9";
-    }; 
+        if (layout == aboutButton) {
+            document.getElementById(about).classList.remove('d-none');
+            document.getElementById(baseStats).classList.add('d-none');
+            document.getElementById(baseStatsButton).classList.remove('btn-yellow');
+            document.getElementById(aboutButton).classList.add('btn-yellow');
+        }
+        if (layout == baseStatsButton) {
+            document.getElementById(about).classList.add('d-none');
+            document.getElementById(baseStats).classList.remove('d-none');
+            document.getElementById(baseStatsButton).classList.add('btn-yellow');
+            document.getElementById(aboutButton).classList.remove('btn-yellow');
+        }
+    }
 }
 
 
-function openPokemonCard(flipCard) {
+function openPokemonCard(flipCard, j, openCard) {
     let flipPokemonCard = document.getElementById(`${flipCard}`);
+    let aboutButton = `aboutButton${j}`;
+    let about = `about${j}`;
 
+    if (about) {
+        document.getElementById(aboutButton).classList.add('btn-yellow');
+    }
+    
     if (flipPokemonCard) {
         flipPokemonCard.style.transition = "1.5s";
         flipPokemonCard.style.transform = "scale(1) translateY(-50%)";
@@ -280,9 +294,11 @@ function openPokemonCard(flipCard) {
             flipPokemonCard.style.position = "fixed";
             flipPokemonCard.style.top = "20vh";
         }, 800);
+        setTimeout(() => {
+            document.getElementById('overlayCard').classList.remove('d-none');
+        }, 400);
     }
 }
-
 
 
 function scrollFunction() {
@@ -307,6 +323,7 @@ function closePokemonCard(flipCard) {
         flipPokemonCart.style.transform = "scale(1) rotate3D(0, 1, 0, 0deg)";
         flipPokemonCart.style.zIndex = "auto";
         flipPokemonCart.style.position = "static";
+        document.getElementById('overlayCard').classList.add('d-none');
     }
 }
 
