@@ -25,7 +25,7 @@
 </head>
 
 <body id="myBody" onload="init()">
-    <div id="overlayCard" class="overlay-back-card d-none"></div>
+    <div onclick="closeCard()" id="overlayCard" class="overlay-back-card d-none"></div>
     <div id="loadingOverlay">
         <div id="loadingOverlayImg" class="overlay-img">
             <img src="img/pokeball.png" alt="">
@@ -36,9 +36,6 @@
     
     <div id="pokedex"></div>
     <div w3-include-html="includes/loadmore.html"></div>
-
-
-
 
 </body>
 

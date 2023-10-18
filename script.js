@@ -1,11 +1,11 @@
 let currentPokemonName = [];
 let currentPokemon;
 let pokemons;
-let allPokemons = []; //sind alle URL von der Pokemon API 
-let limit = 4;
+let allPokemons = [];
+let limit = 20;
 let offset = 0;
-window.onscroll = function () { scrollFunction() }; // scroll on Top funktion
-window.addEventListener("DOMContentLoaded", loadPokemon, loadMorePokemon); // zeigt das overlay an solange die Pokemons nicht vollständig geladen sind
+window.onscroll = function () { scrollFunction() };
+window.addEventListener("DOMContentLoaded", loadPokemon, loadMorePokemon);
 
 
 async function init() {
@@ -19,13 +19,13 @@ async function init() {
 
 
 async function includeHTML() {
-    let includeElements = document.querySelectorAll('[w3-include-html]'); //  Wir rufen unseren DIV im Index auf 
-    for (let i = 0; i < includeElements.length; i++) { // hier iterieren wir alles Obejekte in diesem DIV container sprich alles was in dem Fall im Header Bereich ist 
+    let includeElements = document.querySelectorAll('[w3-include-html]');
+    for (let i = 0; i < includeElements.length; i++) {
         const element = includeElements[i];
-        file = element.getAttribute("w3-include-html");// hier liest er den Wert im Index.Html "includes/header.html" aus. Und wir deieser Varibale file zugeordnet 
-        let resp = await fetch(file); // hier laden wir die datei mit fetch 
+        file = element.getAttribute("w3-include-html");
+        let resp = await fetch(file);
         if (resp.ok) {
-            element.innerHTML = await resp.text(); // hier haben wir jetzt alles in der Variable contetn als Text gespeichert^
+            element.innerHTML = await resp.text();
         } else {
             element.innerHTML = 'Page not found';
         }
@@ -35,11 +35,10 @@ async function includeHTML() {
 
 async function loadAllPokemons() {
     try {
-        let url = `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`; // API limit auf 33 gesetzt 
-        let response = await fetch(url); //ladet die API runter (aller Pokemons)
-        pokemons = await response.json(); //wandelt das in eine JSON um
-        let result = pokemons['results']; //results ist ein Array in der API
-        console.log('load first 34 Pokemons', result);
+        let url = `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`;
+        let response = await fetch(url);
+        pokemons = await response.json();
+        let result = pokemons['results'];
         loadPokemonId(result);
     } catch (error) {
         console.log('Fehler beim laden der Pokemon Liste');
@@ -49,10 +48,10 @@ async function loadAllPokemons() {
 
 
 function loadPokemonId(result) {
-    for (let i = 0; i < result.length; i++) { //ist ein Array aus der Function loadAllPokemons - hier habe ich die Max zahl in einem Array hinterlegt
+    for (let i = 0; i < result.length; i++) {
         let pokemon = result[i];
-        let url = pokemon['url'];//wird auf die URL in dem ARRAY results zugegriffen
-        allPokemons.push(url); //wird in die Array allPokemonUrl gepusht
+        let url = pokemon['url'];
+        allPokemons.push(url);
     }
 }
 
@@ -61,10 +60,9 @@ async function loadPokemon() {
     try {
         for (let j = offset; j < allPokemons.length; j++) {
             let pokemonCurrentUrl = allPokemons[j];
-            let response = await fetch(pokemonCurrentUrl);// ladet die URL aus dem Array 
+            let response = await fetch(pokemonCurrentUrl);
             currentPokemon = await response.json();
             currentPokemonName.push(currentPokemon);
-            console.log('pokemons', currentPokemon);
             renderPokemonInformation(j);
         }
     } catch (error) {
@@ -81,7 +79,7 @@ function showLoadingOverlay() {
 
 function loadMorePokemon() {
     showLoadingOverlay();
-    offset += 4;
+    offset += 20;
     init();
 }
 
@@ -137,7 +135,7 @@ function generateHTMLBackCard(img, name, color, shadow, flipCard, j) {
                     <img onclick="closePokemonCard('${flipCard}')" class="back-close-pokeball-button" src="img/pokeball.png" alt="close Button Pokeball">
                 </div>
                 <img class="back-img" src="${img}" alt="">
-            </div> 
+            </div>
                 <div class="back-category">
                     <button id="aboutButton${j}" class="show-stats-button" onclick="showInformation('aboutButton${j}')">About</button>
                     <button id="baseStatsButton${j}" class="show-stats-button" onclick="showInformation('baseStatsButton${j}')">Base Stats</button>
@@ -195,7 +193,7 @@ function generateHTMLBackCardStats(shadow, j) {
             <tr class="${shadow}">
                 <td>${currentPokemon['stats']['0']['stat']['name'].charAt(0).toUpperCase() + currentPokemon['stats']['0']['stat']['name'].slice(1)}</td>
                 <td class="progress-style"><div class="progress">
-                    <div id="progressBar0${j}1" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="150"><p>25%</p></div>
+                    <div id="progressBar0${j}1" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="100" aria-valuemin="0" aria-valuemax="150"><p class="progress-bar-text">25%</p></div>
                 </div>
                 </td>
             </tr>
@@ -203,7 +201,7 @@ function generateHTMLBackCardStats(shadow, j) {
                 <td>${currentPokemon['stats']['1']['stat']['name'].charAt(0).toUpperCase() + currentPokemon['stats']['1']['stat']['name'].slice(1)}</td>
                 <td class="progress-style">
                 <div class="progress">
-                    <div id="progressBar0${j}2" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="150"><p>25%</p></div>
+                    <div id="progressBar0${j}2" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="150"><p class="progress-bar-text">25%</p></div>
                 </div>
                 </td>
             </tr>
@@ -211,21 +209,23 @@ function generateHTMLBackCardStats(shadow, j) {
                 <td>${currentPokemon['stats']['2']['stat']['name'].charAt(0).toUpperCase() + currentPokemon['stats']['2']['stat']['name'].slice(1)}</td>
                 <td class="progress-style">
                 <div class="progress">
-                    <div id="progressBar0${j}3" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="150"><p>25%</p></div>
+                    <div id="progressBar0${j}3" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="150"><p class="progress-bar-text">25%</p></div>
                 </div>
                 </td>
             </tr>
             <tr class="${shadow}">
                 <td>${currentPokemon['stats']['3']['stat']['name'].charAt(0).toUpperCase() + currentPokemon['stats']['3']['stat']['name'].slice(1)}</td>
-                <td class="progress-style"><div class="progress">
-                    <div id="progressBar0${j}4" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="150"><p>25%</p></div>
-                </div></td>
+                <td class="progress-style">
+                    <div class="progress">
+                        <div id="progressBar0${j}4" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="150"><p class="progress-bar-text">25%</p></div>
+                    </div>
+                </td>
             </tr>
             <tr class="${shadow}">
                 <td>${currentPokemon['stats']['4']['stat']['name'].charAt(0).toUpperCase() + currentPokemon['stats']['4']['stat']['name'].slice(1)}</td>
                 <td class="progress-style">
                 <div class="progress">
-                    <div id="progressBar0${j}5" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="150"><p>25%</p></div>
+                    <div id="progressBar0${j}5" class="progress-bar" role="progressbar" style="width: 25px" aria-valuenow="25" aria-valuemin="0" aria-valuemax="150"><p class="progress-bar-text">25%</p></div>
                 </div>
                 </td>
             </tr>
@@ -290,12 +290,12 @@ function openPokemonCardAnimation(flipPokemonCard) {
             mediaQuerysStyleFlip90DEG(flipPokemonCard);
             mediaQuerysStyleFlip180DEG(flipPokemonCard);
             overlayAfterFlipCard();
-            overflowHiddyX();
+            overflowHiddenX();
         } else {
             styleFlip90DEG(flipPokemonCard);
             styleFlip180DEG(flipPokemonCard);
             overlayAfterFlipCard();
-            overflowHiddyX();
+            overflowHiddenX();
         }
     }
 }
@@ -356,7 +356,7 @@ function styleFlip180DEG(flipPokemonCard) {
 }
 
 
-function overflowHiddyX() {
+function overflowHiddenX() {
     document.getElementById('myBody').classList.add('overflow');
 }
 
@@ -400,6 +400,54 @@ function closePokemonCardAnimation(flipPokemonCard) {
 }
 
 
+function closeCard() {
+    for (let l = 0; l < currentPokemonName.length; l++) {
+        let flipPokemonCard = `flipper-${l}`;
+        closePokemonCard(flipPokemonCard);
+    }
+}
+
+
+function nextPokemon(action, j) {
+    let currentFlipCard = `flipper-${j}`;
+    let nextFlipCard = `flipper-${j + 1}`;
+    let showNextPokemon = `showNextPokemon${j}`;
+
+    if (action == showNextPokemon) {
+        closePokemonCard(currentFlipCard);
+        if (document.getElementById(nextFlipCard)) {
+            setTimeout(() => {
+                openPokemonCardAnimation(nextFlipCard);
+            }, 800);  
+        }
+    } 
+    // else if (action === 'showPreviousPokemon') {
+    //     // Hier können Sie Logik für das Zurückgehen zur vorherigen Karte hinzufügen, wenn nötig.
+    // }
+}
+
+
+// function nextPokemon(action, j) {
+//     let currentFlipCard = `flipper-${j}`;
+//     let nextFlipCard = `flipper-${j}`;
+//     nextFlipCard++;
+//     let previousFlipCard = `flipper-${j}`;
+//     previousFlipCard--;
+//     let showNextPokemon = `showNextPokemon${j}`;
+    
+//     if (action == showNextPokemon) {
+//         closePokemonCard(currentFlipCard);
+//         if (document.getElementById(nextFlipCard)) {
+//             setTimeout(() => {
+//                 openPokemonCardAnimation(nextFlipCard);
+//             }, 100);
+//         }
+//         console.log(action);
+//     }
+// }
+
+
+
 function searchPokemon() {
     let search = document.getElementById('search').value;
     search = search.toLowerCase();
@@ -414,3 +462,5 @@ function searchPokemon() {
         }
     }
 }
+
+

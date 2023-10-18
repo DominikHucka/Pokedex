@@ -273,9 +273,17 @@ body {
 }
 
 .back-div-about {
-    margin-top: 25px;
     margin-left: 40px;
+    margin-top: 20px;
 }
+
+.back-div-baseStats {
+    display: inline-table;
+}
+
+.back-div-baseStats tr {
+    font-size: 14px;
+} 
 
 .back-img {
     height: 100px;
@@ -347,6 +355,11 @@ table tr td {
     right: 0;
     background-color: rgba(0, 0, 0, 0.5);
     animation: smoothOverlay 2s ease-in-out;
+}
+
+
+.overlay-back-card {
+    cursor: pointer;
 }
 
 
@@ -437,6 +450,7 @@ table tr td {
 
 .progress-bar {
     text-align: unset !important;
+    font-size: 10px !important;
     padding: 5px;
 }
 
@@ -447,7 +461,6 @@ table tr td {
 .overflow {
     overflow-y: hidden;
 }
-
 
 
 
