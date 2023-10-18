@@ -1,0 +1,95 @@
+@media (max-width: 1000px) {
+    .search-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .search-container img {
+        height: 20px;
+    }
+}
+
+@media (min-width: 767px) {
+    .header-768px {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .pokedex img {
+        display: none;
+    }
+
+    .header-black,
+    .header-red {
+        display: none;
+    }
+
+    .header-white {
+        height: 200px;
+        background-color: #e3350d;
+        display: block;
+    }
+
+    .search {
+        display: none;
+    }
+
+    .pokeball {
+        height: 100px;
+        top: 220px;
+    }
+
+    #pokedex {
+        margin-top: 100px;
+    }
+
+    .search-container {
+        display: flex;
+        flex-direction: column;
+        align-items: baseline;
+    }
+
+    .search-bar {
+        width: 80%;
+    }
+
+    .header-768px {
+        margin-top: 5%;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .header-768px h1 {
+        font-size: 50px;
+        color: white;
+        font-family: fantasy;
+    }
+
+    .header-768px img {
+        height: 30px;
+    }
+}
+
+@media (max-width: 450px) {
+    .load-button img {
+        height: 40px;
+    }
+
+    .loading-pokemon {
+        width: 150px;
+        height: 60px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 350px) {
+    .load-button {
+       justify-content: space-between;
+    }
+
+    .pokemon-ball-footer1 {
+        display: none;
+    }
+}

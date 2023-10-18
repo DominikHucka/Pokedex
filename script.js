@@ -8,7 +8,6 @@ window.onscroll = function () { scrollFunction() }; // scroll on Top funktion
 window.addEventListener("DOMContentLoaded", loadPokemon, loadMorePokemon); // zeigt das overlay an solange die Pokemons nicht vollständig geladen sind
 
 
-
 async function init() {
     await includeHTML();
     await loadAllPokemons();
@@ -74,6 +73,19 @@ async function loadPokemon() {
 }
 
 
+function showLoadingOverlay() {
+    let loadingScreen = document.getElementById('loadingOverlay');
+    loadingScreen.style.display = "block";
+}
+
+
+function loadMorePokemon() {
+    showLoadingOverlay();
+    offset += 4;
+    init();
+}
+
+
 function renderPokemonInformation(j) {
     let pokemon = currentPokemonName[j]
     let pokemonImage = pokemon['sprites']['other']['official-artwork']['front_default'];
@@ -83,19 +95,6 @@ function renderPokemonInformation(j) {
     let backgroundColorClass = `bg-${pokemonType.toLowerCase()}`;
     let shadowClass = `shadow-${pokemonType.toLowerCase()}`;
     document.getElementById('pokedex').innerHTML += generateHTMLPokedex(pokemonImage, pokemonName, pokemonId, pokemonType, backgroundColorClass, shadowClass, j);
-    // showInformation(`about${j}`, `aboutButton${j}`);
-}
-
-
-function showLoadingOverlay() {
-    let loadingScreen = document.getElementById('loadingOverlay');
-    loadingScreen.style.display = "block";
-}
-
-function loadMorePokemon() {
-    showLoadingOverlay();
-    offset += 4;
-    init();
 }
 
 
@@ -130,10 +129,6 @@ function generateHTMLFrontCard(img, name, id, type, color, shadow, flipCard, j) 
 
 
 function generateHTMLBackCard(img, name, color, shadow, flipCard, j) {
-    // let about = `about-${j}`;
-    // let baseStats = `baseStats-${j}`;
-    // let aboutButton = `aboutButton-${j}`;
-    // let baseStatsButton = `baseStatsButton-${j}`;
     return /*html*/`
         <div class="stats-container pokemon-card-back">
             <div class="back-id ${color}">
@@ -152,8 +147,6 @@ function generateHTMLBackCard(img, name, color, shadow, flipCard, j) {
         </div>
     `
 }
-
-
 
 
 function generateHTMLBackCardAbout(j) {
@@ -183,6 +176,7 @@ function generateHTMLBackCardAbout(j) {
 function updateProgressBar() {
     for (let j = 0; j < currentPokemonName.length; j++) {
         let pokemon = currentPokemonName[j];
+
         for (let m = 0; m < 5; m++) {
             const stat = pokemon['stats'][m]['base_stat'];
             const calc = (stat / 150) * 100;
@@ -248,106 +242,122 @@ function showInformation(layout) {
         let baseStatsButton = `baseStatsButton${n}`
 
         if (layout == aboutButton) {
-            document.getElementById(about).classList.remove('d-none');
-            document.getElementById(baseStats).classList.add('d-none');
-            document.getElementById(baseStatsButton).classList.remove('btn-yellow');
-            document.getElementById(aboutButton).classList.add('btn-yellow');
+            showLayoutAbout(about, baseStats, baseStatsButton, aboutButton);
         }
         if (layout == baseStatsButton) {
-            document.getElementById(about).classList.add('d-none');
-            document.getElementById(baseStats).classList.remove('d-none');
-            document.getElementById(baseStatsButton).classList.add('btn-yellow');
-            document.getElementById(aboutButton).classList.remove('btn-yellow');
+            showLayoutBaseStats(about, baseStats, baseStatsButton, aboutButton)
         }
     }
 }
 
 
-function openPokemonCard(flipCard, j) {
-    let flipPokemonCard = document.getElementById(`${flipCard}`);
-    let aboutButton = `aboutButton${j}`;
-    let about = `about${j}`;
-
-    if (about) {
-        document.getElementById(aboutButton).classList.add('btn-yellow');
-    }
-
-    if (flipPokemonCard) {
-        flipPokemonCard.style.animation = 'none';
-
-        setTimeout(function () {
-            flipPokemonCard.style.animation = 'zoomIn 2s ease-in-out forwards';
-        }, 10);
-        overlayCard.classList.remove('d-none');
-    }
-
-    // if (flipPokemonCard) {
-    //     document.getElementById(flipCard).classList.remove('animation-card');
-    //     setTimeout(function() {
-    //         flipPokemonCard.classList.add('animation-card');
-    //     }, 100);
-    //     document.getElementById('overlayCard').classList.remove('d-none');
-    // }
+function showLayoutAbout(about, baseStats, baseStatsButton, aboutButton) {
+    document.getElementById(about).classList.remove('d-none');
+    document.getElementById(baseStats).classList.add('d-none');
+    document.getElementById(baseStatsButton).classList.remove('btn-yellow');
+    document.getElementById(aboutButton).classList.add('btn-yellow');
 }
 
 
+function showLayoutBaseStats(about, baseStats, baseStatsButton, aboutButton) {
+    document.getElementById(about).classList.add('d-none');
+    document.getElementById(baseStats).classList.remove('d-none');
+    document.getElementById(baseStatsButton).classList.add('btn-yellow');
+    document.getElementById(aboutButton).classList.remove('btn-yellow');
+}
+
 
 function openPokemonCard(flipCard, j) {
     let flipPokemonCard = document.getElementById(`${flipCard}`);
     let aboutButton = `aboutButton${j}`;
     let about = `about${j}`;
+    defaultLayoutAbout(about, aboutButton);
+    openPokemonCardAnimation(flipPokemonCard);
+}
 
+
+function defaultLayoutAbout(about, aboutButton) {
     if (about) {
         document.getElementById(aboutButton).classList.add('btn-yellow');
     }
+}
 
+
+function openPokemonCardAnimation(flipPokemonCard) {
     if (flipPokemonCard) {
-        flipPokemonCard.style.transition = "1.5s";
-        flipPokemonCard.style.transform = "scale(1) translateY(-50%)";
-        flipPokemonCard.style.zIndex = "10";
-        flipPokemonCard.style.position = "static";
+        firstStepToStyleCard(flipPokemonCard);
         if (window.matchMedia("(max-width: 450px)").matches) {
-            setTimeout(() => {
-                flipPokemonCard.style.transform = "scale(1) rotate3D(0, 1, 0, 90deg)";
-                flipPokemonCard.style.zIndex = "10";
-                flipPokemonCard.style.position = "fixed";
-                flipPokemonCard.style.top = "20vh";
-            }, 800);
-            setTimeout(() => {
-                flipPokemonCard.style.transform = "scale(1) rotate3D(0, 1, 0, 180deg)";
-                flipPokemonCard.style.zIndex = "10";
-                flipPokemonCard.style.position = "fixed";
-                flipPokemonCard.style.top = "20vh";
-            }, 800);
-            setTimeout(() => {
-                document.getElementById('overlayCard').classList.remove('d-none');
-            }, 400);
-            document.getElementById('myBody').classList.add('overflow');
-            
+            mediaQuerysStyleFlip90DEG(flipPokemonCard);
+            mediaQuerysStyleFlip180DEG(flipPokemonCard);
+            overlayAfterFlipCard();
+            overflowHiddyX();
         } else {
-            setTimeout(() => {
-                flipPokemonCard.style.transform = "scale(1.2) rotate3D(0, 1, 0, 45deg)";
-                flipPokemonCard.style.zIndex = "10";
-                flipPokemonCard.style.position = "static";
-            }, 800);
-            setTimeout(() => {
-                flipPokemonCard.style.transform = "scale(1.5) rotate3D(0, 1, 0, 90deg)";
-                flipPokemonCard.style.zIndex = "10";
-                flipPokemonCard.style.position = "fixed";
-                flipPokemonCard.style.top = "20vh";
-            }, 800);
-            setTimeout(() => {
-                flipPokemonCard.style.transform = "scale(1.5) rotate3D(0, 1, 0, 180deg)";
-                flipPokemonCard.style.zIndex = "10";
-                flipPokemonCard.style.position = "fixed";
-                flipPokemonCard.style.top = "20vh";
-            }, 800);
-            setTimeout(() => {
-                document.getElementById('overlayCard').classList.remove('d-none');
-            }, 400);
+            styleFlip90DEG(flipPokemonCard);
+            styleFlip180DEG(flipPokemonCard);
+            overlayAfterFlipCard();
+            overflowHiddyX();
         }
-        
     }
+}
+
+
+function firstStepToStyleCard(flipPokemonCard) {
+    flipPokemonCard.style.transition = "1.5s";
+    flipPokemonCard.style.transform = "scale(1) translateY(-50%)";
+    flipPokemonCard.style.zIndex = "10";
+    flipPokemonCard.style.position = "static";
+}
+
+
+function mediaQuerysStyleFlip90DEG(flipPokemonCard) {
+    setTimeout(() => {
+        flipPokemonCard.style.transform = "scale(1) rotate3D(0, 1, 0, 90deg)";
+        flipPokemonCard.style.zIndex = "10";
+        flipPokemonCard.style.position = "fixed";
+        flipPokemonCard.style.top = "20vh";
+    }, 800);
+}
+
+
+function mediaQuerysStyleFlip180DEG(flipPokemonCard) {
+    setTimeout(() => {
+        flipPokemonCard.style.transform = "scale(1) rotate3D(0, 1, 0, 180deg)";
+        flipPokemonCard.style.zIndex = "10";
+        flipPokemonCard.style.position = "fixed";
+        flipPokemonCard.style.top = "20vh";
+    }, 800);
+}
+
+
+function overlayAfterFlipCard() {
+    setTimeout(() => {
+        document.getElementById('overlayCard').classList.remove('d-none');
+    }, 400);
+}
+
+
+function styleFlip90DEG(flipPokemonCard) {
+    setTimeout(() => {
+        flipPokemonCard.style.transform = "scale(1.5) rotate3D(0, 1, 0, 90deg)";
+        flipPokemonCard.style.zIndex = "10";
+        flipPokemonCard.style.position = "fixed";
+        flipPokemonCard.style.top = "20vh";
+    }, 800);
+}
+
+
+function styleFlip180DEG(flipPokemonCard) {
+    setTimeout(() => {
+        flipPokemonCard.style.transform = "scale(1.5) rotate3D(0, 1, 0, 180deg)";
+        flipPokemonCard.style.zIndex = "10";
+        flipPokemonCard.style.position = "fixed";
+        flipPokemonCard.style.top = "20vh";
+    }, 800);
+}
+
+
+function overflowHiddyX() {
+    document.getElementById('myBody').classList.add('overflow');
 }
 
 
@@ -360,9 +370,11 @@ function scrollFunction() {
     }
 }
 
+
 function bottomFunction() {
     window.scrollTo(0, document.body.scrollHeight);
 }
+
 
 function topFunction() {
     document.body.scrollTop = 0;
@@ -370,26 +382,21 @@ function topFunction() {
 }
 
 
-
-// function closePokemonCard(flipCard) {
-//     // let flipPokemonCard = document.getElementById(`${flipCard}`);
-//     if (flipCard) {
-//         document.getElementById(flipCard).classList.add('close-animation');
-//         document.getElementById('overlayCard').classList.add('d-none');
-//     }
-// }
-
 function closePokemonCard(flipCard) {
     let flipPokemonCard = document.getElementById(`${flipCard}`);
     if (flipPokemonCard) {
-        flipPokemonCard.style.animation = 'zoomOut 2s ease-in-out forwards';
-        flipPokemonCard.style.transition = "1s"
-        flipPokemonCard.style.transform = "scale(1) rotate3D(0, 1, 0, 0deg)";
-        flipPokemonCard.style.zIndex = "auto";
-        flipPokemonCard.style.position = "static";
+        closePokemonCardAnimation(flipPokemonCard);
         document.getElementById('overlayCard').classList.add('d-none');
         document.getElementById('myBody').classList.remove('overflow');
     }
+}
+
+
+function closePokemonCardAnimation(flipPokemonCard) {
+    flipPokemonCard.style.transition = "1s"
+    flipPokemonCard.style.transform = "scale(1) rotate3D(0, 1, 0, 0deg)";
+    flipPokemonCard.style.zIndex = "auto";
+    flipPokemonCard.style.position = "static";
 }
 
 
