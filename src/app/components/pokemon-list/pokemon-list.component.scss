@@ -1,0 +1,49 @@
+@import './../../share/mixin.scss';
+
+
+.main-container {
+    @include dFlex(flex, center, center);
+    flex-wrap: wrap;
+    margin-top: 100px
+}
+
+
+.pokemon-card {
+    @include dFlex(flex, none, none);
+    flex-direction: column;
+    width: 280px;
+    height: 400px;
+    padding: 10px;
+    gap: 10px;
+    margin: 10px;
+    border-radius: 10px;
+    transition: transform linear .2s;
+    &:hover {
+        cursor: pointer;
+        transform: translateY(-10px);
+    }
+}
+
+
+.pokemon-image-container {
+    @include dFlex(flex, center, center);
+}
+
+
+.pokemon-image {
+    @include dFlex(flex, center, center);
+    background-color: var(--light-grey);
+    width: 250px;
+    height: 250px;
+    border-radius: 10px;
+    >img {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+
+.pokemon-type {
+    @include dFlex(flex, none, none);
+    gap: 10px;
+}

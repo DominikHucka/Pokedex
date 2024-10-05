@@ -1,0 +1,30 @@
+<!-- *ngFor="let pokemon of pokemonData.slice(0, 20); let i = index -->
+
+<section class="main-container">
+    @for (pokemon of pokemonData.slice(0, 20); track $index) {
+    <ng-container>
+        <div [ngClass]="getShadowClass(pokemon?.types[0].type.name)" class="pokemon-card">
+            <div class="pokemon-image-container">
+                <div class="pokemon-image">
+                    <img [src]="pokemon?.sprites.other['official-artwork'].front_default">
+                </div>
+            </div>
+            <div class="pokemon-id">
+                <span>#{{ pokemon?.id.toString().padStart(4, '0') }} </span>
+            </div>
+            <div class="pokemon-name">
+                <h2>{{ pokemon?.name | titlecase }}</h2>
+            </div>
+            <div class="pokemon-type">
+                <div [ngClass]="getBgClass(pokemon?.types[0].type.name)" class="pokemon-type-container">
+                    <span>{{ pokemon?.types[0].type.name | titlecase }}</span>
+                </div>
+                <div *ngIf="pokemon?.types.length > 1" [ngClass]="getBgClass(pokemon.types[1].type.name)"
+                    class="pokemon-type-container">
+                    <span>{{ pokemon?.types[1].type.name | titlecase }}</span>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+    }
+</section>

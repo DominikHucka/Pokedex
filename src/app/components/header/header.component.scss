@@ -1,0 +1,36 @@
+.header {
+    position: relative;
+}
+
+
+.pokeball {
+    >img {
+        height: 150px;
+        width: auto;
+        position: absolute;
+        left: 50%;
+        -ms-transform: translate(-50%, 0);
+        transform: translate(-50%, 0);
+        top: 33px;
+    }
+}
+
+
+.headline-top {
+    width: 100%;
+    height: 100px;
+}
+
+
+.headline-center {
+    width: 100%;
+    background-color: black;
+    height: 10px;
+}
+
+
+.headline-bottom {
+    width: 100%;
+    background-color: var(--red);
+    height: 100px;
+}

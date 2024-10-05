@@ -1,0 +1,5 @@
+@mixin dFlex($f, $j, $a) {
+    display: $f;
+    justify-content: $j;
+    align-items: $a;
+}

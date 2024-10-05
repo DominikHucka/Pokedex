@@ -1,1 +1,228 @@
 /* You can add global styles to this file, and also import other style files */
+// * {
+//     box-sizing: border-box;
+// }
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: 'Comic Neue', Arial, Helvetica, sans-serif; }
+
+
+:root {
+    --grey: rgb(145, 145, 145);
+    --light-grey: #F2F2F2;
+    --red: #b41413;
+}
+
+span, p {
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+h1, h2, h3 {
+    font-weight: 700;
+    font-style: normal;
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+
+
+/* Color Type */
+
+.bg-bug {
+    background-color: #9eb96e;
+}
+
+.bg-dragon {
+    background-color: #E4C920;
+}
+
+.bg-electric {
+    background-color: #FBFBB5;    
+}
+
+.bg-fairy {
+    background-color: #FF95C2;    
+}
+
+.bg-fighting {
+    background-color: #F0D7B5;        
+}
+
+.bg-fire {
+    background-color: #F3B34D;                
+}
+
+.bg-flying {
+    background-color: #5299CD;
+}
+
+.bg-grass {
+    background-color: #81DE1C;                    
+}
+
+.bg-ground {
+    background-color: #DC8732;                
+}
+
+.bg-ice {
+    background-color: #ACD1ED;        
+}
+
+.bg-normal {
+    background-color: lightgray;                        
+}
+
+.bg-poison {
+    background-color: #C189BC;                        
+}
+
+.bg-psychic {
+    background-color: #f366b9;                
+}
+
+.bg-steel {
+    background-color: #E1E6E8;    
+}
+
+.bg-water {
+    background-color: #5FB9DF;                                                
+}
+
+.bg-rock {
+    background-color: #a38c21;
+}
+
+.bg-ghost {
+    background-color: #7b62a3;
+}
+
+.bg-dark {
+    background-color: #080808;
+    color: white;
+}
+
+/* color Typ Shadow Box */
+
+.shadow-dark:hover {
+    box-shadow: 1px 1px 15px 0px #080808;
+}
+
+.shadow-bug:hover {
+    box-shadow: 1px 1px 15px 0px #9eb96e;
+}
+
+.shadow-dragon:hover {
+    box-shadow: 1px 1px 15px 0px #E4C920;
+}
+
+.shadow-electric:hover {
+    box-shadow: 1px 1px 15px 0px #FBFBB5;    
+}
+
+.shadow-fairy:hover {
+    box-shadow: 1px 1px 15px 0px #FF95C2;    
+}
+
+.shadow-fighting:hover {
+    box-shadow: 1px 1px 15px 0px #F0D7B5;        
+}
+
+.shadow-fire:hover {
+    box-shadow: 1px 1px 15px 0px #F3B34D;                
+}
+
+.shadow-flying:hover {
+    box-shadow: 1px 1px 15px 0px #5299CD;
+}
+
+.shadow-grass:hover {
+    box-shadow: 1px 1px 15px 0px #81DE1C;                    
+}
+
+.shadow-ground:hover {
+    box-shadow: 1px 1px 15px 0px #DC8732;                
+}
+
+.shadow-ice:hover {
+    box-shadow: 1px 1px 15px 0px #ACD1ED;        
+}
+
+.shadow-normal:hover {
+    box-shadow: 1px 1px 15px 0px lightgray;                        
+}
+
+.shadow-poison:hover {
+    box-shadow: 1px 1px 15px 0px #C189BC;                        
+}
+
+.shadow-psychic:hover {
+    box-shadow: 1px 1px 15px 0px #f366b9;                
+}
+
+.shadow-steel:hover {
+    box-shadow: 1px 1px 15px 0px #E1E6E8;    
+}
+
+.shadow-water:hover {
+    box-shadow: 1px 1px 15px 0px #5FB9DF;                                                
+}
+
+.shadow-rock:hover {
+    box-shadow: 1px 1px 15px 0px #a38c21;
+}
+
+.shadow-ghost:hover {
+    box-shadow: 1px 1px 15px 0px #7b62a3;
+}
+
+
+/* comic-neue-300 - latin */
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Comic Neue';
+    font-style: normal;
+    font-weight: 300;
+    src: url('./fonts/comic-neue-v8-latin-300.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  }
+  /* comic-neue-300italic - latin */
+  @font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Comic Neue';
+    font-style: italic;
+    font-weight: 300;
+    src: url('./fonts/comic-neue-v8-latin-300italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  }
+  /* comic-neue-regular - latin */
+  @font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Comic Neue';
+    font-style: normal;
+    font-weight: 400;
+    src: url('./fonts/comic-neue-v8-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  }
+  /* comic-neue-italic - latin */
+  @font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Comic Neue';
+    font-style: italic;
+    font-weight: 400;
+    src: url('./fonts/comic-neue-v8-latin-italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  }
+  /* comic-neue-700 - latin */
+  @font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Comic Neue';
+    font-style: normal;
+    font-weight: 700;
+    src: url('./fonts/comic-neue-v8-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  }
+  /* comic-neue-700italic - latin */
+  @font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Comic Neue';
+    font-style: italic;
+    font-weight: 700;
+    src: url('./fonts/comic-neue-v8-latin-700italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+  }

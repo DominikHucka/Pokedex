@@ -1,0 +1,14 @@
+@import './../../share/mixin.scss';
+
+
+.search {
+    @include dFlex(flex, none, none);
+    gap: 10px;
+    margin-left: 25px;
+    margin-top: 50px;
+    position: absolute;
+    >input {
+        border-radius: 20px;
+        padding: 5px;
+    }
+}
