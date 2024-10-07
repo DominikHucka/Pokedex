@@ -8,7 +8,8 @@ import { HeaderComponent } from '../header/header.component';
   standalone: true,
   imports: [CommonModule,
     PokemonListComponent,
-    HeaderComponent
+    HeaderComponent,
+
   ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'

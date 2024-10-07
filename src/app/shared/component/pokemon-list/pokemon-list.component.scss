@@ -54,3 +54,24 @@
     top: 20px;
     left: 10px;
 }
+
+.overlay {
+    @include dFlex(flex, center, center);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba($color: #000000, $alpha: 0.2);
+    transition: all .5s ease-in-out;
+    transform: translateX(1000%);
+}
+
+
+.show-overlay {
+    transform: translateX(0);
+}
+
+
