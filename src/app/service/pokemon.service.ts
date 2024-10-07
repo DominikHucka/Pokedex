@@ -7,10 +7,10 @@ import { Observable } from 'rxjs';
 })
 export class PokemonService {
   offset: number = 0;
-  private BASE_URL: string = 'https://pokeapi.co/api/v2/pokemon?limit=1302&offset={$this.offset}';
+  private BASE_URL: string = `https://pokeapi.co/api/v2/pokemon?limit=1302&offset={$this.offset}`;
   http = inject(HttpClient);
   url: string = 'https://pokeapi.co/api/v2/pokemon/bulbasaur';
- 
+
 
 
 

@@ -1,45 +1,44 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Component, OnInit, inject } from '@angular/core';
-import { PokemonService } from '../../service/pokemon.service';
-
+import { HttpClient } from '@angular/common/http';
+import { Component, inject } from '@angular/core';
+import { PokemonService } from '../../../service/pokemon.service';
+import { SearchComponent } from '../search/search.component';
 
 @Component({
   selector: 'app-pokemon-list',
   standalone: true,
-  templateUrl: './pokemon-list.component.html',
-  styleUrl: './pokemon-list.component.scss',
   imports: [CommonModule,
-    HttpClientModule
-  ]
+    SearchComponent
+  ],
+  templateUrl: './pokemon-list.component.html',
+  styleUrl: './pokemon-list.component.scss'
 })
-
-export class PokemonListComponent implements OnInit {
-
+export class PokemonListComponent {
   pokemonData: any[] = [];
+  filteredPokemon: any[] = [];
   currentPokemon: any;
   baseData: any;
   limitPokemon: any;
   private pokemonService = inject(PokemonService);
-  http = inject(HttpClient);
+  private http = inject(HttpClient);
 
 
   ngOnInit() {
     setTimeout(() => {
       this.loadAllPokemons()
-    }, 1000);
-    
+    }, 500);
+
   }
 
 
-  loadAllPokemons()  {
+  loadAllPokemons() {
     this.pokemonService.fetchAllPokemons().subscribe((pokemons: any) => {
       this.baseData = pokemons;
       let result = this.baseData.results;
       for (let i = 0; i < result.length; i++) {
         const results = result[i];
-        console.log('show all Pokemons', results);
-        this.filterPokemonName(results);
+        // console.log('show all Pokemons', results);
+        // this.filterPokemonName(results);
         this.fetchPokemonUrl(results);
       }
     }, (error) => {
@@ -52,14 +51,30 @@ export class PokemonListComponent implements OnInit {
     this.http.get(results.url).subscribe((url) => {
       this.currentPokemon = url;
       this.pokemonData.push(this.currentPokemon);
+      // console.log(this.currentPokemon);
     }, (error) => {
       console.log('fetch data failed', error);
     })
   }
 
 
-  filterPokemonName(results: any) {
-    this.results.filter()
+  // testFromChild(name: string ){
+  //   console.log(name);
+  // }
+
+
+  // filterPokemonName(results: any) {
+  //   results.filter((pokemon: any) => pokemon.name.toLowerCase().include())
+  // }
+
+
+  searchPokemon(name: string) {
+    const filteredName = this.currentPokemon.name.filter((pokemon: string) => pokemon);
+    filteredName.toLowerCase().include(name);
+    
+    console.log(filteredName);
+    debugger;
+    
   }
 
 
@@ -72,4 +87,3 @@ export class PokemonListComponent implements OnInit {
     return typeName ? `shadow-${typeName.toLowerCase()}` : '';
   }
 }
-

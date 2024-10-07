@@ -13,5 +13,4 @@ export class HeaderComponent {
   searchPokemon(name: string ) {
     console.log(name);
   }
-
 }
