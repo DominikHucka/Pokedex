@@ -1,5 +1,4 @@
 <div class="search">
     <h2>Search</h2>
-    <input type="search" name="search"  placeholder="Pokemon..." (keyup)="emitName()" #filter>
-    <!-- <button (click)="emitTest()"></button> -->
+    <input type="search" name="search"  placeholder="Pokemon..." (keyup)="emitName($event)">
 </div>

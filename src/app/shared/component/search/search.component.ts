@@ -10,12 +10,10 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 export class SearchComponent {
   @Output() searchPokemonName = new EventEmitter<string>();
-  pokemonName: string = '';
   
   
-    emitName() {
-      this.searchPokemonName.emit(this.pokemonName);
-      // console.log('its worked', this.pokemonName)
-      // debugger;
+    emitName(event: any) {
+      const pokemonName = event.target.value;
+      this.searchPokemonName.emit(pokemonName);
     }
 }

@@ -2,7 +2,7 @@
 
 <section class="main-container">
     <app-search [ngClass]="'position'" (searchPokemonName)="searchPokemon($event)"></app-search>
-    @for (pokemon of pokemonData.slice(0 , 20); track pokemon.id; let index = $index) {
+    @for (pokemon of filteredPokemon.slice(0 , 20); track pokemon.id; let index = $index) {
     <ng-container>
         <div [ngClass]="getShadowClass(pokemon?.types[0].type.name)" class="pokemon-card">
             <div class="pokemon-image-container">

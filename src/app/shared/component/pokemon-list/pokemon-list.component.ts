@@ -16,9 +16,7 @@ import { SearchComponent } from '../search/search.component';
 export class PokemonListComponent {
   pokemonData: any[] = [];
   filteredPokemon: any[] = [];
-  currentPokemon: any;
   baseData: any;
-  limitPokemon: any;
   private pokemonService = inject(PokemonService);
   private http = inject(HttpClient);
 
@@ -26,7 +24,7 @@ export class PokemonListComponent {
   ngOnInit() {
     setTimeout(() => {
       this.loadAllPokemons()
-    }, 500);
+    }, 200);
 
   }
 
@@ -37,8 +35,6 @@ export class PokemonListComponent {
       let result = this.baseData.results;
       for (let i = 0; i < result.length; i++) {
         const results = result[i];
-        // console.log('show all Pokemons', results);
-        // this.filterPokemonName(results);
         this.fetchPokemonUrl(results);
       }
     }, (error) => {
@@ -49,32 +45,22 @@ export class PokemonListComponent {
 
   fetchPokemonUrl(results: any) {
     this.http.get(results.url).subscribe((url) => {
-      this.currentPokemon = url;
-      this.pokemonData.push(this.currentPokemon);
-      // console.log(this.currentPokemon);
+      this.pokemonData.push(url);
+      this.filteredPokemon = [...this.pokemonData];
     }, (error) => {
       console.log('fetch data failed', error);
     })
   }
 
 
-  // testFromChild(name: string ){
-  //   console.log(name);
-  // }
-
-
-  // filterPokemonName(results: any) {
-  //   results.filter((pokemon: any) => pokemon.name.toLowerCase().include())
-  // }
-
-
-  searchPokemon(name: string) {
-    const filteredName = this.currentPokemon.name.filter((pokemon: string) => pokemon);
-    filteredName.toLowerCase().include(name);
-    
-    console.log(filteredName);
-    debugger;
-    
+  searchPokemon(name: string) {   
+    if (name) {
+      this.filteredPokemon = this.pokemonData.filter((pokemon: any) => 
+        pokemon.name.toLowerCase().startsWith(name.toLowerCase())
+      );
+    } else {
+      this.filteredPokemon = [...this.pokemonData]; 
+    }
   }
 
 
