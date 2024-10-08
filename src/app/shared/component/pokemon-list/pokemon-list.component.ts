@@ -4,6 +4,7 @@ import { Component, inject } from '@angular/core';
 import { PokemonService } from '../../../service/pokemon.service';
 import { SearchComponent } from '../search/search.component';
 import { PokemonCardComponent } from '../pokemon-card/pokemon-card.component';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-pokemon-list',
@@ -25,11 +26,16 @@ export class PokemonListComponent {
   private http = inject(HttpClient);
   slideIn: boolean = false;
   isLoading: boolean = false;
+  pokemonChar: any;
+  characteristic: any[] = [];
+  totalCharacteristics: number = 10;
 
 
   ngOnInit() {
     setTimeout(() => {
-      this.loadAllPokemons()
+      this.loadAllPokemons();
+      this.loadCharInfos();
+      // this.pushCharToArray();
     }, 200);
   }
 
@@ -38,8 +44,9 @@ export class PokemonListComponent {
     this.pokemonService.fetchAllPokemons().subscribe((pokemons: any) => {
       this.baseData = pokemons;
       let result = this.baseData.results;
-      for (let i = 0; i < 1 && result.length; i++) {
-        const results = result[i];
+      // console.log('base-Url', result);
+      for (let i = 0; i < result.length; i++) {
+        let results = result[i];
         this.fetchPokemonUrl(results);
       }
     }, (error) => {
@@ -57,6 +64,45 @@ export class PokemonListComponent {
       console.log('fetch data failed', error);
     })
   }
+
+// DOKUMENTATION NOCH DURCHFÜHREN IN NOTION FÜR JOINFROK //
+
+
+  loadCharInfos() {
+    const requests = [];
+  
+    for (let j = 1; j <= this.totalCharacteristics; j++) {
+      requests.push(this.pokemonService.fetchChar(j)); 
+    }
+  
+    forkJoin(requests).subscribe((results: any[]) => {
+      this.characteristic = results; 
+      console.log('show characteristic', this.characteristic); 
+    }, (error) => {
+      console.log('fetch data failed', error);
+    });
+  }
+
+
+
+
+
+//   loadCharInfos() {
+//     for (let j = 1; j <= this.totalCharacteristics; j++) {
+//       const fetched = this.pokemonService.fetchChar(j)
+//     }
+
+//   console.log('show characteristic', this.characteristic);
+// }
+
+
+
+  // loadingChar(results: any) {
+  //   this.http.get(results).subscribe((url) => {
+  //     this.pokemonChar.push(url);
+  //     console.log('show char information', this.pokemonChar);
+  //   })
+  // }
 
 
   searchPokemon(name: string) {

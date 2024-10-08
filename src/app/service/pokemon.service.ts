@@ -6,10 +6,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class PokemonService {
+  limit: number = 1; // limit ist 1302; 
   offset: number = 0;
-  private BASE_URL: string = `https://pokeapi.co/api/v2/pokemon?limit=1302&offset={$this.offset}`;
+  BASE_URL: string = `https://pokeapi.co/api/v2/pokemon?limit=${this.limit}&offset=${this.offset}`;
   http = inject(HttpClient);
-  url: string = 'https://pokeapi.co/api/v2/pokemon/bulbasaur';
+  // URL: string = 'https://pokeapi.co/api/v2/pokemon/bulbasaur';
 
 
 
@@ -19,10 +20,10 @@ export class PokemonService {
   }
 
 
-
-  // fetchPokemon() {
-  //   return this.http.get(this.url);
-  // }
+  fetchChar(id: number): Observable<any> {
+    const CHAR_URL = `https://pokeapi.co/api/v2/characteristic/${id}`;
+    return this.http.get<any>(CHAR_URL);
+  }
 
 
   loadMorePokemons() {
