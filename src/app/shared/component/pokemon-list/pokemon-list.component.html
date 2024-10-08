@@ -3,7 +3,7 @@
 
     <app-search [ngClass]="'position'" (searchPokemonName)="searchPokemon($event)"></app-search>
 
-    @for (pokemon of filteredPokemon.slice(0 , 20); track pokemon.id; let index = $index) {
+    @for (pokemon of filteredPokemon.slice(0 , 1); track pokemon.id; let index = $index) {
     <ng-container>
         <div (click)="openCard(pokemon, true)" [ngClass]="'shadow-' + pokemon?.types[0].type.name" class="pokemon-card">
             <div class="pokemon-image-container">

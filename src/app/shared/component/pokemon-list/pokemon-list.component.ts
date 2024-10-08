@@ -38,7 +38,7 @@ export class PokemonListComponent {
     this.pokemonService.fetchAllPokemons().subscribe((pokemons: any) => {
       this.baseData = pokemons;
       let result = this.baseData.results;
-      for (let i = 0; i < result.length; i++) {
+      for (let i = 0; i < 1 && result.length; i++) {
         const results = result[i];
         this.fetchPokemonUrl(results);
       }
@@ -72,6 +72,8 @@ export class PokemonListComponent {
 
   openCard(pokemon: any, slideIn: boolean) {
     this.currentPokemon = pokemon;
-    this.slideIn = slideIn;
+    setTimeout(() => {
+      this.slideIn = slideIn;
+    }, 100)
   }
 }
