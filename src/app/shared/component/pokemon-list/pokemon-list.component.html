@@ -1,13 +1,14 @@
 <section class="main-container">
     <!-- <div class="stripe-left"></div> -->
-    <app-pokemon-card *ngIf="currentPokemon" [ability]="currentPokemon" [pokemons]="currentPokemon" class="overlay"
-        [class.show-overlay]="slideIn"></app-pokemon-card>
+    <app-pokemon-card *ngIf="currentPokemon && pokemonDetails" [ability]="pokemonDetails" [pokemons]="currentPokemon"
+        class="overlay" [class.show-overlay]="slideIn"></app-pokemon-card>
 
     <app-search class="position" (searchPokemonName)="searchPokemon($event)"></app-search>
 
     @for (pokemon of filteredPokemon; track $index) {
     <ng-container>
-        <div (click)="openCard(pokemon, true)" [ngClass]="'shadow-' + pokemon.types[0].type.name" class="pokemon-card">
+        <div *ngFor="let ability of abilities" (click)="openCard(pokemon, true, ability)" [ngClass]="'shadow-' + pokemon.types[0].type.name"
+            class="pokemon-card">
             <div class="pokemon-image-container">
                 <div class="pokemon-image">
                     <img [src]="pokemon.sprites.other['official-artwork'].front_default">

@@ -25,15 +25,16 @@ export class PokemonListComponent implements OnInit {
 
   pokemonData: Pokemon[] = [];
   filteredPokemon: Pokemon[] = [];
-  baseData: any;
   abilities: Pokemon[] = [];
 
 
+  baseData: any;
   currentPokemon: any = null;
+  pokemonDetails: any = null;
   slideIn: boolean = false;
   isLoading: boolean = false;
 
-  
+
   totalPokemonId: number = 1;
   limit: number = 1;
   offset: number = 0;
@@ -98,8 +99,10 @@ export class PokemonListComponent implements OnInit {
   }
 
 
-  openCard(pokemon: any, slideIn: boolean) {
+  openCard(pokemon: any, slideIn: boolean, ability: any) {
     this.currentPokemon = pokemon;
+    this.pokemonDetails = ability;
+    // debugger;
     setTimeout(() => {
       this.slideIn = slideIn;
     }, 100)
