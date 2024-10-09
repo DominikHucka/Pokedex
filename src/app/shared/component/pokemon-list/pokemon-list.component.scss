@@ -5,6 +5,7 @@
     @include dFlex(flex, center, center);
     flex-wrap: wrap;
     margin-top: 100px;
+    // position: relative;
 }
 
 
@@ -51,7 +52,7 @@
 
 .position {
     position: absolute;
-    top: 20px;
+    top: 25px;
     left: 10px;
 }
 
@@ -75,3 +76,19 @@
 }
 
 
+.stripe-left  {
+    min-height: 100%;
+    width: 50px;
+    background-color: var(--red);
+    position: absolute;
+    left: 0;
+}
+
+
+.stripe-right {
+    min-height: 100%;
+    width: 50px;
+    background-color: var(--red);
+    position: absolute;
+    right: 0;
+}

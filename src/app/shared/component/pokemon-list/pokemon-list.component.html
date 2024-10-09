@@ -1,32 +1,35 @@
 <section class="main-container">
-    <app-pokemon-card *ngIf="currentPokemon" [pokemons]="currentPokemon" class="overlay" [class.show-overlay]="slideIn"></app-pokemon-card>
+    <!-- <div class="stripe-left"></div> -->
+    <app-pokemon-card *ngIf="currentPokemon" [ability]="currentPokemon" [pokemons]="currentPokemon" class="overlay"
+        [class.show-overlay]="slideIn"></app-pokemon-card>
 
-    <app-search [ngClass]="'position'" (searchPokemonName)="searchPokemon($event)"></app-search>
+    <app-search class="position" (searchPokemonName)="searchPokemon($event)"></app-search>
 
-    @for (pokemon of filteredPokemon.slice(0 , 1); track pokemon.id; let index = $index) {
+    @for (pokemon of filteredPokemon; track $index) {
     <ng-container>
-        <div (click)="openCard(pokemon, true)" [ngClass]="'shadow-' + pokemon?.types[0].type.name" class="pokemon-card">
+        <div (click)="openCard(pokemon, true)" [ngClass]="'shadow-' + pokemon.types[0].type.name" class="pokemon-card">
             <div class="pokemon-image-container">
                 <div class="pokemon-image">
-                    <img [src]="pokemon?.sprites.other['official-artwork'].front_default">
+                    <img [src]="pokemon.sprites.other['official-artwork'].front_default">
                 </div>
             </div>
             <div class="pokemon-id">
-                <span>#{{ pokemon?.id.toString().padStart(4, '0') }} </span>
+                <span>#{{ pokemon.id.toString().padStart(4, '0') }} </span>
             </div>
             <div class="pokemon-name">
-                <h2>{{ pokemon?.name | titlecase }}</h2>
+                <h2>{{ pokemon.name | titlecase }}</h2>
             </div>
             <div class="pokemon-type">
                 <div [ngClass]="'bg-' + pokemon?.types[0].type.name" class="pokemon-type-container">
-                    <span>{{ pokemon?.types[0].type.name | titlecase }}</span>
+                    <span>{{ pokemon.name | titlecase }}</span>
                 </div>
-                <div *ngIf="pokemon?.types.length > 1" [ngClass]="'bg-' + pokemon.types[1].type.name"
+                <div *ngIf="pokemon.types.length > 1" [ngClass]="'bg-' + pokemon.types[1].type.name"
                     class="pokemon-type-container">
-                    <span>{{ pokemon?.types[1].type.name | titlecase }}</span>
+                    <span>{{ pokemon.types[1].type.name | titlecase }}</span>
                 </div>
             </div>
         </div>
     </ng-container>
     }
+    <!-- <div class="stripe-right"></div> -->
 </section>

@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { Component, inject, OnInit } from '@angular/core';
 import { PokemonService } from '../../../service/pokemon.service';
 import { SearchComponent } from '../search/search.component';
 import { PokemonCardComponent } from '../pokemon-card/pokemon-card.component';
+import { Pokemon } from '../../../pokemon';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -11,103 +12,84 @@ import { forkJoin } from 'rxjs';
   standalone: true,
   imports: [CommonModule,
     SearchComponent,
-    PokemonCardComponent
+    PokemonCardComponent,
+    HttpClientModule
   ],
   templateUrl: './pokemon-list.component.html',
   styleUrl: './pokemon-list.component.scss'
 })
-export class PokemonListComponent {
-  pokemonData: any[] = [];
-  filteredPokemon: any[] = [];
-  baseData: any;
-  pokemon: any;
-  currentPokemon: any = null;
+export class PokemonListComponent implements OnInit {
   private pokemonService = inject(PokemonService);
   private http = inject(HttpClient);
+
+
+  pokemonData: Pokemon[] = [];
+  filteredPokemon: Pokemon[] = [];
+  baseData: any;
+  abilities: Pokemon[] = [];
+
+
+  currentPokemon: any = null;
   slideIn: boolean = false;
   isLoading: boolean = false;
-  pokemonChar: any;
-  characteristic: any[] = [];
-  totalCharacteristics: number = 10;
+
+  
+  totalPokemonId: number = 1;
+  limit: number = 1;
+  offset: number = 0;
 
 
   ngOnInit() {
-    setTimeout(() => {
-      this.loadAllPokemons();
-      this.loadCharInfos();
-      // this.pushCharToArray();
-    }, 200);
+    this.loadAllPokemons();
+    this.loadDetails();
   }
 
 
   loadAllPokemons() {
-    this.pokemonService.fetchAllPokemons().subscribe((pokemons: any) => {
+    this.pokemonService.fetchAPI(`https://pokeapi.co/api/v2/pokemon?limit=${this.limit}&offset=${this.offset}`)
+    .subscribe((pokemons: any) => {
       this.baseData = pokemons;
       let result = this.baseData.results;
-      // console.log('base-Url', result);
-      for (let i = 0; i < result.length; i++) {
-        let results = result[i];
-        this.fetchPokemonUrl(results);
-      }
+      const pokemonRequest = result.map((pokemon: any) => this.http.get(pokemon.url));
+      this.fetchPokemonUrl(pokemonRequest);
     }, (error) => {
       console.log('fetch data failed', error);
     })
   }
 
 
-  fetchPokemonUrl(results: any) {
-    this.http.get(results.url).subscribe((url) => {
-      this.pokemonData.push(url);
-      // console.log(url);
+  fetchPokemonUrl(request: any) {
+    forkJoin(request).subscribe((pokemonArray: any) => {
+      this.pokemonData = pokemonArray;
       this.filteredPokemon = [...this.pokemonData];
+      console.log('show Pokemon Data', this.pokemonData);
     }, (error) => {
-      console.log('fetch data failed', error);
+      console.log('fetched failed', error);
     })
   }
 
-// DOKUMENTATION NOCH DURCHFÜHREN IN NOTION FÜR JOINFROK //
 
-
-  loadCharInfos() {
-    const requests = [];
+  loadDetails() {
+    const abilityRequests: any[] = [];
   
-    for (let j = 1; j <= this.totalCharacteristics; j++) {
-      requests.push(this.pokemonService.fetchChar(j)); 
+    for (let i = 1; i <= this.totalPokemonId; i++) {
+      const request = this.pokemonService.fetchAPI(`https://pokeapi.co/api/v2/ability/${i}/`);
+      abilityRequests.push(request);
     }
   
-    forkJoin(requests).subscribe((results: any[]) => {
-      this.characteristic = results; 
-      console.log('show characteristic', this.characteristic); 
+    
+    forkJoin(abilityRequests).subscribe((abilities) => {
+      this.abilities = abilities; 
+      console.log('abilities', this.abilities);
     }, (error) => {
-      console.log('fetch data failed', error);
+      console.error('Error fetching abilities:', error);
     });
   }
 
 
-
-
-
-//   loadCharInfos() {
-//     for (let j = 1; j <= this.totalCharacteristics; j++) {
-//       const fetched = this.pokemonService.fetchChar(j)
-//     }
-
-//   console.log('show characteristic', this.characteristic);
-// }
-
-
-
-  // loadingChar(results: any) {
-  //   this.http.get(results).subscribe((url) => {
-  //     this.pokemonChar.push(url);
-  //     console.log('show char information', this.pokemonChar);
-  //   })
-  // }
-
-
   searchPokemon(name: string) {
     if (name) {
-      this.filteredPokemon = this.pokemonData.filter((pokemon: any) =>
+      this.filteredPokemon = this.pokemonData.filter((pokemon: Pokemon) =>
         pokemon.name.toLowerCase().startsWith(name.toLowerCase())
       );
     } else {
@@ -123,3 +105,4 @@ export class PokemonListComponent {
     }, 100)
   }
 }
+

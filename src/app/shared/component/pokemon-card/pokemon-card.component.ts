@@ -10,5 +10,5 @@ import { Component, Input } from '@angular/core';
 })
 export class PokemonCardComponent {
   @Input() pokemons: any;
-  
+  @Input() ability: any;  
 }
