@@ -14,16 +14,14 @@ export class PokemonInfoComponent implements OnInit {
   private pokemonService = inject(PokemonService);
   @Input() pokemon: any;
 
-  totalPokemonId: number = 1;
   
+  totalPokemonId: number = 1;
   abilities: any[] = [];
-  types: any[] = [];
   species: any[] = [];
 
 
   ngOnInit(): void {
     this.loadAbilities();
-    this.loadTypes();
     this.loadSpecies();
   }
 
@@ -32,16 +30,6 @@ export class PokemonInfoComponent implements OnInit {
     forkJoin(param).subscribe((response: any) => {
       this.abilities = response;
       console.log('abilities', this.abilities);
-    }, (error) => {
-      console.error('Error fetching abilities:', error);
-    });
-  }
-
-
-  requestOfTypes(param: any) {
-    forkJoin(param).subscribe((response: any) => {
-      this.types = response;
-      console.log('types', this.types);
     }, (error) => {
       console.error('Error fetching abilities:', error);
     });
@@ -62,14 +50,6 @@ export class PokemonInfoComponent implements OnInit {
     for (let i = 1; i <= this.totalPokemonId; i++) {
       let request = this.pokemonService.fetchAPI(`https://pokeapi.co/api/v2/ability/${i}/`);
       this.requestOfAbilities(request);
-    }
-  }
-
-
-  loadTypes() {
-    for (let i = 1; i <= this.totalPokemonId; i++) {
-      let request = this.pokemonService.fetchAPI(`https://pokeapi.co/api/v2/type/${i}/`);
-      this.requestOfTypes(request);
     }
   }
 

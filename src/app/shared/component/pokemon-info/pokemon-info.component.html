@@ -5,16 +5,16 @@
 <div *ngFor="let speciesOfPokemon of species" [ngClass]="'bg-' + pokemon.types[0].type.name" class="card-container">
     <div class="card-information">
         <span> Height </span>
-        <h4>{{(pokemon.height / 10).toFixed(1).replace(".", ",") }} m</h4>
+        <p>{{(pokemon.height / 10).toFixed(1).replace(".", ",") }} m</p>
         <span>Weight</span>
-        <h4>{{ (pokemon.weight / 10).toFixed(1).replace(".", ",") }} kg</h4>
+        <p>{{ (pokemon.weight / 10).toFixed(1).replace(".", ",") }} kg</p>
         <span class="font-color"></span>
     </div>
     <div class="card-information">
         <span>Genera</span>
-        <h4> {{speciesOfPokemon.genera[7].genus}} </h4>
+        <p> {{speciesOfPokemon.genera[7].genus}} </p>
         <span>Area</span>
-        <h4> {{speciesOfPokemon.habitat.name | titlecase}} </h4>
+        <p> {{speciesOfPokemon.habitat.name | titlecase}} </p>
     </div>
 </div>
 }

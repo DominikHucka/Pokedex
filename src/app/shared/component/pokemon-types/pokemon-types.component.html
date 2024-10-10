@@ -1,1 +1,22 @@
-<p>pokemon-types works!</p>
+@for (type of types; track $index) {
+<div class="type-container">
+    <div class="info">
+        <p>Type</p>
+        <div class="info-container">
+            <span [ngClass]="'bg-' + pokemon.types[0].type.name"> {{pokemon.types[0].type.name | titlecase}} </span>
+            <span [ngClass]="'bg-' + pokemon.types[1].type.name" *ngIf="pokemon.types.length > 1">
+                {{pokemon.types[1].type.name | titlecase}} </span>
+        </div>
+    </div>
+    <div class="info">
+        <p>Weakness</p>
+        <div class="info-container">
+            <span [ngClass]="'bg-' + type.damage_relations.double_damage_from[0].name">
+                {{type.damage_relations.double_damage_from[0].name | titlecase}} </span>
+            <span [ngClass]="'bg-' + type.damage_relations.double_half_from[0].name"
+                *ngIf="type.damage_relations.double_half_from > 1"> {{type.damage_relations.double_half_from[0].name |
+                titlecase}} </span>
+        </div>
+    </div>
+</div>
+}

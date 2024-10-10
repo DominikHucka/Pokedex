@@ -10,10 +10,11 @@
         <div class="second-container">
             <div class="image-statisitc-contianer">
                 <img [src]="pokemons.sprites.other.dream_world.front_default" alt="pokemon image">
-                <!--Compoenent with properties of Statstics-->
+                <app-pokemon-stats></app-pokemon-stats>
             </div>
             <div class="details-container">
                 <app-pokemon-info [pokemon]="pokemons"></app-pokemon-info>
+                <app-pokemon-types [pokemon]="pokemons"></app-pokemon-types>
             </div>
         </div>
     </div>

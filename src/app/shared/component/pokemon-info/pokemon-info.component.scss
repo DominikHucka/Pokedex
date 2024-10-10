@@ -2,9 +2,10 @@
 
 
 .card-container {
-    @include dFlex(flex, space-between, null);
+    @include dFlex(flex, flex-start, null);
     border-radius: 10px;
-    padding: 10px
+    padding: 10px;
+    gap: 140px;
 }
 
 
@@ -17,6 +18,10 @@
 .card-information {
     >span {
         color: #ffff;
+    }
+    >p {
+        font-size: 18px;
+        font-weight: 400;
     }
 }
 

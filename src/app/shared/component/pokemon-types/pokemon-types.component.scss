@@ -1,0 +1,27 @@
+@import './../../mixin.scss';
+
+
+.type-container {
+    @include dFlex(flex, none, none);
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+.info {
+    @include dFlex(flex, none, none);
+    flex-direction: column;
+    >p {
+        font-size: 18px;
+    }
+}
+
+
+.info-container { 
+    @include dFlex(flex, none, none);
+    gap: 10px;
+    >span {
+        border-radius: 5px;
+        padding: 0 30px 0 30px;
+    }
+} 
