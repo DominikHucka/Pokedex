@@ -4,7 +4,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { PokemonService } from '../../../service/pokemon.service';
 import { SearchComponent } from '../search/search.component';
 import { PokemonCardComponent } from '../pokemon-card/pokemon-card.component';
-import { Pokemon } from '../../../pokemon';
+// import { Pokemon } from '../../../pokemon';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -23,9 +23,9 @@ export class PokemonListComponent implements OnInit {
   private http = inject(HttpClient);
 
 
-  pokemonData: Pokemon[] = [];
-  filteredPokemon: Pokemon[] = [];
-  abilities: Pokemon[] = [];
+  pokemonData: any[] = [];
+  filteredPokemon: any[] = [];
+  // abilities: Pokemon[] = [];
 
 
   baseData: any;
@@ -35,14 +35,14 @@ export class PokemonListComponent implements OnInit {
   isLoading: boolean = false;
 
 
-  totalPokemonId: number = 1;
   limit: number = 1;
   offset: number = 0;
+  // totalPokemonId: number = 1;
 
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadAllPokemons();
-    this.loadDetails();
+    // this.loadDetails();
   }
 
 
@@ -70,27 +70,27 @@ export class PokemonListComponent implements OnInit {
   }
 
 
-  loadDetails() {
-    const abilityRequests: any[] = [];
+  // loadDetails() {
+  //   const abilityRequests: any[] = [];
   
-    for (let i = 1; i <= this.totalPokemonId; i++) {
-      const request = this.pokemonService.fetchAPI(`https://pokeapi.co/api/v2/ability/${i}/`);
-      abilityRequests.push(request);
-    }
+  //   for (let i = 1; i <= this.totalPokemonId; i++) {
+  //     const request = this.pokemonService.fetchAPI(`https://pokeapi.co/api/v2/ability/${i}/`);
+  //     abilityRequests.push(request);
+  //   }
   
     
-    forkJoin(abilityRequests).subscribe((abilities) => {
-      this.abilities = abilities; 
-      console.log('abilities', this.abilities);
-    }, (error) => {
-      console.error('Error fetching abilities:', error);
-    });
-  }
+  //   forkJoin(abilityRequests).subscribe((abilities) => {
+  //     this.abilities = abilities; 
+  //     console.log('abilities', this.abilities);
+  //   }, (error) => {
+  //     console.error('Error fetching abilities:', error);
+  //   });
+  // }
 
 
   searchPokemon(name: string) {
     if (name) {
-      this.filteredPokemon = this.pokemonData.filter((pokemon: Pokemon) =>
+      this.filteredPokemon = this.pokemonData.filter((pokemon: any) =>
         pokemon.name.toLowerCase().startsWith(name.toLowerCase())
       );
     } else {
@@ -99,9 +99,9 @@ export class PokemonListComponent implements OnInit {
   }
 
 
-  openCard(pokemon: any, slideIn: boolean, ability: any) {
+  openCard(pokemon: any, slideIn: boolean) {
     this.currentPokemon = pokemon;
-    this.pokemonDetails = ability;
+    // this.pokemonDetails = ability;
     // debugger;
     setTimeout(() => {
       this.slideIn = slideIn;

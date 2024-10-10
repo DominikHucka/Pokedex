@@ -1,12 +1,21 @@
 <div class="main-container">
     <div class="next-previous-contianer">
-        
+        <!--Compoenent with properties buttons with option for next and previous Pokemon-->
     </div>
     <div class="container">
-        <h1 class="card-title">{{pokemons.name | titlecase}} </h1>
-        <img [src]="pokemons.sprites.other.dream_world.front_default" alt="...">
-        
-        <p class="card-text">{{pokemons.types[0].type.name | titlecase}}</p>
-        {{ ability.effect_entries[1].effect }}
+        <div class="header">
+            <h1 class="card-title">{{pokemons.name | titlecase}} </h1>
+            <span> Nr. {{ pokemons.id.toString().padStart(4, '0') }} </span>
+        </div>
+        <div class="second-container">
+            <div class="image-statisitc-contianer">
+                <img [src]="pokemons.sprites.other.dream_world.front_default" alt="pokemon image">
+                <!--Compoenent with properties of Statstics-->
+            </div>
+            <div class="details-container">
+                <app-pokemon-info [pokemon]="pokemons"></app-pokemon-info>
+            </div>
+        </div>
     </div>
+    <!-- <p class="card-text">{{pokemons.types[0].type.name | titlecase}}</p> -->
 </div>

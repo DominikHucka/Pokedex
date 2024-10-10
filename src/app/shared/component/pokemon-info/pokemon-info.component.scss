@@ -1,0 +1,22 @@
+@import './../../../shared/mixin.scss';
+
+
+.card-container {
+    @include dFlex(flex, space-between, null);
+    border-radius: 10px;
+    padding: 10px
+}
+
+
+.card-information {
+    @include dFlex(flex, space-between, null);
+    flex-direction: column;
+}
+
+
+.card-information {
+    >span {
+        color: #ffff;
+    }
+}
+

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Pokemon } from '../pokemon';
+// import { Pokemon } from '../pokemon';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +11,6 @@ export class PokemonService {
 
 
   fetchAPI(url: any): Observable<any> {
-    return this.http.get<Pokemon>(url);
+    return this.http.get<any>(url);
   }
 }
