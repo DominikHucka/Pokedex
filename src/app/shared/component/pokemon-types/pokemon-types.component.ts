@@ -16,18 +16,9 @@ export class PokemonTypesComponent implements OnInit {
   types: any[] = [];
   totalPokemonId = 1;
 
+  
   ngOnInit(): void {
     this.loadTypes();
-    this.test();
-  }
-
-
-  test() {
-    if (this.pokemon) {
-      return console.log('finished');
-    } else {
-      return console.log('Error');
-    }
   }
 
 

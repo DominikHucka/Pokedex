@@ -62,9 +62,10 @@
 .image-statisitc-contianer {
     @include dFlex(flex, none, none);
     flex-direction: column;
+    gap: 25px;
     >img {
-        width: 250px;
-        height: 250px;
+        width: 300px;
+        height: 300px;
         background-color: var(--light-grey);
         border-radius: 10px;
         padding: 10px;

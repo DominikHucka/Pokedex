@@ -2,7 +2,7 @@
 <div>
     <p>{{ ability.effect_entries[1].effect }}</p>
 </div>
-<div *ngFor="let speciesOfPokemon of species" [ngClass]="'bg-' + pokemon.types[0].type.name" class="card-container">
+<div *ngFor="let speciesOfPokemon of species" class="card-container">
     <div class="card-information">
         <span> Height </span>
         <p>{{(pokemon.height / 10).toFixed(1).replace(".", ",") }} m</p>
