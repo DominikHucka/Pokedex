@@ -13,9 +13,22 @@
         <div class="info-container">
             <span [ngClass]="'bg-' + type.damage_relations.double_damage_from[0].name">
                 {{type.damage_relations.double_damage_from[0].name | titlecase}} </span>
-            <span [ngClass]="'bg-' + type.damage_relations.double_half_from[0].name"
-                *ngIf="type.damage_relations.double_half_from > 1"> {{type.damage_relations.double_half_from[0].name |
-                titlecase}} </span>
+
+            <span *ngIf=" type.damage_relations.double_damage_from.length > 1"
+                [ngClass]="'bg-' + type.damage_relations.double_damage_from[1].name">
+                {{type.damage_relations.double_damage_from[1].name | titlecase}} </span>
+
+            <span *ngIf=" type.damage_relations.double_damage_from.length > 2"
+                [ngClass]="'bg-' + type.damage_relations.double_damage_from[2].name">
+                {{type.damage_relations.double_damage_from[2].name | titlecase}} </span>
+
+            <span *ngIf=" type.damage_relations.double_damage_from.length > 3"
+                [ngClass]="'bg-' + type.damage_relations.double_damage_from[3].name">
+                {{type.damage_relations.double_damage_from[3].name | titlecase}} </span>
+
+            <span *ngIf=" type.damage_relations.double_damage_from.length > 4"
+                [ngClass]="'bg-' + type.damage_relations.double_damage_from[4].name">
+                {{type.damage_relations.double_damage_from[4].name | titlecase}} </span>
         </div>
     </div>
 </div>

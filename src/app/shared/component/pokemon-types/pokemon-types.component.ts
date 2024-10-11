@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input, OnInit } from '@angular/core';
-import { forkJoin } from 'rxjs';
+import { Component, inject, Input } from '@angular/core';
 import { PokemonService } from '../../../service/pokemon.service';
 
 @Component({
@@ -10,32 +9,23 @@ import { PokemonService } from '../../../service/pokemon.service';
   templateUrl: './pokemon-types.component.html',
   styleUrl: './pokemon-types.component.scss'
 })
-export class PokemonTypesComponent implements OnInit {
+export class PokemonTypesComponent {
   @Input() pokemon: any;
   pokemonService = inject(PokemonService);
   types: any[] = [];
-  totalPokemonId = 1;
+  url: string = 'https://pokeapi.co/api/v2/type';
+ 
 
-  
+
   ngOnInit(): void {
     this.loadTypes();
   }
 
 
-  requestOfTypes(param: any) {
-    forkJoin(param).subscribe((response: any) => {
-      this.types = response;
-      console.log('types', this.types);
-    }, (error) => {
-      console.error('Error fetching abilities:', error);
-    });
-  }
-
-
   loadTypes() {
-    for (let i = 1; i <= this.totalPokemonId; i++) {
-      let request = this.pokemonService.fetchAPI(`https://pokeapi.co/api/v2/type/${i}/`);
-      this.requestOfTypes(request);
-    }
+    this.pokemonService.fetchAPI(`${this.url}/${this.pokemon.id}`)
+    .subscribe((result) => {
+      this.types.push(result);
+    })
   }
 }

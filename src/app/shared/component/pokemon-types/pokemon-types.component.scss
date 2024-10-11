@@ -1,6 +1,13 @@
 @import './../../mixin.scss';
 
 
+.main-container {
+    @include dFlex(flex, none, none);
+    flex-direction: column;
+    gap: 10px;
+}
+
+
 .type-container {
     @include dFlex(flex, none, none);
     flex-direction: column;
@@ -18,10 +25,13 @@
 
 
 .info-container { 
-    @include dFlex(flex, none, none);
+    @include dFlex(flex, start, center);
+    flex-wrap: wrap;
     gap: 10px;
     >span {
+        width: 80px;
+        height: 25px;
         border-radius: 5px;
-        padding: 0 30px 0 30px;
+        text-align: center;
     }
 } 

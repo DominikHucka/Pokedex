@@ -1,12 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { PokemonService } from '../../../service/pokemon.service';
+import { HttpClientModule } from '@angular/common/http';
 import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-pokemon-info',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,
+    HttpClientModule
+  ],
   templateUrl: './pokemon-info.component.html',
   styleUrl: './pokemon-info.component.scss'
 })
@@ -14,10 +17,14 @@ export class PokemonInfoComponent implements OnInit {
   private pokemonService = inject(PokemonService);
   @Input() pokemon: any;
 
-  
-  totalPokemonId: number = 1;
+
   abilities: any[] = [];
   species: any[] = [];
+  url = {
+      species: "https://pokeapi.co/api/v2/pokemon-species",
+      abilities: "https://pokeapi.co/api/v2/ability",
+    }
+  
 
 
   ngOnInit(): void {
@@ -25,39 +32,19 @@ export class PokemonInfoComponent implements OnInit {
     this.loadSpecies();
   }
 
-  
-  requestOfAbilities(param: any) {
-    forkJoin(param).subscribe((response: any) => {
-      this.abilities = response;
-      console.log('abilities', this.abilities);
-    }, (error) => {
-      console.error('Error fetching abilities:', error);
-    });
-  }
 
-
-  requestOfSpecies(param: any) {
-    forkJoin(param).subscribe((response: any) => {
-      this.species = response;
-      console.log('species', this.species);
-    }, (error) => {
-      console.error('Error fetching abilities:', error);
-    });
+  loadSpecies() {
+    this.pokemonService.fetchAPI(`${this.url.species}/${this.pokemon.id}/`)
+      .subscribe((result) => {
+        this.species.push(result);
+      }); 
   }
 
 
   loadAbilities() {
-    for (let i = 1; i <= this.totalPokemonId; i++) {
-      let request = this.pokemonService.fetchAPI(`https://pokeapi.co/api/v2/ability/${i}/`);
-      this.requestOfAbilities(request);
-    }
-  }
-
-
-  loadSpecies() {
-    for (let i = 1; i <= this.totalPokemonId; i++) {
-      let request = this.pokemonService.fetchAPI(`https://pokeapi.co/api/v2/pokemon-species/${i}/`);
-      this.requestOfSpecies(request);
-    }
+    this.pokemonService.fetchAPI(`${this.url.abilities}/${this.pokemon.id}/`)
+    .subscribe((result) => {
+      this.abilities.push(result);
+    }); 
   }
 }

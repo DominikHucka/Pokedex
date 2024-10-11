@@ -10,7 +10,5 @@ import { SearchComponent } from '../search/search.component';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-  searchPokemon(name: string ) {
-    console.log(name);
-  }
+ 
 }

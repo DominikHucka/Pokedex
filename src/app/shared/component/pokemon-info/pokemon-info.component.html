@@ -2,7 +2,7 @@
 <div>
     <p>{{ ability.effect_entries[1].effect }}</p>
 </div>
-<div *ngFor="let speciesOfPokemon of species" class="card-container">
+<div *ngFor="let properties of species" class="card-container">
     <div class="card-information">
         <span> Height </span>
         <p>{{(pokemon.height / 10).toFixed(1).replace(".", ",") }} m</p>
@@ -11,10 +11,11 @@
         <span class="font-color"></span>
     </div>
     <div class="card-information">
-        <span>Genera</span>
-        <p> {{speciesOfPokemon.genera[7].genus}} </p>
+        <span>Category</span>
+        <p> {{properties.genera[7].genus.replace('Pokemon', '')}} </p>
         <span>Area</span>
-        <p> {{speciesOfPokemon.habitat.name | titlecase}} </p>
+        <p> {{properties.habitat.name | titlecase}} </p>
     </div>
 </div>
 }
+
