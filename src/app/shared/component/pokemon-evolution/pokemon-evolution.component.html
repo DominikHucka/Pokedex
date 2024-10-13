@@ -1,1 +1,56 @@
-<p>pokemon-evolution works!</p>
+<div class="main-contianer">
+    <div class="header-text">
+        <p>Evolution</p>
+    </div>
+    <div class="evolution-container">
+        @for (details of evoOne; track $index) {
+        <div class="evolution">
+            <div class="pokemon-image">
+                <img [src]="details.sprites.other.dream_world.front_default" alt="pokemon image">
+            </div>
+            <div class="pokemon-name">
+                <p>{{details.name | titlecase}}</p>
+                <span> Nr. {{ details.id.toString().padStart(4, '0') }}</span>
+            </div>
+            <div class="pokemon-type">
+                <!--Types-->
+            </div>
+        </div>
+        }
+        <div class="arrow">
+            <img src="/assets/img/arrow.png" alt="arrow">
+        </div>
+        @for (details of evoTwo; track $index) {
+        <div class="evolution">
+            <div class="pokemon-image">
+                <img [src]="details.sprites.other.dream_world.front_default" alt="pokemon image">
+            </div>
+            <div class="pokemon-name">
+                <p>{{details.name | titlecase}}</p>
+                <span> Nr. {{ details.id.toString().padStart(4, '0') }}</span>
+            </div>
+            <div class="pokemon-type">
+                <!--Types-->
+            </div>
+        </div>
+        }
+
+        <div class="arrow">
+            <img src="/assets/img/arrow.png" alt="arrow">
+        </div>
+        @for (details of evoThree; track $index) {
+        <div class="evolution">
+            <div class="pokemon-image">
+                <img [src]="details.sprites.other.dream_world.front_default" alt="pokemon image">
+            </div>
+            <div class="pokemon-name">
+                <p>{{details.name | titlecase}}</p>
+                <span> Nr. {{ details.id.toString().padStart(4, '0') }}</span>
+            </div>
+            <div class="pokemon-type">
+                <!--Types-->
+            </div>
+        </div>
+        }
+    </div>
+</div>

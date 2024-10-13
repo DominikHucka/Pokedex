@@ -1,0 +1,59 @@
+@import './../../mixin.scss';
+
+
+.main-contianer {
+    @include dFlex(flex, none, none);
+    flex-direction: column;
+    width: 100%;
+    height: 450px;
+    padding: 50px;
+    background-color: #5a5a5a;
+    border-radius: 10px;
+    gap: 20px;
+}
+
+
+.evolution-container {
+    @include dFlex(flex, none, none);
+}
+
+
+.header-text {
+    >p {
+        color: white;
+    }
+}
+
+
+.pokemon-image {
+    >img {
+        width: 100px;
+    }
+}
+
+
+.pokemon-name {
+    @include dFlex(flex, none, none);
+    gap: 5px;
+    >p {
+        color: white;
+        font-weight: bold;
+    };
+    >span {
+        color: var(--grey);
+        font-weight: bold;
+    }
+}
+
+
+.arrow {
+    >img {
+        width: 40px;
+        rotate: 275deg;
+    }
+}
+
+
+
+
+

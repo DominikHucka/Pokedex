@@ -14,18 +14,62 @@ export class PokemonEvolutionComponent implements OnInit {
   pokemonService = inject(PokemonService);
   url: string = 'https://pokeapi.co/api/v2/evolution-chain';
   evolutions: any[] = [];
+  evoOne: any[] = [];
+  evoTwo: any[] = [];
+  evoThree: any[] = [];
 
 
   ngOnInit(): void {
-    this.loadEvolution()
+    this.loadEvolution();
+    // this.getPokemonFromEvolution();
   }
 
 
   loadEvolution() {
     this.pokemonService.fetchAPI(`${this.url}/${this.pokemon.id}`)
-    .subscribe((result) => {
-      this.evolutions.push(result);
-      console.log('Evoltuins', this.evolutions);
-    })
+      .subscribe((result) => {
+        this.fetchEvoOne(result);
+        this.fetchEvoTwo(result);
+        this.fetchEvoThree(result);
+        console.log('Evoltuins', this.evolutions);
+      })
+  }
+
+
+  fetchEvoOne(result: any) {
+    this.pokemonService.fetchAPI(result.chain.species.url)
+      .subscribe((details) => {
+        this.pokemonService.fetchAPI(`https://pokeapi.co/api/v2/pokemon/${details.name}`)
+          .subscribe((one) => {
+            this.evoOne.push(one);
+            console.log('evolution one', one);
+          })
+      })
+  }
+
+
+  fetchEvoTwo(result: any) {
+    this.pokemonService.fetchAPI(result.chain.evolves_to[0].species.url)
+      .subscribe((details) => {
+        this.pokemonService.fetchAPI(`https://pokeapi.co/api/v2/pokemon/${details.name}`)
+          .subscribe((two) => {
+            this.evoTwo.push(two);
+            console.log('evolution two', two);
+          })
+      })
+  }
+
+
+  fetchEvoThree(result: any) {
+    this.pokemonService.fetchAPI(result.chain.evolves_to[0].evolves_to[0].species.url)
+      .subscribe((details) => {
+        this.pokemonService.fetchAPI(`https://pokeapi.co/api/v2/pokemon/${details.name}`)
+          .subscribe((three) => {
+            this.evoOne.push(three);
+            console.log('evolution three', three);
+          })
+      })
   }
 }
+
+

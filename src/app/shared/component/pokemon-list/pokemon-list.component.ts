@@ -34,7 +34,7 @@ export class PokemonListComponent implements OnInit {
 
 
   limit: number = 1;
-  offset: number = 3;
+  offset: number = 0;
 
 
   ngOnInit(): void {
