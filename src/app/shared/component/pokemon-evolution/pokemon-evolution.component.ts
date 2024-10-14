@@ -17,6 +17,7 @@ export class PokemonEvolutionComponent implements OnInit {
   evoOne: any[] = [];
   evoTwo: any[] = [];
   evoThree: any[] = [];
+  isLoading: false | undefined;
 
 
   ngOnInit(): void {
@@ -29,8 +30,14 @@ export class PokemonEvolutionComponent implements OnInit {
     this.pokemonService.fetchAPI(`${this.url}/${this.pokemon.id}`)
       .subscribe((result) => {
         this.fetchEvoOne(result);
-        this.fetchEvoTwo(result);
-        this.fetchEvoThree(result);
+        setTimeout(() => {
+          this.fetchEvoTwo(result);
+        }, 100);
+        setTimeout(() => {
+          this.fetchEvoThree(result);
+        }, 200);
+        
+        
         console.log('Evoltuins', this.evolutions);
       })
   }
@@ -65,7 +72,7 @@ export class PokemonEvolutionComponent implements OnInit {
       .subscribe((details) => {
         this.pokemonService.fetchAPI(`https://pokeapi.co/api/v2/pokemon/${details.name}`)
           .subscribe((three) => {
-            this.evoOne.push(three);
+            this.evoThree.push(three);
             console.log('evolution three', three);
           })
       })
